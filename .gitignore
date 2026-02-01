@@ -1,0 +1,17 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Environment files — NEVER commit secrets
+.env
+.env.*
+!.env.example
+
+# Claude Code
+.claude/

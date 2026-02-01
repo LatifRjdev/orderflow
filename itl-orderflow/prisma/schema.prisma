@@ -1,0 +1,727 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================== AUTH ====================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?
+  image         String?
+  role          Role      @default(DEVELOPER)
+  isActive      Boolean   @default(true)
+
+  // Relations
+  managedOrders Order[]   @relation("OrderManager")
+  assignedTasks Task[]    @relation("TaskAssignee")
+  timeEntries   TimeEntry[]
+  comments      Comment[]
+  notifications Notification[]
+
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // NextAuth
+  accounts      Account[]
+  sessions      Session[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  DEVELOPER
+  VIEWER
+}
+
+// ==================== CLIENTS ====================
+
+model Client {
+  id            String    @id @default(cuid())
+
+  // Basic info
+  name          String
+  legalName     String?
+  inn           String?
+  email         String?
+  phone         String?
+  website       String?
+  address       String?
+  industry      String?
+  notes         String?   @db.Text
+
+  // Status
+  isArchived    Boolean   @default(false)
+
+  // Portal
+  portalToken   String?   @unique
+  portalEnabled Boolean   @default(false)
+
+  // Relations
+  contacts      ClientContact[]
+  orders        Order[]
+  invoices      Invoice[]
+  proposals     Proposal[]
+
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([name])
+  @@index([isArchived])
+  @@index([portalToken])
+}
+
+model ClientContact {
+  id            String    @id @default(cuid())
+
+  clientId      String
+  client        Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  firstName     String
+  lastName      String?
+  position      String?
+  email         String?
+  phone         String?
+  telegram      String?
+
+  isPrimary     Boolean   @default(false)
+  isDecisionMaker Boolean @default(false)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([clientId])
+}
+
+// ==================== ORDERS ====================
+
+model OrderStatus {
+  id            String    @id @default(cuid())
+
+  name          String
+  code          String    @unique
+  color         String    @default("#6B7280")
+  position      Int
+
+  isInitial     Boolean   @default(false)
+  isFinal       Boolean   @default(false)
+  notifyClient  Boolean   @default(false)
+
+  isActive      Boolean   @default(true)
+
+  orders        Order[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([position])
+}
+
+model Order {
+  id            String    @id @default(cuid())
+
+  // Identification
+  number        String    @unique
+
+  // Basic info
+  title         String
+  description   String?   @db.Text
+  projectType   String?
+
+  // Relations
+  clientId      String
+  client        Client    @relation(fields: [clientId], references: [id])
+
+  statusId      String
+  status        OrderStatus @relation(fields: [statusId], references: [id])
+
+  managerId     String?
+  manager       User?     @relation("OrderManager", fields: [managerId], references: [id])
+
+  // Priority
+  priority      Priority  @default(MEDIUM)
+
+  // Dates
+  estimatedStartDate  DateTime?
+  estimatedEndDate    DateTime?
+  actualStartDate     DateTime?
+  actualEndDate       DateTime?
+  deadline            DateTime?
+
+  // Budget
+  estimatedHours      Decimal?  @db.Decimal(10, 2)
+  estimatedBudget     Decimal?  @db.Decimal(15, 2)
+  currency            String    @default("TJS")
+
+  // Progress
+  progressPercent     Int       @default(0)
+
+  // Portal
+  portalToken         String    @unique @default(cuid())
+  portalEnabled       Boolean   @default(true)
+
+  // Relations
+  milestones    Milestone[]
+  tasks         Task[]
+  timeEntries   TimeEntry[]
+  files         File[]
+  comments      Comment[]
+  invoices      Invoice[]
+  proposals     Proposal[]
+  statusHistory OrderStatusHistory[]
+
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([clientId])
+  @@index([statusId])
+  @@index([managerId])
+  @@index([deadline])
+  @@index([portalToken])
+}
+
+model OrderStatusHistory {
+  id            String    @id @default(cuid())
+
+  orderId       String
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  fromStatusId  String?
+  toStatusId    String
+
+  changedById   String?
+  comment       String?
+
+  createdAt     DateTime  @default(now())
+
+  @@index([orderId])
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+// ==================== MILESTONES & TASKS ====================
+
+model Milestone {
+  id            String    @id @default(cuid())
+
+  orderId       String
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  title         String
+  description   String?   @db.Text
+  position      Int
+
+  startDate     DateTime?
+  dueDate       DateTime?
+  completedAt   DateTime?
+
+  estimatedHours    Decimal?  @db.Decimal(10, 2)
+  progressPercent   Int       @default(0)
+
+  requiresApproval  Boolean   @default(false)
+  clientApprovedAt  DateTime?
+
+  status        MilestoneStatus @default(PENDING)
+
+  tasks         Task[]
+  files         File[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([orderId])
+  @@index([position])
+}
+
+enum MilestoneStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  APPROVED
+  CANCELLED
+}
+
+model Task {
+  id            String    @id @default(cuid())
+
+  orderId       String
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  milestoneId   String?
+  milestone     Milestone? @relation(fields: [milestoneId], references: [id], onDelete: SetNull)
+
+  parentTaskId  String?
+  parentTask    Task?     @relation("SubTasks", fields: [parentTaskId], references: [id], onDelete: Cascade)
+  subTasks      Task[]    @relation("SubTasks")
+
+  title         String
+  description   String?   @db.Text
+
+  assigneeId    String?
+  assignee      User?     @relation("TaskAssignee", fields: [assigneeId], references: [id])
+
+  status        TaskStatus @default(TODO)
+  priority      Priority   @default(MEDIUM)
+
+  startDate     DateTime?
+  dueDate       DateTime?
+  completedAt   DateTime?
+
+  estimatedHours    Decimal?  @db.Decimal(10, 2)
+  position          Int       @default(0)
+
+  // Relations
+  timeEntries   TimeEntry[]
+  comments      Comment[]
+  checklists    TaskChecklist[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([orderId])
+  @@index([milestoneId])
+  @@index([assigneeId])
+  @@index([status])
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  REVIEW
+  DONE
+  CANCELLED
+}
+
+model TaskChecklist {
+  id            String    @id @default(cuid())
+
+  taskId        String
+  task          Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  title         String
+  isCompleted   Boolean   @default(false)
+  completedAt   DateTime?
+  position      Int       @default(0)
+
+  createdAt     DateTime  @default(now())
+
+  @@index([taskId])
+}
+
+// ==================== TIME TRACKING ====================
+
+model TimeEntry {
+  id            String    @id @default(cuid())
+
+  orderId       String
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  taskId        String?
+  task          Task?     @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  userId        String
+  user          User      @relation(fields: [userId], references: [id])
+
+  date          DateTime  @db.Date
+  hours         Decimal   @db.Decimal(5, 2)
+  description   String?   @db.Text
+
+  isBillable    Boolean   @default(true)
+  hourlyRate    Decimal?  @db.Decimal(10, 2)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([orderId])
+  @@index([userId])
+  @@index([date])
+}
+
+// ==================== FINANCES ====================
+
+model Invoice {
+  id            String    @id @default(cuid())
+
+  number        String    @unique
+
+  clientId      String
+  client        Client    @relation(fields: [clientId], references: [id])
+
+  orderId       String?
+  order         Order?    @relation(fields: [orderId], references: [id])
+
+  issueDate     DateTime  @db.Date
+  dueDate       DateTime? @db.Date
+
+  subtotal      Decimal   @db.Decimal(15, 2)
+  discountAmount Decimal  @default(0) @db.Decimal(15, 2)
+  taxAmount     Decimal   @default(0) @db.Decimal(15, 2)
+  total         Decimal   @db.Decimal(15, 2)
+  currency      String    @default("TJS")
+
+  status        InvoiceStatus @default(DRAFT)
+
+  paidAmount    Decimal   @default(0) @db.Decimal(15, 2)
+  paidAt        DateTime?
+
+  notes         String?   @db.Text
+  internalNotes String?   @db.Text
+
+  items         InvoiceItem[]
+  payments      Payment[]
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([clientId])
+  @@index([orderId])
+  @@index([status])
+}
+
+enum InvoiceStatus {
+  DRAFT
+  SENT
+  VIEWED
+  PAID
+  PARTIALLY_PAID
+  OVERDUE
+  CANCELLED
+}
+
+model InvoiceItem {
+  id            String    @id @default(cuid())
+
+  invoiceId     String
+  invoice       Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  description   String
+  quantity      Decimal   @default(1) @db.Decimal(10, 2)
+  unit          String?
+  unitPrice     Decimal   @db.Decimal(15, 2)
+  total         Decimal   @db.Decimal(15, 2)
+
+  position      Int       @default(0)
+
+  createdAt     DateTime  @default(now())
+
+  @@index([invoiceId])
+}
+
+model Payment {
+  id            String    @id @default(cuid())
+
+  invoiceId     String
+  invoice       Invoice   @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  amount        Decimal   @db.Decimal(15, 2)
+  paymentDate   DateTime  @db.Date
+  paymentMethod String?
+  reference     String?
+  notes         String?   @db.Text
+
+  createdAt     DateTime  @default(now())
+
+  @@index([invoiceId])
+  @@index([paymentDate])
+}
+
+// ==================== FILES ====================
+
+model File {
+  id            String    @id @default(cuid())
+
+  orderId       String?
+  order         Order?    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  milestoneId   String?
+  milestone     Milestone? @relation(fields: [milestoneId], references: [id], onDelete: SetNull)
+
+  name          String
+  originalName  String
+  url           String
+  key           String
+  size          Int
+  mimeType      String?
+
+  category      String?
+  isClientVisible      Boolean @default(false)
+  isClientDownloadable Boolean @default(false)
+
+  uploadedById  String?
+
+  createdAt     DateTime  @default(now())
+
+  @@index([orderId])
+  @@index([milestoneId])
+}
+
+// ==================== COMMENTS ====================
+
+model Comment {
+  id            String    @id @default(cuid())
+
+  // Polymorphic relation
+  orderId       String?
+  order         Order?    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  taskId        String?
+  task          Task?     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  userId        String?
+  user          User?     @relation(fields: [userId], references: [id])
+
+  // For client comments (from portal)
+  clientName    String?
+  clientEmail   String?
+
+  content       String    @db.Text
+  isInternal    Boolean   @default(false)
+  isPortalVisible Boolean @default(true)
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([orderId])
+  @@index([taskId])
+  @@index([createdAt])
+}
+
+// ==================== PROPOSALS ====================
+
+model Proposal {
+  id            String    @id @default(cuid())
+
+  number        String    @unique
+  title         String
+
+  clientId      String
+  client        Client    @relation(fields: [clientId], references: [id])
+
+  orderId       String?
+  order         Order?    @relation(fields: [orderId], references: [id])
+
+  status        ProposalStatus @default(DRAFT)
+
+  validUntil    DateTime?  @db.Date
+  totalAmount   Decimal    @default(0) @db.Decimal(15, 2)
+  currency      String     @default("TJS")
+
+  introduction  String?    @db.Text
+  scope         String?    @db.Text
+
+  items         ProposalItem[]
+  sections      ProposalSection[]
+  payments      ProposalPayment[]
+
+  sentAt        DateTime?
+  viewedAt      DateTime?
+  respondedAt   DateTime?
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([clientId])
+  @@index([orderId])
+  @@index([status])
+}
+
+model ProposalItem {
+  id            String    @id @default(cuid())
+
+  proposalId    String
+  proposal      Proposal  @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  description   String
+  quantity      Decimal   @default(1) @db.Decimal(10, 2)
+  unit          String?
+  unitPrice     Decimal   @db.Decimal(15, 2)
+  total         Decimal   @db.Decimal(15, 2)
+
+  position      Int       @default(0)
+
+  createdAt     DateTime  @default(now())
+
+  @@index([proposalId])
+}
+
+enum ProposalStatus {
+  DRAFT
+  SENT
+  VIEWED
+  ACCEPTED
+  REJECTED
+  EXPIRED
+}
+
+enum ProposalSectionType {
+  ABOUT_SOLUTION
+  TECH_STACK
+  KEY_ADVANTAGES
+  FUNCTIONAL_MODULES
+  ARCHITECTURE
+  IMPLEMENTATION_STAGES
+  PAYMENT_SCHEDULE
+  ADDITIONAL_TERMS
+  CONTACT_INFO
+  CUSTOM
+}
+
+model ProposalSection {
+  id         String              @id @default(cuid())
+
+  proposalId String
+  proposal   Proposal            @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  type       ProposalSectionType
+  title      String
+  content    Json
+  position   Int                 @default(0)
+  isVisible  Boolean             @default(true)
+
+  createdAt  DateTime            @default(now())
+  updatedAt  DateTime            @updatedAt
+
+  @@index([proposalId])
+}
+
+model ProposalPayment {
+  id          String   @id @default(cuid())
+
+  proposalId  String
+  proposal    Proposal @relation(fields: [proposalId], references: [id], onDelete: Cascade)
+
+  stageName   String
+  percentage  Decimal  @db.Decimal(5, 2)
+  amount      Decimal  @db.Decimal(15, 2)
+  description String?
+  position    Int      @default(0)
+
+  createdAt   DateTime @default(now())
+
+  @@index([proposalId])
+}
+
+// ==================== NOTIFICATIONS ====================
+
+model Notification {
+  id          String           @id @default(cuid())
+
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type        NotificationType
+  title       String
+  description String
+
+  linkUrl     String?
+
+  entityType  String?
+  entityId    String?
+
+  read        Boolean          @default(false)
+  readAt      DateTime?
+
+  createdAt   DateTime         @default(now())
+
+  @@index([userId])
+  @@index([userId, read])
+  @@index([createdAt])
+}
+
+enum NotificationType {
+  COMMENT
+  DEADLINE
+  STATUS
+  ASSIGNMENT
+}
+
+// ==================== SETTINGS ====================
+
+model Settings {
+  id            String    @id @default("default")
+
+  companyName   String    @default("ITL Solutions")
+  companyLegalName String?
+  companyLogo   String?
+  companyEmail  String?
+  companyPhone  String?
+  companyAddress String?
+  companyInn    String?
+  companyWebsite String?
+  bankName      String?
+  bankAccount   String?
+
+  currency      String    @default("TJS")
+  timezone      String    @default("Asia/Dushanbe")
+
+  invoicePrefix String    @default("INV")
+  orderPrefix   String    @default("ORD")
+  proposalPrefix String   @default("КП")
+  nextInvoiceNumber Int   @default(1)
+  nextOrderNumber   Int   @default(1)
+  nextProposalNumber Int  @default(1)
+
+  updatedAt     DateTime  @updatedAt
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([email])
+  @@index([token])
+}

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Гантт</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .gantt-grid {
+            background-size: 40px 100%;
+            background-image: linear-gradient(to right, #f0f2f5 1px, transparent 1px);
+        }
+        .today-line {
+            left: 480px; /* Position for 'today' in the mockup */
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] antialiased">
+<div class="flex h-screen flex-col overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-[#f0f2f5] bg-white px-6 py-3 shrink-0">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-xl">account_tree</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight">ITL OrderFlow</h2>
+</div>
+<div class="flex items-center gap-6">
+<a class="text-sm font-medium text-[#111418]" href="#">Проекты</a>
+<a class="text-sm font-medium text-[#111418]" href="#">Задачи</a>
+<a class="text-sm font-medium text-[#111418]" href="#">Команда</a>
+<a class="text-sm font-medium text-[#111418]" href="#">Отчеты</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<label class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-[#60708a]">search</span>
+<input class="h-10 w-64 rounded-lg border-none bg-[#f0f2f5] pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20" placeholder="Поиск по проекту" type="text"/>
+</label>
+<button class="flex h-10 items-center justify-center rounded-lg bg-primary px-4 text-sm font-bold text-white shadow-sm hover:bg-primary/90">
+                    Создать задачу
+                </button>
+<div class="h-10 w-10 rounded-full bg-cover bg-center border-2 border-white shadow-sm" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAfZmTMHvDI1KSBR0xHKzkWIBuRdjGj2dWl-CLidsPsKEIeMgQ6oRiA29pUA_2KCd3SCTjFc_nG_6p7WdCzGJw-4B6S8za0yvtlO_X1q73l1urPZ19hAhq4KkxiDS1bZ54k5WtqFWMJk-Ya1Fs45bmtOXcos_wGre9iASw0hEjwiG4QhJZQeepobSpzYb31FheuNMBFdIPVYJ6gVkLvt5lLm0T6KNTvPmV2RojGcYdoKxH75-dPkP4Ui1wp_E8k5y3XecM45nlMKWx0");'></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- Left Sidebar -->
+<aside class="w-64 border-r border-[#f0f2f5] bg-white shrink-0 flex flex-col">
+<div class="p-6">
+<h1 class="text-base font-semibold">Project Alpha</h1>
+<p class="text-xs text-[#60708a] uppercase tracking-wider font-bold mt-1">Детализация</p>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#60708a] hover:bg-[#f0f2f5] cursor-pointer transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium">Дашборд</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-sm font-medium font-bold">Гантт</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#60708a] hover:bg-[#f0f2f5] cursor-pointer transition-colors">
+<span class="material-symbols-outlined">view_kanban</span>
+<p class="text-sm font-medium">Канбан</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#60708a] hover:bg-[#f0f2f5] cursor-pointer transition-colors">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium">Ресурсы</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#60708a] hover:bg-[#f0f2f5] cursor-pointer transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Настройки</p>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex flex-1 flex-col overflow-hidden bg-white">
+<!-- Toolbar & Headline -->
+<div class="flex items-center justify-between px-6 py-4 border-b border-[#f0f2f5]">
+<div class="flex items-center gap-6">
+<h3 class="text-xl font-bold">Февраль - Март 2024</h3>
+<div class="flex h-9 items-center rounded-lg bg-[#f0f2f5] p-1 w-64">
+<button class="flex-1 text-xs font-medium text-[#60708a] py-1">День</button>
+<button class="flex-1 text-xs font-semibold bg-white rounded-md shadow-sm text-primary py-1">Неделя</button>
+<button class="flex-1 text-xs font-medium text-[#60708a] py-1">Месяц</button>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="flex h-10 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-bold text-white shadow-sm">
+<span class="material-symbols-outlined text-[20px]">event</span>
+                            Сегодня
+                        </button>
+<button class="p-2 text-[#60708a] hover:bg-[#f0f2f5] rounded-lg">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="p-2 text-[#60708a] hover:bg-[#f0f2f5] rounded-lg">
+<span class="material-symbols-outlined">download</span>
+</button>
+</div>
+</div>
+<!-- Gantt Workspace -->
+<div class="flex flex-1 overflow-hidden">
+<!-- Left Task List -->
+<div class="w-80 border-r border-[#f0f2f5] flex flex-col shrink-0">
+<div class="bg-[#fcfdfe] h-12 border-b border-[#f0f2f5] flex items-center px-4">
+<span class="text-xs font-bold text-[#60708a] uppercase tracking-wider">Название задачи</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Task Row: Milestone -->
+<div class="flex h-12 items-center px-4 border-b border-[#f0f2f5] bg-slate-50/50">
+<span class="material-symbols-outlined text-sm mr-2 text-primary">keyboard_arrow_down</span>
+<span class="text-sm font-bold truncate">Подготовительный этап</span>
+</div>
+<!-- Task Row -->
+<div class="flex h-12 items-center px-4 border-b border-[#f0f2f5] pl-8 hover:bg-[#f0f2f5]/40 group cursor-pointer">
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium truncate">Анализ требований</p>
+</div>
+<div class="size-6 rounded-full bg-cover ml-2 border border-white" data-alt="Assignee 1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAXUpuVZnRH5gYCybDmy3kdIpzfwLFoVaN_ZsS5U3p-cGPRDPiE1CVkCa-8PRNIIDt12K7pPpCsiBJB-fqkLN2Z4wcQ-m_3j4eRj4kLt1PCd_XMzciwGIGRWAirP6XUeh0IlGaC_nx_PHklfDkQaPmyL-ivybRKCdqDe6f1XNw4lDl9XztXEcCZhVCJdncRCOwMwzjPe0NPEu5PqiLn1BVIfJjm3hqNKTLsLHlBr2wE8UwLSG4IIqLGS_paWOlQEhxZbQ47aHvOXlrn");'></div>
+</div>
+<div class="flex h-12 items-center px-4 border-b border-[#f0f2f5] pl-8 hover:bg-[#f0f2f5]/40 group cursor-pointer">
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium truncate">Проектирование БД</p>
+</div>
+<div class="size-6 rounded-full bg-cover ml-2 border border-white" data-alt="Assignee 2" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCjgTIR2Nw_kO2URmPNMrR5SZNOAcIjuiHAfuICDJJ1FE1f4Ih4mhjVktU4D6S4ytSOy8S0Nl1FuYLr8r4SoX-cf00WC8DROS1IYDqxbkmrRUiGVUqZ30bn8h9m4GOq_3gkYwSP4SKJRz7zEYqjqSZvbHCt-gaOQNBUbfC7qPtNqMjqb-4eQTKb5IcLql_jrnp9_WrSEHEFd4coQGXYRbkjDy-i4WZUDHUZXIgdYA6VQJti5MuVcoHSpehCMv8Nka-4tTcE27lI3xj4");'></div>
+</div>
+<!-- Task Row: Milestone -->
+<div class="flex h-12 items-center px-4 border-b border-[#f0f2f5] bg-slate-50/50 mt-4">
+<span class="material-symbols-outlined text-sm mr-2 text-primary">keyboard_arrow_down</span>
+<span class="text-sm font-bold truncate">Разработка ядра</span>
+</div>
+<div class="flex h-12 items-center px-4 border-b border-[#f0f2f5] pl-8 hover:bg-[#f0f2f5]/40 group cursor-pointer">
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium truncate">API Gateway</p>
+</div>
+<div class="size-6 rounded-full bg-cover ml-2 border border-white" data-alt="Assignee 3" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDCVLeDFjYo9Ljwqh56MJEQw9IhMjtiwgrIagwu1vNBWsUjSeT-LKLXwDJmVA-FYO4qlF8EhfdneX54xXRf3JdsbroE_1t8exJ6O8OILYZZagNq_XVtiMu4D10Yg11yKTw4rxz4O9R-qTjHEjsrBssGVrD_Ttk8tgK83myqKwT_q2ccX0EzqlvAmgw85g7Y1mjBne9DXLQ25ER9CwiH5CMkSIi46Mwq6eaIbOam_0z542FkOMobs7y9lT_OyMoJUJ_L3UB5-UABOap2");'></div>
+</div>
+<div class="flex h-12 items-center px-4 border-b border-[#f0f2f5] pl-8 hover:bg-[#f0f2f5]/40 group cursor-pointer">
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium truncate">Сервисы аутентификации</p>
+</div>
+<div class="size-6 rounded-full bg-cover ml-2 border border-white" data-alt="Assignee 4" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAcKqXBIFL2-F8H1qOdoEeBHNoKSfH2r3KrU-DGFcFDRE_S5DVE-C-0931YO9WjmGvA3xo8zB51O9GaVht9ZIThDuvMqH-HqhQs4mdEPFJyiYyKQOWj2vKpzRCoI6PRbZjBiWF6K3FyRdIXJwn1AjxBHqR4jnGUoXhczen5ql-4guWbr3hqyAy1COKnXDdQSjvxKqvtc2rwWD5NG14dlF1EvTovsPW1rm2tGcOnVjRHUz1M99B6Zfc5E4xNttAohgny4mooh-FWss1a");'></div>
+</div>
+<div class="flex h-12 items-center px-4 border-b border-[#f0f2f5] pl-8 hover:bg-[#f0f2f5]/40 group cursor-pointer">
+<div class="flex-1 min-w-0">
+<p class="text-sm font-medium truncate">Интеграция Kafka</p>
+</div>
+<div class="size-6 rounded-full bg-cover ml-2 border border-white" data-alt="Assignee 1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAfhJFaBIL5fU0-_RSwIVCpZd5QrfmTJhfssQbq_D-KPL4E0HWM1L6WsKFwJhXL5pVONITK8t24RSDlwUJz7CgKZVYBF2ZbGYxcf0jyGvSnAcYGkI6gM5fd9BPow2oBzLVdeEI0aBJn4hHW-CBZa-mwCW-YSIAecsNAaeopSeVScenNza4utnp7UKFLT_50v6WNlBfmdvXMwx7CtNVAi_xNRwoPY0cKKZV_Sd6X40AGwxSrxpUHGQQiyGTpi64p_WYjwLCGsfUWfPwT");'></div>
+</div>
+</div>
+</div>
+<!-- Right Gantt Chart -->
+<div class="flex-1 flex flex-col overflow-x-auto overflow-y-hidden relative custom-scrollbar">
+<!-- Timeline Header -->
+<div class="h-12 border-b border-[#f0f2f5] flex items-stretch gantt-grid sticky top-0 bg-white z-10 shrink-0">
+<!-- Week 1: Feb -->
+<div class="w-[280px] border-r border-[#f0f2f5] flex flex-col">
+<div class="h-6 flex items-center justify-center text-[10px] font-bold text-[#60708a] border-b border-[#f0f2f5]">ФЕВРАЛЬ</div>
+<div class="h-6 flex">
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ПН 12</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ВТ 13</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">СР 14</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ЧТ 15</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ПТ 16</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5] bg-red-50 font-bold">СБ 17</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] bg-red-50 font-bold">ВС 18</div>
+</div>
+</div>
+<!-- Week 2: Feb -->
+<div class="w-[280px] border-r border-[#f0f2f5] flex flex-col">
+<div class="h-6 flex items-center justify-center text-[10px] font-bold text-[#60708a] border-b border-[#f0f2f5]">ФЕВРАЛЬ</div>
+<div class="h-6 flex">
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ПН 19</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ВТ 20</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">СР 21</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ЧТ 22</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ПТ 23</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5] bg-red-50">СБ 24</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] bg-red-50">ВС 25</div>
+</div>
+</div>
+<!-- Week 3: Mar -->
+<div class="w-[280px] flex flex-col">
+<div class="h-6 flex items-center justify-center text-[10px] font-bold text-[#60708a] border-b border-[#f0f2f5]">МАРТ</div>
+<div class="h-6 flex">
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ПН 26</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ВТ 27</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">СР 28</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ЧТ 01</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5]">ПТ 02</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] border-r border-[#f0f2f5] bg-red-50">СБ 03</div>
+<div class="flex-1 flex items-center justify-center text-[10px] text-[#60708a] bg-red-50">ВС 04</div>
+</div>
+</div>
+</div>
+<!-- Gantt Bars Canvas -->
+<div class="flex-1 overflow-y-auto custom-scrollbar relative gantt-grid bg-white">
+<!-- Today Indicator -->
+<div class="absolute today-line top-0 bottom-0 w-px border-l-2 border-dashed border-red-500 z-20 pointer-events-none">
+<div class="absolute top-0 -translate-x-1/2 bg-red-500 text-[9px] text-white px-1 font-bold rounded">СЕГОДНЯ</div>
+</div>
+<!-- Bar Rows -->
+<div class="flex flex-col min-w-[840px]">
+<!-- Milestone Header Row (Empty in Gantt) -->
+<div class="h-12 border-b border-[#f0f2f5]"></div>
+<!-- Task 1 Bar -->
+<div class="h-12 border-b border-[#f0f2f5] relative flex items-center">
+<div class="absolute left-10 h-6 bg-primary/20 rounded-md border border-primary/30 flex overflow-hidden w-[240px] z-10 group cursor-pointer hover:shadow-md transition-shadow">
+<div class="h-full bg-primary w-[75%]"></div>
+<span class="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary">75% Завершено</span>
+</div>
+<!-- Dependency Arrow Concept (SVG) -->
+<svg class="absolute left-[250px] top-[24px] overflow-visible pointer-events-none" height="48" width="100">
+<path d="M 0 0 L 20 0 L 20 48 L 40 48" fill="none" marker-end="url(#arrowhead)" stroke="#cbd5e1" stroke-width="1.5"></path>
+<defs>
+<marker id="arrowhead" markerheight="4" markerwidth="6" orient="auto" refx="5" refy="2">
+<polygon fill="#cbd5e1" points="0 0, 6 2, 0 4"></polygon>
+</marker>
+</defs>
+</svg>
+</div>
+<!-- Task 2 Bar -->
+<div class="h-12 border-b border-[#f0f2f5] relative flex items-center">
+<div class="absolute left-[290px] h-6 bg-amber-100 rounded-md border border-amber-300 flex overflow-hidden w-[160px] z-10 group cursor-pointer hover:shadow-md transition-shadow">
+<div class="h-full bg-amber-500 w-[20%]"></div>
+<span class="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-amber-900">20% В процессе</span>
+</div>
+</div>
+<!-- Milestone Separator -->
+<div class="h-12 border-b border-[#f0f2f5] mt-4"></div>
+<!-- Task 3 Bar: API Gateway -->
+<div class="h-12 border-b border-[#f0f2f5] relative flex items-center">
+<!-- Diamond Milestone Marker -->
+<div class="absolute left-[450px] w-4 h-4 bg-primary rotate-45 z-10 shadow-sm" title="Критическая отметка"></div>
+<div class="absolute left-[470px] h-6 bg-primary/10 rounded-md border border-primary/20 flex overflow-hidden w-[200px] z-10 group cursor-pointer hover:shadow-md transition-shadow">
+<div class="h-full bg-primary/40 w-0"></div>
+<span class="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary/60">Запланировано</span>
+</div>
+</div>
+<!-- Task 4 Bar -->
+<div class="h-12 border-b border-[#f0f2f5] relative flex items-center">
+<div class="absolute left-[520px] h-6 bg-slate-100 rounded-md border border-slate-300 flex overflow-hidden w-[140px] z-10">
+<span class="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-slate-500">Ожидание</span>
+</div>
+</div>
+<!-- Task 5 Bar -->
+<div class="h-12 border-b border-[#f0f2f5] relative flex items-center">
+<div class="absolute left-[660px] h-6 bg-primary/20 rounded-md border border-primary/30 flex overflow-hidden w-[180px] z-10">
+<span class="absolute left-2 top-1/2 -translate-y-1/2 text-[10px] font-bold text-primary">Развертывание</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / Status Bar -->
+<footer class="h-8 border-t border-[#f0f2f5] bg-[#fcfdfe] px-4 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1.5">
+<div class="size-2 rounded-full bg-primary"></div>
+<span class="text-[10px] font-medium text-[#60708a]">Завершено</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="size-2 rounded-full bg-amber-500"></div>
+<span class="text-[10px] font-medium text-[#60708a]">В работе</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="size-2 rounded-full bg-slate-400"></div>
+<span class="text-[10px] font-medium text-[#60708a]">Ожидание</span>
+</div>
+</div>
+<span class="text-[10px] text-[#60708a]">Последнее изменение: сегодня, 14:20</span>
+</footer>
+</main>
+</div>
+</div>
+</body></html>

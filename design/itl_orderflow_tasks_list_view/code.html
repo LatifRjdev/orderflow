@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow Tasks List View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#2877f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                        "sidebar-dark": "#111827",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-sidebar-dark text-white flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary rounded-lg p-1.5">
+<span class="material-symbols-outlined text-white text-2xl">rocket_launch</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-tight">ITL OrderFlow</h1>
+<p class="text-[10px] text-gray-400 uppercase tracking-wider">SaaS Management</p>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1 mt-4">
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">folder</span>
+<span class="text-sm font-medium">Проекты</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary text-white rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">task_alt</span>
+<span class="text-sm font-medium">Задачи</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Клиенты</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-sm font-medium">Отчеты</span>
+</a>
+</nav>
+<div class="p-4 border-t border-white/10 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Настройки</span>
+</a>
+<div class="flex items-center gap-3 px-3 py-4 mt-2">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary text-sm">person</span>
+</div>
+<div class="overflow-hidden">
+<p class="text-xs font-semibold truncate">Александр В.</p>
+<p class="text-[10px] text-gray-400">Администратор</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Header -->
+<header class="h-16 bg-white dark:bg-background-dark border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-6 shrink-0">
+<div class="flex items-center gap-6">
+<h2 class="text-xl font-bold text-gray-900 dark:text-white">Задачи</h2>
+<div class="flex items-center bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+<button class="px-4 py-1.5 text-xs font-semibold rounded-md bg-white dark:bg-gray-700 shadow-sm text-primary">Список</button>
+<button class="px-4 py-1.5 text-xs font-semibold rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700">Доска</button>
+<button class="px-4 py-1.5 text-xs font-semibold rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700">Календарь</button>
+</div>
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+<input class="w-full pl-10 pr-4 py-1.5 bg-gray-100 dark:bg-gray-800 border-none rounded-lg text-sm focus:ring-2 focus:ring-primary/20" placeholder="Поиск задач..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-lg">add</span>
+                        Создать задачу
+                    </button>
+</div>
+</header>
+<!-- Scrollable Area -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Quick Filters Chips -->
+<div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+<button class="px-4 py-1.5 bg-primary text-white rounded-full text-xs font-semibold whitespace-nowrap">Все</button>
+<button class="px-4 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-semibold hover:border-primary transition-colors whitespace-nowrap">Мои задачи</button>
+<button class="px-4 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-semibold hover:border-primary transition-colors whitespace-nowrap">Сегодня</button>
+<button class="px-4 py-1.5 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 rounded-full text-xs font-semibold hover:border-primary transition-colors whitespace-nowrap">На этой неделе</button>
+<button class="px-4 py-1.5 bg-white dark:bg-gray-800 border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 rounded-full text-xs font-semibold hover:bg-red-50 transition-colors whitespace-nowrap">Просроченные</button>
+</div>
+<!-- Project Group 1 -->
+<section class="space-y-3">
+<div class="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-gray-800/50 border-l-4 border-primary rounded-r-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-400 cursor-pointer">keyboard_arrow_down</span>
+<h3 class="text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-tight">
+                                #ORD-2024-047 — Корпоративный портал <span class="ml-2 font-medium text-gray-400 lowercase">(8 задач)</span>
+</h3>
+</div>
+<button class="text-xs font-medium text-primary hover:underline">Детали проекта</button>
+</div>
+<div class="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50/50 dark:bg-gray-800/50 text-[11px] uppercase tracking-wider text-gray-500 font-bold border-b border-gray-200 dark:border-gray-800">
+<th class="w-12 px-4 py-3 text-center"><input class="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/></th>
+<th class="w-32 px-4 py-3">Приоритет</th>
+<th class="px-4 py-3">Задача</th>
+<th class="w-40 px-4 py-3">Веха</th>
+<th class="w-56 px-4 py-3">Исполнитель</th>
+<th class="w-32 px-4 py-3">Срок</th>
+<th class="w-40 px-4 py-3">Статус</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors group">
+<td class="px-4 py-4 text-center"><input class="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide w-fit">
+<span class="size-1.5 bg-red-600 rounded-full animate-pulse"></span>
+                                            Высокий
+                                        </div>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors cursor-pointer">Разработка API авторизации</span>
+<span class="text-[11px] text-gray-400">Back-end / Auth</span>
+</div>
+</td>
+<td class="px-4 py-4 text-xs text-gray-500 dark:text-gray-400">Спринт 1</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="size-7 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center border border-blue-200 dark:border-blue-800 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User avatar of Ivan Ivanov" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj9HY7KR0psr7OKEfmRAxdORRiWl--XaTzE9sLYIuUYtR5fYFsb0epA48cv7Wy0g-Cx8NFdXm-jc8YIcDl8gUmIfvykzilAEQY1c8Ex0MpHleEuWqVUKS8W6v3n01CY31_HIYWSGyIvmR5SCVurAN3fri5iC_Tgcmd8P3Aw42toxL23zvBZWZ4fEqvxe_ADQowiQRAOhvF2x7INBF_zBLfOHZ4Dv6kqmwCQtseNA4L2zFm57dq-pVJSFcbHUZ0deKMdHYK4maoNQvp"/>
+</div>
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Иван Иванов</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">15 мая</span>
+</td>
+<td class="px-4 py-4">
+<button class="flex items-center justify-between w-full px-3 py-1.5 text-xs font-bold text-blue-700 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-100 dark:border-blue-800/50">
+                                            В работе
+                                            <span class="material-symbols-outlined text-sm">unfold_more</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors group">
+<td class="px-4 py-4 text-center"><input class="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide w-fit">
+<span class="size-1.5 bg-blue-600 rounded-full"></span>
+                                            Средний
+                                        </div>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors cursor-pointer">Верстка главной страницы</span>
+<span class="text-[11px] text-gray-400">Front-end / UI</span>
+</div>
+</td>
+<td class="px-4 py-4 text-xs text-gray-500 dark:text-gray-400">Дизайн</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="size-7 rounded-full bg-pink-100 dark:bg-pink-900/30 flex items-center justify-center border border-pink-200 dark:border-pink-800 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User avatar of Anna Sidorova" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMZUzh3NCuJPGE0CoE2PcwWylpotaRWbSH5jlQloXI0i7dH_Ci61EEJGx0Dziv0E8733nGnulizMe5nCK5VpgfkxPABkTKba500zqDqr1lEG3DH5fuE1ZbANe-6r_jHBlopTfyCy1oPNaSExkP3D0_SmZ5LyX37wCzjqNldoV2DQ54kbwYvUWaP8vL8tOAQZdfOICH8DLcLOIv4vt3VtjDFFnJZNverYPufHKPcprpm2bFbbLniiOkU2pH--oaVvzWKBrgL_72gjH9"/>
+</div>
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Анна Сидорова</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-xs font-semibold text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">16 мая</span>
+</td>
+<td class="px-4 py-4">
+<button class="flex items-center justify-between w-full px-3 py-1.5 text-xs font-bold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30 rounded-lg border border-amber-100 dark:border-amber-800/50">
+                                            Ожидание
+                                            <span class="material-symbols-outlined text-sm">unfold_more</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-800/30 transition-colors group">
+<td class="px-4 py-4 text-center"><input class="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/></td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wide w-fit">
+<span class="size-1.5 bg-gray-400 rounded-full"></span>
+                                            Низкий
+                                        </div>
+</td>
+<td class="px-4 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors cursor-pointer">Настройка CI/CD</span>
+<span class="text-[11px] text-gray-400">DevOps / Pipeline</span>
+</div>
+</td>
+<td class="px-4 py-4 text-xs text-gray-500 dark:text-gray-400">Деплой</td>
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="size-7 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center border border-emerald-200 dark:border-emerald-800 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User avatar of Petr Petrov" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrLtaKFKMmZyBEluI2BlE7oN8-AOPS9dJcDdGqVKhbz9u_EOudiO5557NOsWefXFs26S9CCiRx1HMt17Ug9OcsQl_MJWQaDKv_OKLlbZ9rjrKDAEj8ndm804sQ88orbwrOaTK9Cd81t6pYxWWqNQX1I12pK6yESSlQwLj5H45Scyw1FMbttCP0RcW_h6-vdqWP-aRoTX7v9AGjgdjrg-v6Ws6MUoTyYR0mMhgKSxjVIZU73Q0EtrBInoLEsWXqLPRYcAer1i8WBXgW"/>
+</div>
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Петр Петров</span>
+</div>
+</td>
+<td class="px-4 py-4">
+<span class="text-xs font-semibold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/20 px-2 py-1 rounded">Просрочено</span>
+</td>
+<td class="px-4 py-4">
+<button class="flex items-center justify-between w-full px-3 py-1.5 text-xs font-bold text-indigo-700 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/30 rounded-lg border border-indigo-100 dark:border-indigo-800/50">
+                                            Тестирование
+                                            <span class="material-symbols-outlined text-sm">unfold_more</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Project Group 2 (Collapsed state visualization) -->
+<section class="space-y-3">
+<div class="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-gray-800/50 border-l-4 border-gray-300 dark:border-gray-600 rounded-r-lg">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-400 cursor-pointer rotate-270">keyboard_arrow_right</span>
+<h3 class="text-sm font-bold text-gray-700 dark:text-gray-200 uppercase tracking-tight">
+                                #ORD-2024-051 — Обновление CRM системы <span class="ml-2 font-medium text-gray-400 lowercase">(3 задачи)</span>
+</h3>
+</div>
+<button class="text-xs font-medium text-gray-400 hover:text-primary">Развернуть</button>
+</div>
+</section>
+<!-- Floating Bottom Stats (Optional) -->
+<div class="flex items-center gap-6 px-6 py-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-lg w-fit mx-auto sticky bottom-0">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-500">list_alt</span>
+<span class="text-sm font-medium text-gray-600 dark:text-gray-300">Всего: <span class="font-bold text-gray-900 dark:text-white">42</span></span>
+</div>
+<div class="w-px h-4 bg-gray-200 dark:bg-gray-700"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500">pending</span>
+<span class="text-sm font-medium text-gray-600 dark:text-gray-300">В работе: <span class="font-bold text-gray-900 dark:text-white">12</span></span>
+</div>
+<div class="w-px h-4 bg-gray-200 dark:bg-gray-700"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500">error</span>
+<span class="text-sm font-medium text-gray-600 dark:text-gray-300">Просрочено: <span class="font-bold text-gray-900 dark:text-white">4</span></span>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

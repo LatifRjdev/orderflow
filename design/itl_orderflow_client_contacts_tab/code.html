@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Контактные лица</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="w-64 flex flex-col bg-white dark:bg-slate-900 border-r border-[#dbdfe6] dark:border-slate-800 shrink-0">
+<div class="p-6 flex flex-col gap-6 h-full justify-between">
+<div class="flex flex-col gap-6">
+<!-- Logo Section -->
+<div class="flex items-center gap-3">
+<div class="bg-primary size-10 rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">rocket_launch</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-[#111418] dark:text-white text-base font-bold leading-none">ITL OrderFlow</h1>
+<p class="text-[#60708a] dark:text-slate-400 text-xs font-normal">Management System</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#60708a] hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium">Проекты</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#60708a] hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">check_box</span>
+<p class="text-sm font-medium">Задачи</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium font-bold">Клиенты</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#60708a] hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<p class="text-sm font-medium">Финансы</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#60708a] hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Настройки</p>
+</a>
+</nav>
+</div>
+<!-- Profile Footer -->
+<div class="flex items-center gap-3 border-t border-[#dbdfe6] dark:border-slate-800 pt-4">
+<div class="size-8 rounded-full bg-slate-200 dark:bg-slate-700 bg-cover bg-center" data-alt="Avatar of current user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD_W4thDPqoluYVNcTy6tLB_DvjRmC-s6CNwzj5Ql0RG-RbOpTKVtY47tmOrFLPStdv72Ohu1CxmOAxlPyt8Sb2uw2JJ7UbEW0sL3KZK6UqJqal8_o6RbdWAT5p7utSWjTyx4u0LCOoCPOqsFVfnhNAc-JKAosOEHX6Rrlbt9yX9d6egfH-FI1BtPzRF1XkkSL4SSMURDegZC7rBQI1-x1fyogzZKQl75BztvAZfW5R8XwTrrzuO2iwCuj-6zTHTin9ypVZj6AvaJ51")'></div>
+<div class="flex flex-col">
+<p class="text-xs font-bold dark:text-white">Admin User</p>
+<p class="text-[10px] text-[#60708a] dark:text-slate-400">Owner</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Breadcrumbs -->
+<div class="px-8 pt-6">
+<div class="flex items-center gap-2 text-sm">
+<a class="text-[#60708a] dark:text-slate-400 hover:text-primary transition-colors" href="#">Главная</a>
+<span class="text-[#60708a] dark:text-slate-400">/</span>
+<a class="text-[#60708a] dark:text-slate-400 hover:text-primary transition-colors" href="#">Клиенты</a>
+<span class="text-[#60708a] dark:text-slate-400">/</span>
+<span class="text-[#111418] dark:text-white font-medium">ООО ТехноПром</span>
+</div>
+</div>
+<!-- Page Heading -->
+<div class="flex items-end justify-between px-8 py-6">
+<div class="flex flex-col gap-1">
+<h2 class="text-[#111418] dark:text-white text-3xl font-bold tracking-tight">ООО ТехноПром</h2>
+<p class="text-[#60708a] dark:text-slate-400">Информационные технологии и разработка ПО</p>
+</div>
+<button class="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-lg font-medium hover:bg-blue-600 transition-all shadow-sm">
+<span class="material-symbols-outlined text-[20px]">person_add</span>
+<span>Добавить контакт</span>
+</button>
+</div>
+<!-- Tabs -->
+<div class="px-8 border-b border-[#dbdfe6] dark:border-slate-800 bg-white dark:bg-slate-900/50 sticky top-0 z-10">
+<div class="flex gap-8 overflow-x-auto no-scrollbar">
+<a class="flex items-center py-4 border-b-2 border-transparent text-[#60708a] hover:text-primary transition-all" href="#">
+<span class="text-sm font-semibold whitespace-nowrap">Обзор</span>
+</a>
+<a class="flex items-center py-4 border-b-2 border-transparent text-[#60708a] hover:text-primary transition-all" href="#">
+<span class="text-sm font-semibold whitespace-nowrap">Проекты</span>
+</a>
+<a class="flex items-center py-4 border-b-2 border-transparent text-[#60708a] hover:text-primary transition-all" href="#">
+<span class="text-sm font-semibold whitespace-nowrap">Документы</span>
+</a>
+<a class="flex items-center py-4 border-b-2 border-primary text-primary" href="#">
+<span class="text-sm font-bold whitespace-nowrap">Контактные лица</span>
+</a>
+<a class="flex items-center py-4 border-b-2 border-transparent text-[#60708a] hover:text-primary transition-all" href="#">
+<span class="text-sm font-semibold whitespace-nowrap">История</span>
+</a>
+</div>
+</div>
+<!-- Content Area: ImageGrid of Contact Cards -->
+<div class="px-8 py-8 bg-background-light dark:bg-background-dark grow">
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+<!-- Contact Card 1 -->
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-[#dbdfe6] dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-2">
+<span class="bg-primary/10 text-primary text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded">ЛПР</span>
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded">Основной</span>
+</div>
+<button class="text-[#60708a] hover:text-[#111418] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex flex-col items-center text-center gap-3 mb-6">
+<div class="size-20 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-white dark:border-slate-800 shadow-inner overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="Portrait of Ivan Petrov" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCdsKpc1E45iZegMAWXrNuVC1JY2kpA7jvbuMgnjfDhUefjJcEHc19m1CNN28TZbzwAHQmW2lHMhqsdhSBvZj5sVYak8lCdOg4NK4ctlIDjQgceG3uy_7bM3YSa0jrHbc6XHzI6yLzix0fL2nf95GTuX1aMRZxfNAysge3TkDUd5_VLhOMaNbNLoCPPJ3IeIX3CIjfuECtnx4NVlJysGDExwu0ysFGvmDPRuYpDjpVWNS-wn_bVgkjiRkgtDIJgWGbPrFnsbzqHOwuZ")'></div>
+</div>
+<div>
+<h3 class="text-lg font-bold text-[#111418] dark:text-white">Иван Петров</h3>
+<p class="text-sm text-[#60708a] dark:text-slate-400">CTO / Технический директор</p>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">mail</span>
+<span class="text-sm dark:text-slate-300">ivan@example.com</span>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">phone</span>
+<span class="text-sm dark:text-slate-300">+7 900 123-45-67</span>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">send</span>
+<span class="text-sm dark:text-slate-300">@ivan_cto</span>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-white dark:bg-slate-800 border border-[#dbdfe6] dark:border-slate-700 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+                                Написать
+                            </button>
+<button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">call</span>
+                                Позвонить
+                            </button>
+</div>
+</div>
+<!-- Contact Card 2 -->
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-[#dbdfe6] dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-2">
+<span class="bg-primary/10 text-primary text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded">ЛПР</span>
+</div>
+<button class="text-[#60708a] hover:text-[#111418] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex flex-col items-center text-center gap-3 mb-6">
+<div class="size-20 rounded-full bg-slate-100 dark:bg-slate-800 border-2 border-white dark:border-slate-800 shadow-inner overflow-hidden">
+<div class="w-full h-full bg-cover bg-center" data-alt="Portrait of Maria Sidorova" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAyi6mjwByUkjLLnd3qeF-wlko_X-tCtSed7JnH0CsL-9GQXPY4XrgkcdBUsQNaWIagfwPmRdNO6HWOmQpL1I5KyWLs4Lakp8TfQUXHNA9cR0OSJgFffCguqiFuuxq-idJHhiwVTgEK5c-W4PZFRmKEFEIoxoFRdd80Cp08gUDWP737-ouArXEnt_SN1mH2jkKN7-FlakeW-bfFW-FznXb7HM_D0lnm--5abU9w_uSJB3nEWxwwuOah-Dgo1Ne7l11p_dr3N3UPcIG1")'></div>
+</div>
+<div>
+<h3 class="text-lg font-bold text-[#111418] dark:text-white">Мария Сидорова</h3>
+<p class="text-sm text-[#60708a] dark:text-slate-400">Account Manager</p>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">mail</span>
+<span class="text-sm dark:text-slate-300">maria@example.com</span>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">phone</span>
+<span class="text-sm dark:text-slate-300">+7 911 321-65-43</span>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">send</span>
+<span class="text-sm dark:text-slate-300">@maria_mgr</span>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-white dark:bg-slate-800 border border-[#dbdfe6] dark:border-slate-700 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+                                Написать
+                            </button>
+<button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">call</span>
+                                Позвонить
+                            </button>
+</div>
+</div>
+<!-- Contact Card 3 (No avatar fallback) -->
+<div class="bg-white dark:bg-slate-900 p-5 rounded-xl border border-[#dbdfe6] dark:border-slate-800 shadow-sm hover:shadow-md transition-shadow group relative">
+<div class="flex justify-between items-start mb-4">
+<div class="flex gap-2">
+<span class="bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 text-[10px] uppercase tracking-wider font-bold px-2 py-1 rounded">Закупщик</span>
+</div>
+<button class="text-[#60708a] hover:text-[#111418] dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="flex flex-col items-center text-center gap-3 mb-6">
+<div class="size-20 rounded-full bg-primary/20 flex items-center justify-center border-2 border-white dark:border-slate-800 shadow-inner">
+<span class="text-2xl font-bold text-primary">АС</span>
+</div>
+<div>
+<h3 class="text-lg font-bold text-[#111418] dark:text-white">Алексей Смирнов</h3>
+<p class="text-sm text-[#60708a] dark:text-slate-400">Специалист по закупкам</p>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">mail</span>
+<span class="text-sm dark:text-slate-300">alex@example.com</span>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">phone</span>
+<span class="text-sm dark:text-slate-300">+7 905 555-55-55</span>
+</div>
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-slate-800/50 opacity-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-400 text-[18px]">send</span>
+<span class="text-sm dark:text-slate-300 italic">не указан</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-white dark:bg-slate-800 border border-[#dbdfe6] dark:border-slate-700 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">chat</span>
+                                Написать
+                            </button>
+<button class="flex-1 bg-primary text-white py-2 rounded-lg text-sm font-medium hover:bg-blue-600 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">call</span>
+                                Позвонить
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

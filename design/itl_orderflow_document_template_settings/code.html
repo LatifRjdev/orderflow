@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow | Настройки шаблонов документов</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .editor-canvas { background-image: radial-gradient(#3b3b54 1px, transparent 1px); background-size: 20px 20px; }
+        .wysiwyg-page { box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .variable-badge { transition: all 0.2s; }
+        .variable-badge:hover { background: #3c3cf6; color: white; cursor: pointer; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#282839] bg-background-dark px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white">description</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">ITL OrderFlow</h2>
+</div>
+<label class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#9c9cba] flex border-none bg-[#282839] items-center justify-center pl-4 rounded-l-lg" data-icon="search">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#282839] placeholder:text-[#9c9cba] px-4 rounded-l-none pl-2 text-sm font-normal" placeholder="Поиск настроек..."/>
+</div>
+</label>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="flex items-center gap-6">
+<a class="text-[#9c9cba] hover:text-white text-sm font-medium transition-colors" href="#">Заказы</a>
+<a class="text-[#9c9cba] hover:text-white text-sm font-medium transition-colors" href="#">Склад</a>
+<a class="text-[#9c9cba] hover:text-white text-sm font-medium transition-colors" href="#">Финансы</a>
+<a class="text-white text-sm font-bold border-b-2 border-primary pb-1" href="#">Настройки</a>
+</nav>
+<div class="h-6 w-px bg-[#282839]"></div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 border border-[#282839]" data-alt="User avatar profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCP3vrZ2qIhb5BTUaSY7ujmZzZfoMnKZsP52bRibu_PfBSbGnSQTxnTXY_-C7K_XB-vU9vBWqEhNOM_Gf7edfHo2x4YwpMfK1j6NfedimE2SFfqxC5SAn68eXzd6Khd2f_sPAdvl8Ga5nQgcWp0Yb4qRATGqtqDSNfXJpWsh2cwvyzqCj87eRPE5ipyIakuvZsAQKJNx3hZGNz1-tAM135N3qlQIK0LY4_l3mEBac0SZ-tiQwu1Kswxne4JE9yFQvtNkC6-wTbzZke7");'></div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-65px)]">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-[#282839] bg-background-dark p-4 flex flex-col gap-6">
+<div class="flex flex-col gap-1">
+<h1 class="text-white text-sm font-bold uppercase tracking-wider opacity-50 px-3">Настройки</h1>
+</div>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 text-[#9c9cba] hover:bg-[#282839] rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<p class="text-sm font-medium">Общие</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#9c9cba] hover:bg-[#282839] rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<p class="text-sm font-medium">Пользователи</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary border border-primary/20" href="#">
+<span class="material-symbols-outlined text-[20px] fill-[1]">article</span>
+<p class="text-sm font-bold">Шаблоны документов</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#9c9cba] hover:bg-[#282839] rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<p class="text-sm font-medium">Уведомления</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-[#9c9cba] hover:bg-[#282839] rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">extension</span>
+<p class="text-sm font-medium">Интеграции</p>
+</a>
+</div>
+<div class="mt-auto p-4 bg-[#1a1a2e] rounded-xl border border-[#282839]">
+<p class="text-xs text-[#9c9cba] mb-2 uppercase font-bold">Хранилище</p>
+<div class="w-full bg-[#282839] h-1.5 rounded-full mb-2">
+<div class="bg-primary h-1.5 rounded-full w-[65%]"></div>
+</div>
+<p class="text-xs text-white">650 / 1000 шаблонов</p>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col">
+<!-- Breadcrumbs & Header -->
+<div class="px-8 py-6 flex justify-between items-end">
+<div>
+<div class="flex items-center gap-2 text-[#9c9cba] text-xs mb-1 uppercase tracking-widest font-bold">
+<span>Настройки</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-white/50">Документы</span>
+</div>
+<h1 class="text-2xl font-extrabold text-white">Шаблоны документов</h1>
+</div>
+<button class="flex items-center gap-2 bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-lg font-bold text-sm transition-all shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    Создать новый шаблон
+                </button>
+</div>
+<!-- Tabs -->
+<div class="px-8 mb-6">
+<div class="flex border-b border-[#282839] gap-8">
+<a class="flex items-center gap-2 border-b-2 border-primary text-white pb-4 px-2" href="#">
+<span class="material-symbols-outlined text-[18px]">receipt_long</span>
+<p class="text-sm font-bold">Счета</p>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent text-[#9c9cba] hover:text-white pb-4 px-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">request_quote</span>
+<p class="text-sm font-bold">КП</p>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent text-[#9c9cba] hover:text-white pb-4 px-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">fact_check</span>
+<p class="text-sm font-bold">Акты</p>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent text-[#9c9cba] hover:text-white pb-4 px-2 transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">gavel</span>
+<p class="text-sm font-bold">Договоры</p>
+</a>
+</div>
+</div>
+<!-- Grid Content -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 p-8 overflow-y-auto">
+<!-- Create Template Card -->
+<div class="group cursor-pointer flex flex-col items-center justify-center gap-4 rounded-xl border-2 border-dashed border-[#282839] hover:border-primary/50 hover:bg-primary/5 p-8 transition-all h-[320px]">
+<div class="size-14 rounded-full bg-[#282839] group-hover:bg-primary flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined text-white text-3xl">add</span>
+</div>
+<div class="text-center">
+<p class="text-white text-lg font-bold">Новый шаблон</p>
+<p class="text-[#9c9cba] text-sm mt-1">Начните с чистого листа или выберите структуру</p>
+</div>
+</div>
+<!-- Template Card 1 -->
+<div class="bg-[#1a1a2e] rounded-xl border border-[#282839] overflow-hidden group hover:border-[#3b3b54] transition-all flex flex-col">
+<div class="relative aspect-[3/4] bg-[#282839] overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="Corporate invoice document template preview" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuABGu_e4ZCZrCi3YvNBlw9jJbkJLOJBBUNm3rX8dSNQ6nUBhlaOIcHZtgvBQvq2qZlz6ppXhmCdpvFGMfbpt8qvJ_tlzkxk8iPBeW2O4np7Zqe56uGWU4hXL-Qb6ZlhlpSUbGBobRIkFFRHajrOWB-7l4gG2P7g1ishlckDWJ5YZDI33-bL8xQnEEuIYELl4s2orTittQDjr54F79uIC-4n_Fw_qCz8-GnKy7E61dBuw_ubP73vQ3teVI1SZvDq4EPTQQzqLSfbHIEB");'></div>
+<div class="absolute top-3 left-3 bg-primary text-[10px] font-bold px-2 py-1 rounded uppercase tracking-tighter shadow-xl">По умолчанию</div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-3 transition-opacity">
+<button class="p-2 bg-white text-black rounded-lg hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 bg-white text-black rounded-lg hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+<button class="p-2 bg-white text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<div class="p-4 border-t border-[#282839]">
+<h3 class="text-white font-bold truncate">Стандартный счет РФ</h3>
+<p class="text-[#9c9cba] text-xs mt-1">Создан: 12.05.2023</p>
+<div class="mt-3 flex items-center gap-2">
+<span class="px-2 py-0.5 bg-[#282839] text-[#9c9cba] text-[10px] rounded border border-[#3b3b54]">A4</span>
+<span class="px-2 py-0.5 bg-[#282839] text-[#9c9cba] text-[10px] rounded border border-[#3b3b54]">Поля 20мм</span>
+</div>
+</div>
+</div>
+<!-- Template Card 2 -->
+<div class="bg-[#1a1a2e] rounded-xl border border-[#282839] overflow-hidden group hover:border-[#3b3b54] transition-all flex flex-col">
+<div class="relative aspect-[3/4] bg-[#282839] overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Modern minimalist invoice document template preview" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUnMbdkjeMehiiUQxjfGushRVG7hQxadiyb5LHCHOd-qb-UJqPMJsR9M-yNWHYgrVlNHugNfXAqAZkJs6ZpWqOgXQLitSVG7lge_XqewVOcIb51GIxMavcKKWeV_RdO-EG6joi_6ByAtHxTzoN6UOj2vo9BPB-iAghxvF4hAwbaXTz7rthVizBU48SCK756bot71mtMFLghf5SVmDKdOpC3vD9FhZ6v7U3Qt76aDm-plQky7DWxFJEgds2PYLqACg_vE9Asvn7e4sO");'></div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-3 transition-opacity">
+<button class="p-2 bg-white text-black rounded-lg hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 bg-white text-black rounded-lg hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+<button class="p-2 bg-white text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<div class="p-4 border-t border-[#282839]">
+<h3 class="text-white font-bold truncate">Минималистичный (Blue)</h3>
+<p class="text-[#9c9cba] text-xs mt-1">Создан: 18.08.2023</p>
+<div class="mt-3 flex items-center gap-2">
+<span class="px-2 py-0.5 bg-[#282839] text-[#9c9cba] text-[10px] rounded border border-[#3b3b54]">A4</span>
+<span class="px-2 py-0.5 bg-[#282839] text-[#9c9cba] text-[10px] rounded border border-[#3b3b54]">Без полей</span>
+</div>
+</div>
+</div>
+<!-- Template Card 3 -->
+<div class="bg-[#1a1a2e] rounded-xl border border-[#282839] overflow-hidden group hover:border-[#3b3b54] transition-all flex flex-col">
+<div class="relative aspect-[3/4] bg-[#282839] overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Professional invoice with logo document template preview" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA71vPbr8A2SED1NlgHBQfi4FJceVIrB6VvqZuUKTuBw3r4igZeNacYFnwcLY9FcfyOPIARrC5lsvtP2689f487I2_owI584AcUBQmxOf8is-gmInQNksKZXLiMhcZOBKpvYkpu5502YsEEEQcfFWnUYiClaruFgt9vijTe85adfleh7OifPtNalSEaiI3yL9Y7l8-o2c9i9U7jLoyu9JrsCgtP0IeQjdxYq7CbtGLGZagPtlV1uJXiewT44--NNbenJfFlmWica6BI");'></div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center gap-3 transition-opacity">
+<button class="p-2 bg-white text-black rounded-lg hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="p-2 bg-white text-black rounded-lg hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+</button>
+<button class="p-2 bg-white text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[20px]">delete</span>
+</button>
+</div>
+</div>
+<div class="p-4 border-t border-[#282839]">
+<h3 class="text-white font-bold truncate">Корпоративный с логотипом</h3>
+<p class="text-[#9c9cba] text-xs mt-1">Создан: 01.12.2023</p>
+<div class="mt-3 flex items-center gap-2">
+<span class="px-2 py-0.5 bg-[#282839] text-[#9c9cba] text-[10px] rounded border border-[#3b3b54]">Letter</span>
+<span class="px-2 py-0.5 bg-[#282839] text-[#9c9cba] text-[10px] rounded border border-[#3b3b54]">Поля 15мм</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Editor Mode Overlay (Simulated View) -->
+<!-- This would normally be visible only when editing -->
+<div class="fixed inset-0 z-[60] bg-background-dark hidden lg:flex flex-col transform translate-y-full transition-transform duration-500 ease-in-out" id="editor-overlay">
+<!-- Editor Header -->
+<div class="h-16 border-b border-[#282839] flex items-center justify-between px-6 bg-[#1a1a2e]">
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-[#282839] rounded-lg text-[#9c9cba] transition-colors" onclick="document.getElementById('editor-overlay').classList.add('translate-y-full')">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<div class="h-6 w-px bg-[#282839]"></div>
+<div class="flex items-center gap-2">
+<input class="bg-transparent border-none text-white font-bold focus:ring-0 p-0 text-lg w-64" type="text" value="Стандартный счет РФ"/>
+<span class="material-symbols-outlined text-[#9c9cba] text-[18px]">edit</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-4 py-2 text-[#9c9cba] hover:text-white font-bold text-sm transition-colors">Предпросмотр</button>
+<button class="px-6 py-2 bg-primary hover:bg-primary/90 rounded-lg font-bold text-sm shadow-lg shadow-primary/20 transition-all">Сохранить</button>
+</div>
+</div>
+<div class="flex flex-1 overflow-hidden">
+<!-- Left Toolset: Document Properties -->
+<aside class="w-72 border-r border-[#282839] p-6 overflow-y-auto">
+<h4 class="text-white text-xs font-bold uppercase tracking-wider mb-6 opacity-50">Параметры страницы</h4>
+<div class="space-y-6">
+<div>
+<label class="block text-[#9c9cba] text-xs font-bold mb-2">Размер страницы</label>
+<select class="w-full bg-[#282839] border-[#3b3b54] rounded-lg text-sm text-white focus:ring-primary focus:border-primary">
+<option>A4 (210 x 297 мм)</option>
+<option>A5 (148 x 210 мм)</option>
+<option>Letter (216 x 279 мм)</option>
+</select>
+</div>
+<div>
+<label class="block text-[#9c9cba] text-xs font-bold mb-2">Ориентация</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="flex flex-col items-center gap-2 p-3 bg-primary/20 border-2 border-primary rounded-lg">
+<span class="material-symbols-outlined">description</span>
+<span class="text-[10px] font-bold">Портрет</span>
+</button>
+<button class="flex flex-col items-center gap-2 p-3 bg-[#282839] border-2 border-transparent hover:border-[#3b3b54] rounded-lg transition-all">
+<span class="material-symbols-outlined rotate-90">description</span>
+<span class="text-[10px] font-bold">Альбом</span>
+</button>
+</div>
+</div>
+<div>
+<label class="block text-[#9c9cba] text-xs font-bold mb-2">Поля (мм)</label>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-[10px] text-[#9c9cba] mb-1">Сверху</p>
+<input class="w-full bg-[#282839] border-[#3b3b54] rounded-lg text-sm text-white py-1" type="number" value="20"/>
+</div>
+<div>
+<p class="text-[10px] text-[#9c9cba] mb-1">Снизу</p>
+<input class="w-full bg-[#282839] border-[#3b3b54] rounded-lg text-sm text-white py-1" type="number" value="20"/>
+</div>
+<div>
+<p class="text-[10px] text-[#9c9cba] mb-1">Слева</p>
+<input class="w-full bg-[#282839] border-[#3b3b54] rounded-lg text-sm text-white py-1" type="number" value="20"/>
+</div>
+<div>
+<p class="text-[10px] text-[#9c9cba] mb-1">Справа</p>
+<input class="w-full bg-[#282839] border-[#3b3b54] rounded-lg text-sm text-white py-1" type="number" value="20"/>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-[#282839]">
+<h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 opacity-50">Блоки контента</h4>
+<div class="space-y-2">
+<div class="flex items-center gap-3 p-3 bg-[#282839] rounded-lg border border-[#3b3b54] cursor-grab hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[#9c9cba]">drag_indicator</span>
+<span class="text-sm font-medium">Шапка (Лого + Реквизиты)</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-[#282839] rounded-lg border border-[#3b3b54] cursor-grab hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[#9c9cba]">drag_indicator</span>
+<span class="text-sm font-medium">Инфо о клиенте</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-[#282839] rounded-lg border border-[#3b3b54] cursor-grab hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[#9c9cba]">drag_indicator</span>
+<span class="text-sm font-medium">Таблица товаров</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-[#282839] rounded-lg border border-[#3b3b54] cursor-grab hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[#9c9cba]">drag_indicator</span>
+<span class="text-sm font-medium">Итоговый блок</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-[#282839] rounded-lg border border-[#3b3b54] cursor-grab hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-[#9c9cba]">drag_indicator</span>
+<span class="text-sm font-medium">Подписи и печати</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Center: WYSIWYG Editor -->
+<section class="flex-1 bg-[#111118] editor-canvas overflow-y-auto flex flex-col items-center py-12 px-8">
+<div class="wysiwyg-page bg-white w-full max-w-[800px] aspect-[1/1.41] p-12 text-black flex flex-col gap-6 relative">
+<!-- Invoice Header Block -->
+<div class="border-b-2 border-black pb-4 group relative cursor-pointer border-2 border-transparent hover:border-primary/50 hover:bg-primary/5 rounded">
+<div class="flex justify-between items-start">
+<div class="w-32 h-16 bg-gray-100 flex items-center justify-center text-xs text-gray-400 italic">Логотип</div>
+<div class="text-right">
+<h2 class="text-2xl font-bold uppercase leading-none mb-1">Счет на оплату</h2>
+<p class="text-sm">№ {{invoice_number}} от {{invoice_date}}</p>
+</div>
+</div>
+<div class="hidden group-hover:flex absolute -top-8 right-0 gap-1">
+<button class="bg-primary p-1 text-white rounded"><span class="material-symbols-outlined text-[16px]">edit</span></button>
+<button class="bg-red-500 p-1 text-white rounded"><span class="material-symbols-outlined text-[16px]">delete</span></button>
+</div>
+</div>
+<!-- Company/Client Block -->
+<div class="grid grid-cols-2 gap-8 text-xs border-2 border-transparent hover:border-primary/50 hover:bg-primary/5 rounded p-2 group relative transition-all">
+<div class="space-y-1">
+<p class="font-bold uppercase opacity-50">Поставщик:</p>
+<p class="font-bold">{{company_name}}</p>
+<p>ИНН/КПП: {{company_inn}}/{{company_kpp}}</p>
+<p>Адрес: {{company_address}}</p>
+</div>
+<div class="space-y-1">
+<p class="font-bold uppercase opacity-50">Покупатель:</p>
+<p class="font-bold">{{client_name}}</p>
+<p>ИНН/КПП: {{client_inn}}/{{client_kpp}}</p>
+<p>Адрес: {{client_address}}</p>
+</div>
+</div>
+<!-- Table Block -->
+<div class="border-2 border-transparent hover:border-primary/50 hover:bg-primary/5 rounded transition-all group relative">
+<table class="w-full text-xs text-left border-collapse">
+<thead>
+<tr class="bg-gray-100 font-bold">
+<th class="border border-black p-2">№</th>
+<th class="border border-black p-2">Наименование товара/услуги</th>
+<th class="border border-black p-2">Кол-во</th>
+<th class="border border-black p-2">Цена</th>
+<th class="border border-black p-2">Сумма</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="border border-black p-2">1</td>
+<td class="border border-black p-2">Образец товара №1</td>
+<td class="border border-black p-2">5 шт.</td>
+<td class="border border-black p-2">1 200,00</td>
+<td class="border border-black p-2 text-right">6 000,00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Totals Block -->
+<div class="ml-auto w-64 text-sm border-2 border-transparent hover:border-primary/50 hover:bg-primary/5 rounded p-2 transition-all">
+<div class="flex justify-between py-1">
+<span class="font-bold">Итого:</span>
+<span>{{total_net}}</span>
+</div>
+<div class="flex justify-between py-1">
+<span class="font-bold">НДС (20%):</span>
+<span>{{total_vat}}</span>
+</div>
+<div class="flex justify-between py-1 border-t border-black mt-1 font-extrabold text-lg">
+<span>Всего:</span>
+<span>{{total_gross}}</span>
+</div>
+</div>
+<p class="text-[10px] text-gray-500 italic mt-auto">Сгенерировано в системе ITL OrderFlow</p>
+</div>
+</section>
+<!-- Right Library: Dynamic Variables -->
+<aside class="w-80 border-l border-[#282839] bg-[#1a1a2e] flex flex-col">
+<div class="p-6 border-b border-[#282839]">
+<h4 class="text-white text-xs font-bold uppercase tracking-wider mb-4 opacity-50">Динамические переменные</h4>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#9c9cba] text-[18px]">search</span>
+<input class="w-full bg-[#282839] border-none rounded-lg text-sm text-white pl-10 focus:ring-primary" placeholder="Поиск переменной..." type="text"/>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-6">
+<!-- Variable Group: Order -->
+<div>
+<p class="text-[10px] font-extrabold text-primary uppercase mb-2 tracking-widest">Основная информация</p>
+<div class="flex flex-wrap gap-2">
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{invoice_num}} </span>
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{date}} </span>
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{currency}} </span>
+</div>
+</div>
+<!-- Variable Group: Client -->
+<div>
+<p class="text-[10px] font-extrabold text-primary uppercase mb-2 tracking-widest">Клиент</p>
+<div class="flex flex-wrap gap-2">
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{client_name}} </span>
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{client_inn}} </span>
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{client_email}} </span>
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{client_phone}} </span>
+</div>
+</div>
+<!-- Variable Group: Totals -->
+<div>
+<p class="text-[10px] font-extrabold text-primary uppercase mb-2 tracking-widest">Финансы</p>
+<div class="flex flex-wrap gap-2">
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{sum_net}} </span>
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{sum_vat}} </span>
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{total_amount}} </span>
+<span class="variable-badge px-3 py-1 bg-[#282839] rounded-full text-xs font-medium text-[#9c9cba] border border-[#3b3b54]"> {{amount_words}} </span>
+</div>
+</div>
+</div>
+<div class="p-6 bg-[#111118] border-t border-[#282839]">
+<div class="flex items-start gap-3 p-3 bg-primary/10 border border-primary/20 rounded-lg">
+<span class="material-symbols-outlined text-primary text-[20px]">lightbulb</span>
+<p class="text-[10px] text-[#9c9cba] leading-relaxed">
+                            Нажмите на переменную, чтобы скопировать её в буфер обмена. Затем вставьте в текстовый блок редактора.
+                        </p>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- Script to simulate editor toggle for demo purposes -->
+<script>
+        // Simple function to toggle the fullscreen editor overlay
+        // In a real app this would be triggered by clicking Edit
+        document.querySelectorAll('.group.cursor-pointer, .p-2.bg-white').forEach(el => {
+            el.addEventListener('click', () => {
+                const overlay = document.getElementById('editor-overlay');
+                overlay.classList.remove('hidden');
+                setTimeout(() => overlay.classList.remove('translate-y-full'), 10);
+            });
+        });
+    </script>
+</body></html>

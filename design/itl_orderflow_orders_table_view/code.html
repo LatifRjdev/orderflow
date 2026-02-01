@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Таблица заказов</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    vertical-align: middle
+    }
+.sidebar-item-active {
+    background-color: rgba(60, 131, 246, 0.1);
+    color: #3c83f6;
+    border-right: 3px solid #3c83f6
+    }
+body {
+    font-family: "Inter", sans-serif
+    }
+/* Custom checkbox style */
+input[type="checkbox"]:checked {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuBwPRR_jyERoPN_YHRRpC-rkX1AyJZEtp85vrw2B3Wi5ONn87ibRx3f_e6b4Xn45y6rHqOMP5IL8niUU9v2IcIi7L8QzyO0qEaBRugh8rQOJ45LNaCksImBEtvhLa0yPQWO-bumLj-6p55-yiDzoFJsnwOqUwJel41hMKlgJzzqL7ADXsT5ITKZtiZYVXf1zbhMKJski3TgBwfmrU1rZ7HZ32gPGAIOw03kODFy6eb5hBwlrLIoO3dr7nVZe4-Np8FxPSH0jorEyj6Q)
+    }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-background-dark text-gray-300 flex flex-col border-r border-gray-800 shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="bg-primary p-1.5 rounded-lg">
+<span class="material-symbols-outlined text-white">account_tree</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold leading-none">OrderFlow</h1>
+<p class="text-gray-500 text-xs font-medium uppercase tracking-wider mt-1">IT Management</p>
+</div>
+</div>
+<nav class="flex-1 px-3 space-y-1 mt-4">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors sidebar-item-active" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="text-sm font-medium">Заказы</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Клиенты</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">pie_chart</span>
+<span class="text-sm font-medium">Отчеты</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-gray-800 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-sm font-medium">Настройки</span>
+</a>
+</nav>
+<div class="p-4 border-t border-gray-800">
+<div class="flex items-center gap-3 p-2">
+<div class="size-9 rounded-full bg-cover bg-center border border-gray-700" data-alt="User avatar for profile section" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAs76-sQDBsMC3mU-an7RFZnfdkr0OOAJZtgswmJlvaHTlLQY4KUJA_Een692gMkELQ_iBy8vAeovXltfquHByiqytVNkD2MdC9Ftpw37Ezy3cU_WsZemWqRRePOrioxWbWmY5hH2AhSz2-0oMOtiBfXAwPrx9sV3LOI4oVrGTiGDeglweO7d_0ECuZI7hPtkNiPaeV9lyiC7o05iZ21Ov-aLc7gx6DZRFsl3Hmiq_I-1MURBBKqwgoGnFl69mjzRSsof3b_k5MwcVh');"></div>
+<div class="flex flex-col min-w-0">
+<p class="text-sm font-medium text-white truncate">Алексей М.</p>
+<p class="text-xs text-gray-500 truncate">Администратор</p>
+</div>
+<button class="ml-auto text-gray-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="h-16 bg-white dark:bg-background-dark border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-8">
+<h2 class="text-[#111418] dark:text-white text-xl font-bold tracking-tight">Заказы</h2>
+<div class="flex items-center bg-gray-100 dark:bg-gray-800 p-1 rounded-lg">
+<button class="px-4 py-1.5 text-sm font-medium rounded-md bg-white dark:bg-gray-700 shadow-sm text-primary">Таблица</button>
+<button class="px-4 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">Канбан</button>
+<button class="px-4 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">Список</button>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+<input class="pl-10 pr-4 py-2 bg-gray-100 dark:bg-gray-800 border-none rounded-lg text-sm w-64 focus:ring-2 focus:ring-primary/50 dark:text-white" placeholder="Поиск по заказам..." type="text"/>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-base">add</span>
+                        Создать заказ
+                    </button>
+</div>
+</header>
+<!-- Filters Bar -->
+<div class="px-8 py-3 bg-white dark:bg-background-dark border-b border-gray-200 dark:border-gray-800 flex flex-wrap gap-3 shrink-0">
+<button class="flex h-9 items-center gap-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 hover:bg-gray-50 transition-colors">
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Статус: <span class="text-primary">Все</span></span>
+<span class="material-symbols-outlined text-gray-400 text-lg">expand_more</span>
+</button>
+<button class="flex h-9 items-center gap-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 hover:bg-gray-50 transition-colors">
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Клиент: <span class="text-primary">TechCorp</span></span>
+<span class="material-symbols-outlined text-gray-400 text-lg">expand_more</span>
+</button>
+<button class="flex h-9 items-center gap-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 hover:bg-gray-50 transition-colors">
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Менеджер: <span class="text-primary">Все</span></span>
+<span class="material-symbols-outlined text-gray-400 text-lg">expand_more</span>
+</button>
+<button class="flex h-9 items-center gap-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 hover:bg-gray-50 transition-colors">
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Приоритет: <span class="text-primary">Высокий</span></span>
+<span class="material-symbols-outlined text-gray-400 text-lg">expand_more</span>
+</button>
+<button class="flex h-9 items-center gap-2 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 hover:bg-gray-50 transition-colors">
+<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Период: <span class="text-primary">Апрель 2024</span></span>
+<span class="material-symbols-outlined text-gray-400 text-lg">calendar_month</span>
+</button>
+<div class="ml-auto flex gap-2">
+<button class="p-2 text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">filter_list</span>
+</button>
+<button class="p-2 text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">refresh</span>
+</button>
+</div>
+</div>
+<!-- Table Container -->
+<div class="flex-1 overflow-auto bg-background-light dark:bg-background-dark p-6">
+<div class="bg-white dark:bg-background-dark border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse min-w-[1000px]">
+<thead>
+<tr class="bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800">
+<th class="py-4 px-4 w-12 text-center">
+<input class="rounded border-gray-300 dark:border-gray-700 text-primary focus:ring-primary dark:bg-gray-800" type="checkbox"/>
+</th>
+<th class="py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">№</th>
+<th class="py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Название</th>
+<th class="py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Клиент</th>
+<th class="py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Статус</th>
+<th class="py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Прогресс</th>
+<th class="py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider w-16">Менеджер</th>
+<th class="py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Дедлайн</th>
+<th class="py-4 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">Бюджет</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+<!-- Row 1: Overdue -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+<td class="py-4 px-4 text-center">
+<input checked="" class="rounded border-gray-300 dark:border-gray-700 text-primary focus:ring-primary dark:bg-gray-800" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<a class="text-primary font-bold hover:underline" href="#">#ORD-2024-047</a>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500 text-base" title="High Priority">priority_high</span>
+<span class="text-sm font-medium text-gray-900 dark:text-gray-100">Разработка мобильного приложения</span>
+</div>
+</td>
+<td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">TechCorp</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">В работе</span>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 w-24">
+<div class="bg-primary h-1.5 rounded-full" style="width: 65%;"></div>
+</div>
+<span class="text-xs font-semibold text-gray-700 dark:text-gray-300">65%</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="size-8 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-800 shadow-sm" data-alt="Manager avatar 1" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBKo5tU_arqMawux4xAZ6o17XIFXs8P0HX9Xgzq5NxlBqeMHi4301d5UjPWFYz8ddXl0-3yU2uHngnAf40x6gPQAsc193GHKjUld0D5nsIMJSN1HA1UyFGNZDSkyt1EKqLjGS-W2q1aiyQ7fYLueqRjS-ijrRHNidzGSHYDK7thXN-rHKUfcGGpPL-Agys3hgKloY-Tex-RQk28HWUjSlYy-og7KRKYrgflrYhVp68cRnEEjzDF7Bj5p-J0P1fLv82wSvh9vhInJwpO');"></div>
+</td>
+<td class="py-4 px-4 text-sm text-red-500 font-medium">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">event_busy</span>
+                                        15.05.2024
+                                    </div>
+</td>
+<td class="py-4 px-4 text-sm font-semibold text-gray-900 dark:text-gray-100">500,000 ₽</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+<td class="py-4 px-4 text-center">
+<input checked="" class="rounded border-gray-300 dark:border-gray-700 text-primary focus:ring-primary dark:bg-gray-800" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<a class="text-primary font-bold hover:underline" href="#">#ORD-2024-048</a>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-400 text-base">low_priority</span>
+<span class="text-sm font-medium text-gray-900 dark:text-gray-100">Ребрендинг портала</span>
+</div>
+</td>
+<td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">Global IT</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400">Ожидание</span>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 w-24">
+<div class="bg-amber-400 h-1.5 rounded-full" style="width: 10%;"></div>
+</div>
+<span class="text-xs font-semibold text-gray-700 dark:text-gray-300">10%</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="size-8 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-800 shadow-sm" data-alt="Manager avatar 2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDpgXhsUnM34XtaT9JGgUB6cO9OpZOEQvQxnfxlrOwIXlhWun0L47h-erXI0MsL2icgEvv_wjZ6zjR8T2ExkPGSkRqULVg_8RVpOGzChi6pKEtNQXNINilPCMC055mtNyV7g8jE0UykmiJ08KjXI182ohcvQjr_g3WlnEj6k-H980weZhTMlXND-EQ99FQryU7q7WbKKiOtU5jK6NNelyc5RLVx34MgD1fuL2zPiALAfG7-3ccqk4EubXRvYkaI_Ox8QR765h5Tqu4L');"></div>
+</td>
+<td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">20.05.2024</td>
+<td class="py-4 px-4 text-sm font-semibold text-gray-900 dark:text-gray-100">250,000 ₽</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="rounded border-gray-300 dark:border-gray-700 text-primary focus:ring-primary dark:bg-gray-800" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<a class="text-primary font-bold hover:underline" href="#">#ORD-2024-049</a>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-400 text-base">info</span>
+<span class="text-sm font-medium text-gray-900 dark:text-gray-100">QA Тестирование CRM</span>
+</div>
+</td>
+<td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">SoftService</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">Завершено</span>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 w-24">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%;"></div>
+</div>
+<span class="text-xs font-semibold text-gray-700 dark:text-gray-300">100%</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="size-8 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-800 shadow-sm" data-alt="Manager avatar 3" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAV47mJpBdcrgj_b5udNmsb5-8Q1OfhQgC7Km160vSpKhYbsuDVaarvseHoUPgtdFZtHnOOpsQF5JFwzCHEXn5MeqtFyT7CZQXyGusPmfM-GmSZm91lU6p1HvncLLWACbUEShiAGheEXR-YtIlErXIJQ8tW3_AyDg4HImEvHI7-ExZt9Wp0az0lw5wAr-VN0tRIJ0Zd7EVDAhCS13KQi5qRPIUsUvblwGLhBCZm6u_ZA3U-G26NEuF87D8Pr1pe_glXbIWFhum5un4O');"></div>
+</td>
+<td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">01.05.2024</td>
+<td class="py-4 px-4 text-sm font-semibold text-gray-900 dark:text-gray-100">120,000 ₽</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
+<td class="py-4 px-4 text-center">
+<input class="rounded border-gray-300 dark:border-gray-700 text-primary focus:ring-primary dark:bg-gray-800" type="checkbox"/>
+</td>
+<td class="py-4 px-4">
+<a class="text-primary font-bold hover:underline" href="#">#ORD-2024-050</a>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500 text-base">warning</span>
+<span class="text-sm font-medium text-gray-900 dark:text-gray-100">Миграция БД Oracle</span>
+</div>
+</td>
+<td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">DataSafe</td>
+<td class="py-4 px-4">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400">В работе</span>
+</td>
+<td class="py-4 px-4">
+<div class="flex items-center gap-3">
+<div class="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 w-24">
+<div class="bg-primary h-1.5 rounded-full" style="width: 30%;"></div>
+</div>
+<span class="text-xs font-semibold text-gray-700 dark:text-gray-300">30%</span>
+</div>
+</td>
+<td class="py-4 px-4">
+<div class="size-8 rounded-full bg-cover bg-center border-2 border-white dark:border-gray-800 shadow-sm" data-alt="Manager avatar 4" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCKO5hgWr6jd_NlR1r2iXWINJoNCEKZT6Vf-2S4APVQU9XTtxYLkFAIjl_V6lgjU-4a1olANAF7j0g1pJ_03OTEjNC1Zh3VXAbgcozcnlou5tbgkHlKVAzDrR62fGKausc9-37XkI-ctQSGPAHzn0gAFwUO7m9CINCtyadK4Ee_A_v1iN74p8qGF6CF0YuhhhyynV8Qc8sJpV0Mt2NZHmZyz9LiJ7x5Gpx5wONfd_nbndUwkQAAoqVeNNckz1_LzinLpFioC6EOu76c');"></div>
+</td>
+<td class="py-4 px-4 text-sm text-gray-600 dark:text-gray-400">10.05.2024</td>
+<td class="py-4 px-4 text-sm font-semibold text-gray-900 dark:text-gray-100">800,000 ₽</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Floating Action Bar (Bottom) -->
+<div class="fixed bottom-10 left-1/2 -translate-x-1/2 w-full max-w-[900px] px-6">
+<div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl shadow-2xl p-4 flex items-center justify-between animate-slide-up">
+<div class="flex flex-col">
+<p class="text-gray-900 dark:text-white text-sm font-bold">Выбрано заказов: 2</p>
+<p class="text-gray-500 text-xs">Примените массовое действие к выбранным элементам</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex h-9 items-center gap-2 px-4 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-medium hover:bg-gray-200 transition-colors">
+<span class="material-symbols-outlined text-lg">edit</span>
+                            Статус
+                        </button>
+<button class="flex h-9 items-center gap-2 px-4 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 text-sm font-medium hover:bg-gray-200 transition-colors">
+<span class="material-symbols-outlined text-lg">person_add</span>
+                            Менеджер
+                        </button>
+<button class="flex h-9 items-center px-4 rounded-lg bg-red-50 text-red-600 text-sm font-medium hover:bg-red-100 transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+</button>
+<div class="w-px h-8 bg-gray-200 dark:bg-gray-700 mx-1"></div>
+<button class="bg-primary text-white h-9 px-6 rounded-lg text-sm font-bold hover:bg-primary/90">
+                            Применить
+                        </button>
+</div>
+</div>
+</div>
+<!-- Footer / Pagination -->
+<footer class="h-14 bg-white dark:bg-background-dark border-t border-gray-200 dark:border-gray-800 px-8 flex items-center justify-between shrink-0">
+<p class="text-sm text-gray-500">Показано 1-25 из 156</p>
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="size-8 flex items-center justify-center rounded bg-primary text-white text-sm font-bold">1</button>
+<button class="size-8 flex items-center justify-center rounded text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-medium transition-colors">2</button>
+<button class="size-8 flex items-center justify-center rounded text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-medium transition-colors">3</button>
+<span class="px-2 text-gray-400">...</span>
+<button class="size-8 flex items-center justify-center rounded text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm font-medium transition-colors">7</button>
+<button class="p-1.5 rounded text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

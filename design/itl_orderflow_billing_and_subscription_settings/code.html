@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Настройки подписки и счетов</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-[#282839] px-6 py-3 bg-white dark:bg-[#101022] sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">rocket_launch</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">ITL OrderFlow</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Дашборд</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Проекты</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Заказы</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Склад</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-[#282839] hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-[#282839] hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200 dark:border-slate-700" data-alt="Аватар пользователя" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAlBQBUs8zqborfzxh9Tz9qMykzQpooiy9_snVQteV44kBOm0uHzeTRgZXWCi0W30hCBbEYq9bdzhmIOag6093DeRXxtcrMjMQhVnxGzfuHMC9x-KJ1a1Dm2yHdNf6qGvVp_AIkX_2GG54pmLtPijUOyZqCcMnvhPJwOa7EPvbUM9QFjxcNcXvOov8PmJcEZTGV4A4hofuGEd3sMb7Ks2jTwc2_fhRLNWKDH_bIR6jzgoYXjhim9-Yvz8g6pQVl5crmnqS5MVwh9RdW");'></div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-[#282839] hidden lg:flex flex-col p-4 bg-white dark:bg-[#101022]">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col px-3">
+<h1 class="text-base font-bold leading-normal">Настройки</h1>
+<p class="text-slate-500 dark:text-[#9c9cba] text-xs font-normal">Управление организацией</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1b1b27] transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] text-slate-400 group-hover:text-primary">corporate_fare</span>
+<span class="text-sm font-medium">Организация</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1b1b27] transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] text-slate-400 group-hover:text-primary">group</span>
+<span class="text-sm font-medium">Команда</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1">credit_card</span>
+<span class="text-sm font-bold">Подписка и счета</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1b1b27] transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] text-slate-400 group-hover:text-primary">extension</span>
+<span class="text-sm font-medium">Интеграции</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1b1b27] transition-colors group" href="#">
+<span class="material-symbols-outlined text-[22px] text-slate-400 group-hover:text-primary">api</span>
+<span class="text-sm font-medium">API</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-1 overflow-y-auto bg-slate-50 dark:bg-background-dark p-6 lg:p-10">
+<div class="max-w-[1024px] mx-auto flex flex-col gap-8">
+<!-- Page Heading -->
+<div class="flex flex-col gap-2">
+<h2 class="text-3xl font-black leading-tight tracking-[-0.033em]">Подписка и счета</h2>
+<p class="text-slate-500 dark:text-[#9c9cba] text-base font-normal">Управляйте вашим тарифным планом, использованием ресурсов и платежной информацией</p>
+</div>
+<!-- Subscription Overview Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Current Plan Card -->
+<div class="lg:col-span-2 flex flex-col gap-6 rounded-xl bg-white dark:bg-[#1b1b27] p-6 shadow-sm border border-slate-200 dark:border-[#282839]">
+<div class="flex items-start justify-between">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 text-[10px] font-bold uppercase tracking-wider">Активна</span>
+<p class="text-slate-500 dark:text-[#9c9cba] text-xs font-medium uppercase tracking-wide">Текущий тариф</p>
+</div>
+<h3 class="text-2xl font-bold mt-1">Тариф «Business»</h3>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm">$79/мес • Следующее списание: 12 Октября 2023</p>
+</div>
+<div class="hidden sm:block w-32 h-20 rounded-lg overflow-hidden border border-slate-100 dark:border-slate-800" data-alt="Абстрактный градиент для тарифа Business" style="background: linear-gradient(135deg, #3c3cf6 0%, #7c3cf6 100%);">
+<div class="flex h-full w-full items-center justify-center text-white/20">
+<span class="material-symbols-outlined text-4xl">workspace_premium</span>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-3 pt-4 border-t border-slate-100 dark:border-slate-800">
+<button class="flex items-center justify-center rounded-lg h-10 px-6 bg-primary text-white text-sm font-bold hover:bg-primary/90 transition-all">
+                                    Изменить тариф
+                                </button>
+<button class="flex items-center justify-center rounded-lg h-10 px-6 bg-slate-100 dark:bg-[#282839] text-slate-700 dark:text-white text-sm font-bold hover:bg-slate-200 dark:hover:bg-[#323246] transition-all">
+                                    Отменить подписку
+                                </button>
+</div>
+</div>
+<!-- Payment Method Card -->
+<div class="flex flex-col gap-4 rounded-xl bg-white dark:bg-[#1b1b27] p-6 shadow-sm border border-slate-200 dark:border-[#282839]">
+<div class="flex items-center justify-between">
+<h3 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba]">Способ оплаты</h3>
+<button class="text-primary text-xs font-bold hover:underline">Изменить</button>
+</div>
+<div class="mt-2 flex flex-col gap-4">
+<div class="flex items-center gap-4 bg-slate-50 dark:bg-background-dark/50 p-4 rounded-lg border border-slate-100 dark:border-slate-800">
+<div class="size-10 flex items-center justify-center bg-white dark:bg-slate-800 rounded shadow-sm">
+<span class="material-symbols-outlined text-blue-600">credit_card</span>
+</div>
+<div class="flex flex-col">
+<p class="text-sm font-bold">•••• 4242</p>
+<p class="text-xs text-slate-500 dark:text-[#9c9cba]">Истекает 05/26</p>
+</div>
+</div>
+<div class="flex flex-col gap-1 text-xs text-slate-500 dark:text-[#9c9cba]">
+<p>Плательщик: ITL Solutions Ltd.</p>
+<p>billing@itl-orderflow.ru</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Usage Metrics Section -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-1">
+<h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em]">Использование ресурсов</h2>
+<span class="text-xs font-medium text-slate-500 dark:text-[#9c9cba]">Обновлено 5 мин. назад</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Metric 1 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-[#1b1b27] p-5 border border-slate-200 dark:border-[#282839]">
+<div class="flex justify-between items-end">
+<span class="text-sm font-bold">Пользователи</span>
+<span class="text-xs text-slate-500 dark:text-[#9c9cba]">8 / 10</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 80%"></div>
+</div>
+<p class="text-[11px] text-slate-500 dark:text-[#9c9cba]">Доступно еще 2 рабочих места</p>
+</div>
+<!-- Metric 2 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-[#1b1b27] p-5 border border-slate-200 dark:border-[#282839]">
+<div class="flex justify-between items-end">
+<span class="text-sm font-bold">Проекты</span>
+<span class="text-xs text-slate-500 dark:text-[#9c9cba]">15 / 20</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 75%"></div>
+</div>
+<p class="text-[11px] text-slate-500 dark:text-[#9c9cba]">Использовано 75% лимита</p>
+</div>
+<!-- Metric 3 -->
+<div class="flex flex-col gap-3 rounded-xl bg-white dark:bg-[#1b1b27] p-5 border border-slate-200 dark:border-[#282839]">
+<div class="flex justify-between items-end">
+<span class="text-sm font-bold">Хранилище</span>
+<span class="text-xs text-slate-500 dark:text-[#9c9cba]">4.2 GB / 10 GB</span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 42%"></div>
+</div>
+<p class="text-[11px] text-slate-500 dark:text-[#9c9cba]">Свободно 5.8 GB</p>
+</div>
+</div>
+</div>
+<!-- Billing History Table -->
+<div class="flex flex-col gap-4">
+<div class="flex items-center justify-between px-1">
+<h2 class="text-[22px] font-bold leading-tight tracking-[-0.015em]">История платежей</h2>
+<button class="text-sm font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                                Скачать всё
+                            </button>
+</div>
+<div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-[#282839] bg-white dark:bg-[#1b1b27]">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-slate-200 dark:border-[#282839]">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba]">Дата</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba]">Тариф</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba]">Статус</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba]">Сумма</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba] text-right">Счет</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-[#282839]">
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">12 Сен 2023</td>
+<td class="px-6 py-4 text-sm">Business (Месячный)</td>
+<td class="px-6 py-4 text-sm">
+<span class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                                Оплачено
+                                            </span>
+</td>
+<td class="px-6 py-4 text-sm font-bold">$79.00</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-[#282839] rounded transition-colors" title="Скачать PDF">
+<span class="material-symbols-outlined text-slate-400">picture_as_pdf</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">12 Авг 2023</td>
+<td class="px-6 py-4 text-sm">Business (Месячный)</td>
+<td class="px-6 py-4 text-sm">
+<span class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                                Оплачено
+                                            </span>
+</td>
+<td class="px-6 py-4 text-sm font-bold">$79.00</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-[#282839] rounded transition-colors" title="Скачать PDF">
+<span class="material-symbols-outlined text-slate-400">picture_as_pdf</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors">
+<td class="px-6 py-4 text-sm font-medium">12 Июл 2023</td>
+<td class="px-6 py-4 text-sm">Starter (Месячный)</td>
+<td class="px-6 py-4 text-sm">
+<span class="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400">
+<span class="size-1.5 rounded-full bg-emerald-500"></span>
+                                                Оплачено
+                                            </span>
+</td>
+<td class="px-6 py-4 text-sm font-bold">$29.00</td>
+<td class="px-6 py-4 text-right">
+<button class="p-2 hover:bg-slate-200 dark:hover:bg-[#282839] rounded transition-colors" title="Скачать PDF">
+<span class="material-symbols-outlined text-slate-400">picture_as_pdf</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Billing Info Section -->
+<div class="flex flex-col gap-6 rounded-xl bg-white dark:bg-[#1b1b27] p-8 shadow-sm border border-slate-200 dark:border-[#282839]">
+<div class="flex flex-col gap-1">
+<h2 class="text-xl font-bold">Платежная информация</h2>
+<p class="text-sm text-slate-500 dark:text-[#9c9cba]">Эти данные будут отображаться в ваших инвойсах</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold px-1">Название организации</label>
+<input class="w-full h-11 px-4 rounded-lg border border-slate-200 dark:border-[#282839] bg-slate-50 dark:bg-background-dark/30 focus:ring-2 focus:ring-primary/50 outline-none" type="text" value="ООО «ИТЛ Солюшнс»"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-bold px-1">ИНН / КПП</label>
+<input class="w-full h-11 px-4 rounded-lg border border-slate-200 dark:border-[#282839] bg-slate-50 dark:bg-background-dark/30 focus:ring-2 focus:ring-primary/50 outline-none" type="text" value="7700000000 / 770101001"/>
+</div>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-sm font-bold px-1">Юридический адрес</label>
+<input class="w-full h-11 px-4 rounded-lg border border-slate-200 dark:border-[#282839] bg-slate-50 dark:bg-background-dark/30 focus:ring-2 focus:ring-primary/50 outline-none" type="text" value="123456, г. Москва, ул. Примерная, д. 10, оф. 25"/>
+</div>
+</div>
+<div class="flex justify-end pt-4">
+<button class="bg-primary text-white font-bold h-10 px-8 rounded-lg hover:bg-primary/90 transition-all">Сохранить изменения</button>
+</div>
+</div>
+<!-- Footer Help -->
+<div class="flex items-center justify-center p-8 gap-4 text-slate-400">
+<span class="material-symbols-outlined">help_outline</span>
+<p class="text-sm">Возникли вопросы? Свяжитесь с нашей <a class="text-primary hover:underline font-medium" href="#">службой поддержки</a></p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

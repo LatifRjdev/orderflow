@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Kanban Board</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .kanban-column {
+            min-width: 320px;
+            max-width: 320px;
+        }
+        ::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-[#111827] text-white flex flex-col shrink-0">
+<div class="p-6 flex flex-col gap-8 h-full">
+<div class="flex items-center gap-3">
+<div class="bg-primary rounded-lg size-10 flex items-center justify-center">
+<span class="material-symbols-outlined text-white">rocket_launch</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-none">ITL OrderFlow</h1>
+<p class="text-gray-400 text-xs font-normal mt-1">Management System</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1 flex-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<p class="text-sm font-medium">Дашборд</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">business_center</span>
+<p class="text-sm font-medium">Проекты</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary text-white shadow-lg shadow-primary/20" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">content_copy</span>
+<p class="text-sm font-medium">Заказы</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium">Клиенты</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<p class="text-sm font-medium">Аналитика</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors mt-auto" href="#">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Настройки</p>
+</a>
+</nav>
+<div class="pt-6 border-t border-gray-800">
+<button class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-blue-600 text-white text-sm font-bold py-3 px-4 rounded-lg transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+<span>Создать заказ</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 bg-background-light dark:bg-background-dark">
+<!-- Header -->
+<header class="h-16 bg-white dark:bg-background-dark border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-4">
+<nav class="flex items-center gap-2 text-sm">
+<a class="text-gray-500 hover:text-primary transition-colors" href="#">Главная</a>
+<span class="text-gray-400">/</span>
+<span class="text-[#111418] dark:text-white font-medium">Заказы</span>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+<input class="w-full bg-gray-100 dark:bg-gray-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary" placeholder="Поиск заказов..." type="text"/>
+</div>
+<div class="flex items-center gap-2 border-l border-gray-200 dark:border-gray-800 pl-6">
+<button class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+<button class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
+<span class="material-symbols-outlined">forum</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-gray-200 ml-2 bg-cover bg-center" data-alt="User profile avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA_dC6L8HU6GGzPu-Xz2TBG53GejElCt4K-J1KDbDBoI-T9pA9-_sJujSM8HBdb0AQojh9J07iQaGJFcCFt_dX-sDvAWnQPywY4UbgW_RVr2CmvHwTvpG0tVbmy__41dibv3PO3WeuzyR2Xy4ZlPaj6sLvYdJb8V4k-FCi89hIWeYrythRQLWmpolVtuKtm-G3OET_-Hb3RYdZqwzVkBJVxGg4A0ik9Vq3da3wgM5PkRnjaKXplxsXFnMBTTnmDxsXtd5AgutUA4L4I')"></div>
+</div>
+</div>
+</header>
+<!-- Board Toolbar -->
+<div class="px-8 py-4 flex items-center justify-between shrink-0">
+<div class="flex items-center gap-4">
+<h2 class="text-xl font-bold">Доска заказов</h2>
+<div class="flex bg-gray-200 dark:bg-gray-800 p-1 rounded-lg">
+<button class="px-4 py-1.5 rounded-md text-sm font-medium transition-all bg-white dark:bg-gray-700 shadow-sm">Канбан</button>
+<button class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">Список</button>
+<button class="px-4 py-1.5 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">Сетка</button>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-medium hover:bg-gray-50">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                        Фильтры
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-bold hover:bg-blue-600 transition-colors">
+<span class="material-symbols-outlined text-lg">add_circle</span>
+                        Новый заказ
+                    </button>
+</div>
+</div>
+<!-- Kanban Board -->
+<div class="flex-1 overflow-x-auto overflow-y-hidden px-8 pb-6">
+<div class="flex gap-6 h-full pb-4">
+<!-- Column: Новые заявки -->
+<div class="kanban-column flex flex-col gap-4">
+<div class="flex items-center justify-between px-1 py-2 border-t-4 border-gray-400">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold uppercase tracking-wider text-gray-600">Новые заявки</span>
+<span class="bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs px-2 py-0.5 rounded-full font-bold">3</span>
+</div>
+<button class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3">
+<!-- Card -->
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-gray-400">#ORD-2024-041</span>
+<span class="material-symbols-outlined text-blue-400 text-lg">flag</span>
+</div>
+<h3 class="text-sm font-bold mb-3 group-hover:text-primary transition-colors">Аудит безопасности сети</h3>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-cover" data-alt="CyberCorp Logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC6Q3bvTWcIR68C2QgeGA7h2qy4YqYZbZiOQY5_qObCw6bG2jfISPc4JC4X3AoZwS0PWuuQj14OHKiMLBF8M4fKWmVrzA2Oao0z5LJuVZtlbDoIpdfNN0OAlXw0O4tSCs5Z1fJIMtZ8xy0kv9Al7BcxDH2uBsD_egFBNxX3XeQRx6ate6T2nc3Vx8hOqBrQZZMRg_GUBWLPgDARwmMREwAvILECpOyjXkhNF93-vMwwWSrB1VKWDDg1Syn5LnLPUOYcCiteOiYHfb2H')"></div>
+</div>
+<span class="text-xs text-gray-500">CyberCorp Inc.</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full mb-4">
+<div class="bg-primary h-1.5 rounded-full" style="width: 10%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 1" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAN3Vw718OyIE-V4eQHdFS4aNioUSxN9B0nr84X4xvw6Ft_uFojCvcZqyNlWdXT8tqISd4gG_0u5PR9mLvO4M-FkqTWwCmF_VGew5AuIfx_biDkojKPXbhqHUBb-7LI24-uj3YlzyD02811Jmf3pb3cwCWJf0N80evonBF28i9uBIEstERMZXweNov486cXQuwvKNtSTH2RaK_XWzom7_rgi9pnRTMFuvp6mXMbLKzqGxA7DO-hOIpq7C6eLhwLQcq2Kh5sgQs8XIL9')"></div>
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 2" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAgt5drhSIZrHQnv3N-egraXpvLSLB0-NTW5oO7iXhdYWw_WP4zdHHhMLFeHAPhM8IaxQ5W4OJdxsE0Ae9yaM4azlZPZ4Jl6-Cq0v4NtYL6rqrTfOjVf-_2QxvjOeF89JVhZbPdNH7yz8v4tfoexDwBN_cf8FxYqd0ZmKCrZnIhiHsOjxlvtEtVdy7GJtLeW_2ASEAFIQW146FHm0pvBXp4kKK2SVezo9FgjZ-2eezlpntAGpF7eNJgRXAEQ9Fq7wXLKz62Fg_BeXwP')"></div>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>12 Ноя</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Оценка -->
+<div class="kanban-column flex flex-col gap-4">
+<div class="flex items-center justify-between px-1 py-2 border-t-4 border-amber-400">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold uppercase tracking-wider text-gray-600">Оценка</span>
+<span class="bg-amber-100 text-amber-700 text-xs px-2 py-0.5 rounded-full font-bold">5</span>
+</div>
+<button class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3">
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-gray-400">#ORD-2024-045</span>
+<span class="material-symbols-outlined text-amber-400 text-lg">flag</span>
+</div>
+<h3 class="text-sm font-bold mb-3">Миграция базы данных v2</h3>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-cover" data-alt="DataLogic Logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDe-u7FoqrRuEsnuZnAw7hXjXRXXNKxZNjo0FY1_pn3jfOq11nMg1rKqeadjv2yFA6-jtmpp7fIf7l3qod5Xlx37IYQLzj_zEshdqO4ZrWhalwPzXi-hobSfuCIHflJzm8qSdpAIqGTUt3l2cCQQAQ_i9FGfWAN-6FcMsYLqVulwBz9b6fOBsu1AN2yYrsqLLbFEEqheyye7tE_7226o3V5i6j7fBVLBQmIRjH8tXU5-lYZw6IY9uPXwTjvZh5FJmiTbcsAig6lixjs')"></div>
+</div>
+<span class="text-xs text-gray-500">DataLogic SA</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full mb-4">
+<div class="bg-amber-400 h-1.5 rounded-full" style="width: 35%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 3" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBu7ZQYlAqxX_gN0nLaBNbKR4uBo3DeMMGojowawP4H77oQ43oahPNLuA4dSyl1U1K3J1ndbhAji2F9SjrCgwRNIqp-J5yAfjeXpjw9H4gIFBxNjgAGHVcEvYWzamuoXTag_X3nkP93r-vSoHmutsj_6gyX9FdwYdtq1FRUFCYuFgPNi6xcjMIvnsXcT-ksC6es3YX-XNu-OEfIrR5-q3u3N7bdXLephWjmTY4Fj3XU4AJxfcnIKi5B-r1h6R23EWYBdi8UlHrqerJ8')"></div>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>08 Ноя</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: КП отправлено -->
+<div class="kanban-column flex flex-col gap-4">
+<div class="flex items-center justify-between px-1 py-2 border-t-4 border-indigo-400">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold uppercase tracking-wider text-gray-600">КП отправлено</span>
+<span class="bg-indigo-100 text-indigo-700 text-xs px-2 py-0.5 rounded-full font-bold">2</span>
+</div>
+<button class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3">
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-gray-400">#ORD-2024-042</span>
+<span class="material-symbols-outlined text-gray-300 text-lg">flag</span>
+</div>
+<h3 class="text-sm font-bold mb-3">Разработка API шлюза</h3>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-cover" data-alt="FinTech Pro Logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCg9_ANY_cws477-jBXOKqQn9Q2mcW0IHl72PkKVHTklCiVmXgfAYmUjAAoWIRzzyJf9p9XyUZHJGhfdFXrHzJw41ooLAlZcrWm-8g5pI2KkxS_4mHfHjmg_ZwT2HAdut414noQ_MEiMKQHY3xKK7wxkIvf_WGLeMEyVdsujXe8sz8UOwXs_GCjSywiLdPTbYZcdfkq-0U3-qkIYXGO54N43iWlHZFkBVsp_DBo-XIpY-FG_gg0GKika6BWw_GmSZJIA-glgTAgrNkC')"></div>
+</div>
+<span class="text-xs text-gray-500">FinTech Pro</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full mb-4">
+<div class="bg-indigo-400 h-1.5 rounded-full" style="width: 45%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 4" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCfg4k01JDcpoBuLKBKQ2fIF_pDpeugJ3jkLzdmKGM_mV-pCcK0UeGVi3hNfeYkK58bXZoBe6ik3ScnKLS57oZp5TOlNuwTczotyLhF04tOYafwoJKRqwqQfpz4TdlqVfpMHZXHrz-krNWi-Nq-gBw60YItopQgpgtPkMcV_GjiwovRsrz58-l_IPDP__MAZLeXVcNPt7WAg2L2xjKdXUJzqVNMrhQrO0oSikPlOaTBkjBs0tmTbStlIGcs0IY-_mR-mWLGMR2odFmy')"></div>
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 5" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAo1uhdqQp2Mo_YhUjbU2mtoyb7CTBqR210J-ns2wV-XpUTMgHd3YotbgYX1eaYlCkXeK4Ye4yBx27XZ-aSIB4hVnKx1tP8HQCZVVwoUkUNNJh05HogguuSNdnAuuug-72QRFvELKhTKfCuuhTGmIQsKXGAbod-DXD5gxyqn_7PB4rNSoPnZBGCDjUhckS0P-lZz0Z0nJj9X0jXUNYHvHVzFQkyRMYGtucI5OmjhO5E-Wq2Jb4TOzCYD4e00EUDqsQ2-tOqpomdhV9P')"></div>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>05 Ноя</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: В работе -->
+<div class="kanban-column flex flex-col gap-4">
+<div class="flex items-center justify-between px-1 py-2 border-t-4 border-primary">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold uppercase tracking-wider text-gray-600">В работе</span>
+<span class="bg-blue-100 text-primary text-xs px-2 py-0.5 rounded-full font-bold">8</span>
+</div>
+<button class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3">
+<!-- High Priority Card -->
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md border-l-4 border-l-red-500 border-y border-r border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-gray-400">#ORD-2024-047</span>
+<span class="material-symbols-outlined text-red-500 text-lg" style="font-variation-settings: 'FILL' 1;">flag</span>
+</div>
+<h3 class="text-sm font-bold mb-3">Редизайн мобильного приложения</h3>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-cover" data-alt="Global Retail Logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDmr7alMMd9Xrrk-nu1dI3gNkT4TkQi4GCi7iKYOGWVfJXREzfjuCTmYZ5eqjfX7vCdPthMtWW9YLbyYyHzARNIz4zxafPyLjhndeu_S_kHnAJ6bd4Cz3ff0dx_Y_qkdWRBY5xpmbI5uz-mBYquGfoj051zeKGS-7ZPVXQEHV7FCaDsxaKHACDjPqQS1RtC1DAvs12Q1Sd3ZwIU-HSMWnESp3NzjflbiASHH1gerGZKFJOQnctvJ9L_kxqjzqGsRyC6-SdAst5BoSGJ')"></div>
+</div>
+<span class="text-xs text-gray-500">Global Retail</span>
+</div>
+<div class="flex justify-between items-center mb-1">
+<span class="text-[10px] font-bold text-primary">65%</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full mb-4">
+<div class="bg-primary h-1.5 rounded-full" style="width: 65%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 6" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDaqNiAYAiOp6uDWBgJc7BfSfQdKQu6-h_LpWWL_gNh5Eia71DT2MT06Xju5rB3DP_dw76N5odNoYRCrTWTV80oNPf-k-svWolHJOr6cnagYnXEAYM1FMDR9x7klwMtsOmxFyXy1Z-iPd0iaJMVXvLbMR57bnira3NpzQttGUkBNu8DW48lvnjEkvHEJMzhOwejTQ18V-XKi9pN8-FWVTdpa0eRAZEkK2HfH1DCSjZh_TuZFUxc68ezKrKBGeLh4a4AfDSNoUhTLQzM')"></div>
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 7" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZlNBx005euw7Ww9gR_xsJvz7_46GbJMMCzytjSqjv57hnjmK0Fru7Q_9WJh1ZjwKs7IYVaIXYRrRx79y9wXGL2R6YcCQIbxkJI3mvXvLaRyO1ZaRxxRB0bfev0MfvfzLS1-VYf2W2Fs4RtBkWPJkgiRVkeEss3s4wvshAgY7blHK5nDrotf1zodfn_mWX5lpZfx2Sjf1vmZqI3DDkT1O3MCrhUhNSAsJSDd5dS5pw8bRaOcrEil5DSA7R-ukXQLWHYl7R8prqGdy0')"></div>
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 8" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDMaCGJR4czyNw6-gGjfgwKDzLZqvhhq7PzPKqjORv7LVKN-WiVLZpv-QekegrC4IdEAoGRzLluoKldgbacjKQISljJI8YIPZeQQuuVAzu7vyDi8EH1PntedOChmoCMs8zAwdMBOkbwE7zKZwhCvZR7I65E5pcmFxAjn860EsMd35l8Mwqo-HMbeMwgqPYGQ_hOJCiZpVWhAzVcK10Rmokc14xarnc0FB8DOsxpweUroPGjtP76QLGfvmmCXf-ojn7BRWPhzqIxw0OL')"></div>
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-gray-100 flex items-center justify-center text-[10px] font-bold text-gray-500">+2</div>
+</div>
+<div class="flex items-center gap-1 text-xs font-bold text-red-500 bg-red-50 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>До 25 Окт</span>
+</div>
+</div>
+</div>
+<!-- Regular Card -->
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-gray-400">#ORD-2024-049</span>
+<span class="material-symbols-outlined text-blue-400 text-lg">flag</span>
+</div>
+<h3 class="text-sm font-bold mb-3">Интеграция платежной системы</h3>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-cover" data-alt="PayWay Logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdK3188k_OIdgnOCmgxWeDPrWA_VVphxYOgHBGIK-ZcAoMxjPRC4rzJK0ONLAved1WPgh1f-DlnV9qprV4UgcMZb2kMeREVMnSOunyAORRk_vWe8814Ap1dACam8wVdV6Wiws16dzqzENgNOuPGWXUNv8CDGRWFzEFZzr-QsmjcOuM9BXZ8Z3Myp_KssEEljPzm6hcWtckWzQ4wtwM-J5y7pLyTUrgOYFUivgKuEwZdzWX9txab-O47-fAqTkKXWb1nGaOzZJqI7Bp')"></div>
+</div>
+<span class="text-xs text-gray-500">PayWay Systems</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full mb-4">
+<div class="bg-primary h-1.5 rounded-full" style="width: 20%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 9" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBzZ7yCrGNvT438P8uYSys5IFvtu77cUkaML3aNcY8HJU8H9LLWlaeDqZ2NTUItEd2RtE4APAu34cBa77edMwi8ZHk0rHL0VcEjCr7yUx2Zv_kbkM4PTXhOqvNl5Mc1fVVAG46jR3ARhBxC-myD9KMZBfnACsqsgOFhLfGpOp-6MdM_a_zAOKUYQozzzyL4QZk5eQ1sWEib6DkMjwSv4AsyllTrXOL4Goj9a7fnvV7aA9msa2b4H0TuyJeo8a_IFwCUJyovGpVcSrKg')"></div>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>15 Ноя</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Тестирование -->
+<div class="kanban-column flex flex-col gap-4">
+<div class="flex items-center justify-between px-1 py-2 border-t-4 border-purple-400">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold uppercase tracking-wider text-gray-600">Тестирование</span>
+<span class="bg-purple-100 text-purple-700 text-xs px-2 py-0.5 rounded-full font-bold">4</span>
+</div>
+<button class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3">
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-gray-400">#ORD-2024-039</span>
+<span class="material-symbols-outlined text-gray-300 text-lg">flag</span>
+</div>
+<h3 class="text-sm font-bold mb-3">QA: Личный кабинет</h3>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-cover" data-alt="UserHub Logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA2pb0gK4GR-XT-X4ZznxpfrxOU072-zCeEzww-gIiHoLeHMms2NGmpjJ83shPoruyK404Ym4W9Gw1i6Xeh0G2uQqWc-aCnl3mY2B6UM3fKwZsHLYJ6DONf7MYDTAruTR0qMJ5laUzMvqjUM_R05UJDbrPsAM1m2GvBd9v2_oAP1T65UpzscQ5lAJRslRutOY8XmyV9y-nSKnumzTGGRt5ar4uJbDr4b46N1txDLO54xthKb8gR8y41O_0kdh1adJT2bC_TGcGyoG56')"></div>
+</div>
+<span class="text-xs text-gray-500">UserHub</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full mb-4">
+<div class="bg-purple-400 h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 10" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBub9TSPoklPt4tslhYgZcpU19ZZkNc4FbtEjbmdsGFlkmuHvkXz6kjJNpjJraecdclNzhysn6Wh8r0ImBceDr0vEtKXBlacMguulsuYvXQyuJvR3oObsifUkYKzWett2O-YXwz8v7kyoPxpb72NJ56DpB2kUieNhapnhTa9kNuH4whKvGyugEFj-iB_DA_jWP5G7jCXfxEsKZb_VkEb1CTetUF0fG7Ghis6z9go0JxmbOqdxfwbcoWQEYUiEYaW0CyRo1H2onyuz_G')"></div>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>02 Ноя</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Ревью клиента -->
+<div class="kanban-column flex flex-col gap-4">
+<div class="flex items-center justify-between px-1 py-2 border-t-4 border-cyan-400">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold uppercase tracking-wider text-gray-600">Ревью клиента</span>
+<span class="bg-cyan-100 text-cyan-700 text-xs px-2 py-0.5 rounded-full font-bold">2</span>
+</div>
+<button class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3">
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-gray-400">#ORD-2024-035</span>
+<span class="material-symbols-outlined text-red-400 text-lg">flag</span>
+</div>
+<h3 class="text-sm font-bold mb-3">Дашборд аналитики</h3>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-cover" data-alt="MetricFlow Logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCgaeNsFjOM3v1xo9akxfgqnbmK9ianp8sv79U5-JHjnmwW-TxMenbfM0RwHAZdJM6EsjwbnF7rSKDdZm_Sqrm3fvqY-gA6cilcii7G6vCZQtCTZrf5lYvDz_lW14TsvSvyTz12AYmS6_hokCYBYZV-M1wm87W87iuwCd5Se9nV9zXHqcJwY32i2JYBIoERnPRyQORr4Vp6N6kaHSYmSVWxaMXEGojPiFFBolq5D8gHfHTb-He1r9BUFrNGJEMeZUMzyQggwNuoVIqk')"></div>
+</div>
+<span class="text-xs text-gray-500">MetricFlow</span>
+</div>
+<div class="w-full bg-gray-100 dark:bg-gray-700 h-1.5 rounded-full mb-4">
+<div class="bg-cyan-400 h-1.5 rounded-full" style="width: 95%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 11" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuADNFKFp8Pcd3EcBjRsj9Z6G6Mub0EOhk5Bw9MNWxmB0iy0hgy9cEgbznwRUH6okdeI92IUL5YF1JKApXkMP0pclTMMJaMdWcLrBXpmQM9CeVuW7x-CXp9HpgD7lgBe7tNUmaqrkDnMUZP8xV5dSpR_MtJrnKpYgcMLxYqElVg1eTaYQYpPSMQJ8yBwlp8_oJU8_fVXtfhZv-kNggvTLoOpnk3Xs6wWESH7Pp6JYP7DHdE14uCELmi3w4ERFs_KQihwVjQQb5QzlTr-')"></div>
+</div>
+<div class="flex items-center gap-1 text-xs text-gray-500">
+<span class="material-symbols-outlined text-sm">calendar_today</span>
+<span>28 Окт</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column: Завершён -->
+<div class="kanban-column flex flex-col gap-4">
+<div class="flex items-center justify-between px-1 py-2 border-t-4 border-emerald-400">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold uppercase tracking-wider text-gray-600">Завершён</span>
+<span class="bg-emerald-100 text-emerald-700 text-xs px-2 py-0.5 rounded-full font-bold">12</span>
+</div>
+<button class="text-gray-400 hover:text-gray-600"><span class="material-symbols-outlined">more_horiz</span></button>
+</div>
+<div class="flex-1 overflow-y-auto pr-1 flex flex-col gap-3">
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 opacity-60 grayscale hover:opacity-100 hover:grayscale-0 transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[10px] font-bold text-gray-400">#ORD-2024-030</span>
+<span class="material-symbols-outlined text-emerald-500 text-lg" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h3 class="text-sm font-bold mb-3">Обновление CRM системы</h3>
+<div class="flex items-center gap-2 mb-4">
+<div class="w-6 h-6 rounded bg-gray-100 flex items-center justify-center overflow-hidden">
+<div class="w-full h-full bg-cover" data-alt="SoftServe Logo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAR2EibHu-MccsgikkdxYyqeCJLM1VMLOntYsZ9grC9TCkwch4dC9WcrPEPNT6u7COc9Ax8oeKzwTZO5xHFQBgzfubyrnSoI336AYD--JKrnPgMQ24wiyxaAb7y62DnPkrByfWF_xLqfHNmG3q0_kZYYXOlXedzZcjpJqY11SmE62jnI6744J6T5XjCPxV7MQyCRPfPJPGJn0aWOYhrcSQ_FY1v6t5obOY0GJdfpgUnv6p3n5pta1cc1bbBQbYB00NV_bRnPIQ0nPy1')"></div>
+</div>
+<span class="text-xs text-gray-500">SoftServe</span>
+</div>
+<div class="w-full bg-emerald-100 dark:bg-emerald-900/30 h-1.5 rounded-full mb-4">
+<div class="bg-emerald-500 h-1.5 rounded-full" style="width: 100%"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex -space-x-2">
+<div class="w-7 h-7 rounded-full border-2 border-white dark:border-gray-800 bg-cover bg-center" data-alt="Team Member 12" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA91tzoC7AfF1_VKPoyrmEPQAwiKvORend8pchRnwZZJCfboEnb4D1UTQOU6_nfxY_P5f_C4n28xVDehQ3scaEARvXz8VME1DF6Aye6kKYbNNpY2UF0efdt4EWOxNIzFYYUokO8AX2DHbu-9Zh27xbRtz1h1Kc2Te1lOUrCdPYeD2HoUIkuEunC0UpRrTSyrLYdSMnNByKc82jcPSOsKjhWMa8vA0P0UiArKbnFrqhBzgz0O_cRZGpHN2PKS42qgj-Z41JcbGAGMtfN')"></div>
+</div>
+<div class="flex items-center gap-1 text-xs text-emerald-600 font-bold">
+<span>Готово</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow File Upload System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#3c3cf6",
+              "background-light": "#f5f5f8",
+              "background-dark": "#101022",
+            },
+            fontFamily: {
+              "display": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        font-family: 'Manrope', sans-serif;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-white min-h-screen">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#282839] px-10 py-3 bg-background-light dark:bg-background-dark">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] hidden sm:block">ITL OrderFlow</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8 items-center">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-white/70 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Дашборд</a>
+<a class="text-white text-sm font-bold leading-normal" href="#">Загрузки</a>
+<a class="text-white/70 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Отчеты</a>
+<a class="text-white/70 hover:text-white text-sm font-medium leading-normal transition-colors" href="#">Настройки</a>
+</nav>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-[#282839]" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAAJ6Zqn4uMIZPqfiuBhz8uYqQUEQonA9es4oOAfLUrvqO-C6L5sFQJRrvDmcYipmskLrznjYhQ3xjDc0RLW7lA5Scrkxo8aQxngufq9v7eIgZVLQlSt04z2bn4CsydL0lySQmwSuCtkFnAz0rFXCVtSBF77vkg5nLER3bEApcj03ZOYVYWO-gya4MRFGD8LYvFASIaZ6hOqnq3qXFlme78z5ZhmtZQo2rn3zgoh_JRfbWt7BRTkPAkO3NSR3Aj4p-xzHVpdHrtRuQd");'></div>
+</div>
+</header>
+<main class="px-4 md:px-40 flex flex-1 justify-center py-10">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between gap-3 p-4 mb-4">
+<div class="flex min-w-72 flex-col gap-2">
+<p class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Загрузка файлов</p>
+<p class="text-[#9c9cba] text-base font-normal leading-normal">Управляйте вашими документами и импортируйте данные в систему</p>
+</div>
+</div>
+<!-- Upload Drop Zone (Empty State Component) -->
+<div class="flex flex-col p-4">
+<div class="flex flex-col items-center gap-6 rounded-xl border-2 border-dashed border-[#3b3b54] bg-[#1a1a2e]/50 hover:bg-[#282839]/30 transition-all cursor-pointer px-6 py-16">
+<div class="flex items-center justify-center size-16 rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-4xl">cloud_upload</span>
+</div>
+<div class="flex max-w-[480px] flex-col items-center gap-2">
+<p class="text-white text-xl font-bold leading-tight tracking-[-0.015em] text-center">Перетащите файлы сюда</p>
+<p class="text-[#9c9cba] text-sm font-normal leading-normal max-w-[480px] text-center">
+                                    или выберите на компьютере. Максимальный размер файла: 50MB. <br/>Поддерживаемые форматы: PDF, XLSX, CSV.
+                                </p>
+</div>
+<button class="flex min-w-[160px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-6 bg-primary hover:bg-primary/90 text-white text-sm font-bold transition-all shadow-lg shadow-primary/20">
+<span class="truncate">Выбрать файлы</span>
+</button>
+</div>
+</div>
+<!-- Queue Section Header -->
+<div class="flex items-center justify-between px-4 pb-3 pt-8">
+<h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">Очередь загрузки</h2>
+<span class="text-[#9c9cba] text-sm font-medium">3 файла в списке</span>
+</div>
+<!-- Upload List -->
+<div class="flex flex-col gap-2 p-4">
+<!-- List Item: Uploading -->
+<div class="flex items-center gap-4 bg-[#1a1a2e] border border-[#282839] rounded-xl px-5 min-h-[80px] py-3 justify-between">
+<div class="flex items-center gap-4 flex-1">
+<div class="text-primary flex items-center justify-center rounded-lg bg-primary/10 shrink-0 size-12">
+<span class="material-symbols-outlined">description</span>
+</div>
+<div class="flex flex-col justify-center flex-1 max-w-md">
+<p class="text-white text-base font-medium leading-normal line-clamp-1">invoice_2023_01_detailed_report.pdf</p>
+<div class="flex items-center gap-2">
+<p class="text-[#9c9cba] text-sm font-normal">4.2 MB • Загрузка...</p>
+</div>
+<div class="mt-2 flex items-center gap-3">
+<div class="flex-1 h-1.5 overflow-hidden rounded-full bg-[#282839]">
+<div class="h-full rounded-full bg-primary" style="width: 65%;"></div>
+</div>
+<p class="text-white text-xs font-bold w-8 text-right">65%</p>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex gap-2">
+<button class="text-[#9c9cba] hover:text-white p-2">
+<span class="material-symbols-outlined">pause_circle</span>
+</button>
+<button class="text-[#9c9cba] hover:text-red-400 p-2">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- List Item: Error State -->
+<div class="flex items-center gap-4 bg-[#2e1a1a] border border-red-900/50 rounded-xl px-5 min-h-[80px] py-3 justify-between">
+<div class="flex items-center gap-4 flex-1">
+<div class="text-red-500 flex items-center justify-center rounded-lg bg-red-500/10 shrink-0 size-12">
+<span class="material-symbols-outlined">error</span>
+</div>
+<div class="flex flex-col justify-center flex-1">
+<p class="text-white text-base font-medium leading-normal line-clamp-1">raw_database_export_full_v2.csv</p>
+<p class="text-red-400 text-sm font-medium">Ошибка: Файл слишком большой (112 MB)</p>
+</div>
+</div>
+<div class="shrink-0">
+<button class="text-red-400 hover:text-red-300 px-4 py-2 text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">refresh</span>
+                                    Повторить
+                                </button>
+</div>
+</div>
+<!-- List Item: Completed State -->
+<div class="flex items-center gap-4 bg-[#1a1a2e] border border-[#282839] rounded-xl px-5 min-h-[80px] py-3 justify-between">
+<div class="flex items-center gap-4 flex-1">
+<div class="bg-primary/5 text-primary flex items-center justify-center rounded-lg shrink-0 size-12 overflow-hidden border border-[#282839]">
+<img class="w-full h-full object-cover" data-alt="Thumbnail of uploaded image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcZaMs4uh3d27x72J_FBmfh_m6hFpBCF2kTTx4wV1M-68Rj64swgrYpVsduKtPY45P7DXzhRVNlfrBFM_Pk2Mhq_6a4QnB6D10-QMEyNA1s-m9dUmN208obUKiWHKY4bH0D7DdixF14Q-1HKteCGR1i4xe_57xLtR8-oQJA_fLRU8-R7xpyURCf2vL-0Nl4iv-GgzhoDh6ANba4SS-A3Cwk165qHVJx2qsIZB9f8bsoYYnfCI5D6AG4zvEMf3oWD8RxF1wrTnx8Gje"/>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-white text-base font-medium leading-normal line-clamp-1">dashboard_screenshot_final.png</p>
+<div class="flex items-center gap-2">
+<p class="text-[#9c9cba] text-sm font-normal">1.8 MB • Завершено</p>
+<span class="size-1.5 rounded-full bg-green-500"></span>
+</div>
+</div>
+</div>
+<div class="shrink-0 flex items-center gap-4">
+<a class="text-primary hover:underline text-sm font-medium" href="#">Просмотр</a>
+<button class="text-red-400/70 hover:text-red-400 p-2">
+<span class="material-symbols-outlined">delete</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bulk Actions -->
+<div class="flex justify-end gap-3 px-4 pt-6">
+<button class="px-6 py-2.5 rounded-lg border border-[#3b3b54] text-white text-sm font-bold hover:bg-[#282839] transition-colors">
+                            Очистить список
+                        </button>
+<button class="px-6 py-2.5 rounded-lg bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+                            Загрузить все
+                        </button>
+</div>
+</div>
+</main>
+<!-- Footer Meta -->
+<footer class="px-10 py-6 border-t border-[#282839] flex justify-between items-center text-[#9c9cba] text-xs">
+<p>© 2023 ITL OrderFlow SaaS. Все права защищены.</p>
+<div class="flex gap-6">
+<a class="hover:text-white" href="#">Конфиденциальность</a>
+<a class="hover:text-white" href="#">Техподдержка</a>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

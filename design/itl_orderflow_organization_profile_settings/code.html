@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow Organization Profile Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#3c3cf6",
+              "background-light": "#f5f5f8",
+              "background-dark": "#101022",
+            },
+            fontFamily: {
+              "display": ["Manrope", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #282839;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #3b3b54;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen flex flex-col font-display">
+<div class="flex flex-1 h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-72 bg-[#111118] border-r border-[#282839] flex flex-col overflow-y-auto custom-scrollbar">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="bg-primary size-10 rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">layers</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-base font-bold leading-tight">ITL OrderFlow</h1>
+<p class="text-[#9c9cba] text-xs font-normal">Панель администратора</p>
+</div>
+</div>
+<nav class="flex flex-col gap-6">
+<!-- Group 1: Organization -->
+<div>
+<p class="text-[#5c5c7a] text-[10px] uppercase font-bold tracking-wider mb-3 px-3">Организация</p>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined text-[22px]">corporate_fare</span>
+<span class="text-sm font-semibold">Профиль</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">group</span>
+<span class="text-sm font-medium">Пользователи</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">admin_panel_settings</span>
+<span class="text-sm font-medium">Роли</span>
+</a>
+</div>
+</div>
+<!-- Group 2: Workflow -->
+<div>
+<p class="text-[#5c5c7a] text-[10px] uppercase font-bold tracking-wider mb-3 px-3">Воркфлоу</p>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">account_tree</span>
+<span class="text-sm font-medium">Статусы</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">description</span>
+<span class="text-sm font-medium">Шаблоны</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">sell</span>
+<span class="text-sm font-medium">Теги</span>
+</a>
+</div>
+</div>
+<!-- System Links -->
+<div class="flex flex-col gap-1 pt-2 border-t border-[#282839]">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">notifications</span>
+<span class="text-sm font-medium">Уведомления</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">extension</span>
+<span class="text-sm font-medium">Интеграции</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">payments</span>
+<span class="text-sm font-medium">Биллинг</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">security</span>
+<span class="text-sm font-medium">Безопасность</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg text-[#9c9cba] hover:bg-[#282839] hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-[22px]">database</span>
+<span class="text-sm font-medium">Данные</span>
+</a>
+</div>
+</nav>
+</div>
+<div class="mt-auto p-4 border-t border-[#282839]">
+<div class="flex items-center gap-3 bg-[#1b1b27] p-2 rounded-xl">
+<img class="size-8 rounded-full border-2 border-primary" data-alt="Avatar of the system administrator" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjoCR8QsZyLFmfA3zzGJwmS03hP7IWBzGG2gVXYEzoZvtYAkYWcEDF5wNFjxHSZENKOGF1YjqiJ8ijAqt9eV_czguQ73WaXx8pISo6fuAa2JKRwgYSjJgK9DOK64FkNz6jJ5WyKT1dFFGdIOw1BxjTZJUBrGoiEn9BwMm6kvloZnjBUrp9vUHjqem9YLnzcXi5aqhLiJzrspmPbdESDGbeTzVjCqijMKu4ybxU6LLBxuF9FylBDmKwKwXYj94Y-vxqxx7cVexBZ3J7"/>
+<div class="flex flex-col min-w-0">
+<p class="text-white text-xs font-bold truncate">Александр С.</p>
+<p class="text-[#9c9cba] text-[10px] truncate">Admin Account</p>
+</div>
+<button class="ml-auto text-[#9c9cba] hover:text-white">
+<span class="material-symbols-outlined text-lg">logout</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col h-full bg-background-light dark:bg-background-dark overflow-y-auto relative custom-scrollbar">
+<!-- Header -->
+<div class="px-8 pt-8 pb-4 sticky top-0 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md z-10">
+<div class="flex flex-col gap-1">
+<h2 class="text-white text-3xl font-black tracking-tight">Настройки профиля организации</h2>
+<p class="text-[#9c9cba] text-sm font-normal">Управление основной информацией и внешним видом вашей компании в системе ITL OrderFlow</p>
+</div>
+</div>
+<div class="px-8 pb-32 flex flex-col gap-8 max-w-[1000px]">
+<!-- Section 1: Основная информация -->
+<section class="flex flex-col gap-4">
+<h3 class="text-white text-xl font-bold border-b border-[#282839] pb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">info</span>
+                        Основная информация
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Название компании</p>
+<input class="form-input w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base transition-all" placeholder="ООО Инновационные Технологии" type="text" value="ITL Solutions Group"/>
+</label>
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Юридическое название</p>
+<input class="form-input w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base transition-all" placeholder="ООО 'ИТЛ Солюшнс'" type="text" value="Общество с ограниченной ответственностью 'ИТЛ Солюшнс'"/>
+</label>
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">ИНН</p>
+<input class="form-input w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base transition-all" placeholder="7700000000" type="text" value="7704211234"/>
+</label>
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Телефон</p>
+<input class="form-input w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base transition-all" placeholder="+7 (000) 000-00-00" type="tel" value="+7 (495) 123-45-67"/>
+</label>
+<label class="flex flex-col md:col-span-2">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Юридический адрес</p>
+<input class="form-input w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base transition-all" placeholder="г. Москва, ул. Примерная, д. 1" type="text" value="123317, г. Москва, Пресненская наб., д. 12, офис 45"/>
+</label>
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Email для уведомлений</p>
+<input class="form-input w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base transition-all" placeholder="admin@company.ru" type="email" value="contact@itl-group.ru"/>
+</label>
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Веб-сайт</p>
+<input class="form-input w-full rounded-lg text-white focus:outline-0 focus:ring-1 focus:ring-primary border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base transition-all" placeholder="https://example.ru" type="url" value="https://itl-group.ru"/>
+</label>
+</div>
+</section>
+<!-- Section 2: Брендирование -->
+<section class="flex flex-col gap-4">
+<h3 class="text-white text-xl font-bold border-b border-[#282839] pb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">palette</span>
+                        Брендирование
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10 bg-[#1b1b27]/50 p-6 rounded-2xl border border-[#282839]">
+<div class="flex flex-col gap-4">
+<p class="text-white text-sm font-semibold">Логотип организации</p>
+<div class="flex items-center gap-6">
+<div class="size-24 rounded-2xl bg-[#282839] border-2 border-dashed border-[#3b3b54] flex items-center justify-center overflow-hidden">
+<div class="text-primary flex flex-col items-center">
+<span class="material-symbols-outlined text-3xl">add_photo_alternate</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<button class="bg-primary text-white text-sm font-bold px-4 py-2 rounded-lg hover:bg-primary/90 transition-all">Загрузить новый</button>
+<p class="text-[#9c9cba] text-[11px]">PNG, JPG или SVG. Макс. 2МБ.<br/>Рекомендуемый размер 512x512px.</p>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<p class="text-white text-sm font-semibold">Основной цвет интерфейса</p>
+<div class="flex items-center gap-4 h-full">
+<div class="size-12 rounded-full ring-4 ring-[#282839] cursor-pointer bg-primary" title="Текущий цвет"></div>
+<div class="flex-1">
+<input class="form-input w-full rounded-lg text-white border border-[#3b3b54] bg-[#1b1b27] h-10 px-3 text-sm" type="text" value="#3C3CF6"/>
+</div>
+<button class="p-2 text-[#9c9cba] hover:text-white bg-[#282839] rounded-lg">
+<span class="material-symbols-outlined">colorize</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Section 3: Локализация -->
+<section class="flex flex-col gap-4">
+<h3 class="text-white text-xl font-bold border-b border-[#282839] pb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">language</span>
+                        Локализация
+                    </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Часовой пояс</p>
+<select class="form-select w-full rounded-lg text-white border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base focus:ring-primary transition-all">
+<option selected="" value="UTC+3">(UTC+03:00) Москва, Санкт-Петербург</option>
+<option value="UTC+2">(UTC+02:00) Калининград</option>
+<option value="UTC+4">(UTC+04:00) Самара, Ижевск</option>
+</select>
+</label>
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Валюта по умолчанию</p>
+<select class="form-select w-full rounded-lg text-white border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base focus:ring-primary transition-all">
+<option selected="" value="RUB">Российский рубль (₽)</option>
+<option value="USD">Доллар США ($)</option>
+<option value="EUR">Евро (€)</option>
+<option value="KZT">Тенге (₸)</option>
+</select>
+</label>
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Формат даты</p>
+<select class="form-select w-full rounded-lg text-white border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base focus:ring-primary transition-all">
+<option selected="" value="DD.MM.YYYY">ДД.ММ.ГГГГ (31.12.2023)</option>
+<option value="YYYY-MM-DD">ГГГГ-ММ-ДД (2023-12-31)</option>
+<option value="MM/DD/YYYY">ММ/ДД/ГГГГ (12/31/2023)</option>
+</select>
+</label>
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Язык интерфейса</p>
+<select class="form-select w-full rounded-lg text-white border border-[#3b3b54] bg-[#1b1b27] h-12 px-4 text-base focus:ring-primary transition-all">
+<option selected="" value="ru">Русский</option>
+<option value="en">English</option>
+</select>
+</label>
+</div>
+</section>
+<!-- Section 4: Клиентский портал -->
+<section class="flex flex-col gap-6">
+<h3 class="text-white text-xl font-bold border-b border-[#282839] pb-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">hub</span>
+                        Клиентский портал
+                    </h3>
+<div class="bg-[#1b1b27] rounded-2xl border border-[#282839] overflow-hidden">
+<div class="p-6 border-b border-[#282839] flex items-center justify-between">
+<div class="flex flex-col gap-1">
+<p class="text-white text-base font-bold">Публичный доступ</p>
+<p class="text-[#9c9cba] text-xs">Разрешить клиентам отслеживать заказы через внешний портал</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-[#3b3b54] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="p-6 grid grid-cols-1 gap-6">
+<label class="flex flex-col">
+<div class="flex items-center justify-between mb-2">
+<p class="text-[#9c9cba] text-sm font-medium">Кастомный домен</p>
+<span class="bg-primary/20 text-primary text-[10px] font-bold px-2 py-0.5 rounded uppercase">Pro</span>
+</div>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-[#5c5c7a] text-sm">https://</span>
+<input class="form-input w-full rounded-lg text-white border border-[#3b3b54] bg-[#1b1b27] h-12 pl-16 pr-4 text-base focus:ring-primary transition-all" placeholder="portal.company.ru" type="text" value="client.itl-group.ru"/>
+</div>
+</label>
+<label class="flex flex-col">
+<p class="text-[#9c9cba] text-sm font-medium pb-2">Приветственное сообщение</p>
+<textarea class="form-textarea w-full rounded-lg text-white border border-[#3b3b54] bg-[#1b1b27] p-4 text-base focus:ring-primary transition-all resize-none" placeholder="Добро пожаловать в личный кабинет..." rows="3">Добро пожаловать в систему управления заказами ITL Solutions. Здесь вы можете в реальном времени отслеживать статус вашего проекта и обмениваться документами.</textarea>
+</label>
+<div class="flex items-center gap-4 pt-2">
+<div class="flex items-center gap-2">
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-[#3b3b54] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+<span class="text-white text-xs">Показывать цены</span>
+</div>
+<div class="flex items-center gap-2">
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-9 h-5 bg-[#3b3b54] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+<span class="text-white text-xs">Разрешить чат с менеджером</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Sticky Footer Action Bar -->
+<footer class="fixed bottom-0 right-0 left-72 bg-[#111118]/90 backdrop-blur-lg border-t border-[#282839] p-4 z-20 flex justify-end items-center gap-4 shadow-2xl">
+<p class="text-[#9c9cba] text-xs font-medium mr-auto pl-4">Последние изменения сохранены 14 минут назад</p>
+<button class="px-6 py-2.5 rounded-lg border border-[#3b3b54] text-white text-sm font-bold hover:bg-[#282839] transition-all">
+                    Отменить
+                </button>
+<button class="px-8 py-2.5 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">save</span>
+                    Сохранить изменения
+                </button>
+</footer>
+</main>
+</div>
+</body></html>

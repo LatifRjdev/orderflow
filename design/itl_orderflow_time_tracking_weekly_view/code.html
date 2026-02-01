@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Weekly Time Tracking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e5e7eb] dark:border-b-white/10 px-10 py-3 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-primary">
+<div class="size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-[#111118] dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">ITL OrderFlow</h2>
+</div>
+<nav class="flex items-center gap-9">
+<a class="text-[#60608a] dark:text-gray-400 text-sm font-medium hover:text-primary transition-colors" href="#">Проекты</a>
+<a class="text-primary text-sm font-bold border-b-2 border-primary py-4" href="#">Задачи</a>
+<a class="text-[#60608a] dark:text-gray-400 text-sm font-medium hover:text-primary transition-colors" href="#">Команда</a>
+<a class="text-[#60608a] dark:text-gray-400 text-sm font-medium hover:text-primary transition-colors" href="#">Отчёты</a>
+</nav>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<label class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full bg-[#f0f0f5] dark:bg-white/5 border border-transparent focus-within:border-primary">
+<div class="text-[#60608a] flex items-center justify-center pl-4">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:ring-0 text-[#111118] dark:text-white placeholder:text-[#60608a] px-2 text-sm" placeholder="Поиск задач..."/>
+</div>
+</label>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f0f5] dark:bg-white/5 text-[#111118] dark:text-white hover:bg-gray-200 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#f0f0f5] dark:bg-white/5 text-[#111118] dark:text-white hover:bg-gray-200 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User avatar profile picture" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCbeCQme-CYN_sfpEdXwssYmkyBBmZPSbMBB7QGVl4_0bFIOHGOLAqEo5oumHlPVTESj_M0g8L6K3NDUDBTOb5YVsko9LRYpK-V4hhoyu7tCtY3EZWaYhF5HB3AD8yasyoOO0JIdtyVr7gB0gc3p5f2D07-WYaqJLghc2gEnxhoOivUBX42sKE3LfC0HvuZWAzmETiYl2PzBYcAMrWrI1XdrvpAk4lv2x7sHFIIXe6w7Ckq9w7RlQovOfYMVQH45iTmBMqUD8J-ZpdF");'></div>
+</div>
+</header>
+<!-- Active Timer Sticky Widget -->
+<div class="mx-auto w-full max-w-[1200px] px-6 mt-4">
+<div class="flex flex-1 flex-col items-start justify-between gap-4 rounded-xl border border-green-200 bg-green-50 dark:bg-green-900/10 dark:border-green-900/30 p-4 sm:flex-row sm:items-center shadow-sm">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-green-500 rounded-full animate-pulse">
+<span class="material-symbols-outlined text-white text-sm">play_arrow</span>
+<span class="text-white text-xs font-bold uppercase tracking-wider">Таймер запущен</span>
+</div>
+<div class="flex flex-col">
+<p class="text-[#111118] dark:text-white text-sm font-bold leading-tight">Разработка API авторизации</p>
+<p class="text-[#60608a] dark:text-gray-400 text-xs">Проект: CRM System v2.0</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<p class="text-primary dark:text-primary text-2xl font-black font-mono tracking-wider">01:23:45</p>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-9 w-9 bg-white dark:bg-white/10 text-primary border border-primary/20 hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined">pause</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-9 px-4 bg-primary text-white font-bold text-sm hover:opacity-90 transition-opacity">
+<span class="truncate">Остановить</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<main class="mx-auto w-full max-w-[1200px] px-6 py-6">
+<!-- Header Section -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+<h1 class="text-[#111118] dark:text-white text-3xl font-black tracking-tight">Учёт времени</h1>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 rounded-lg h-10 px-4 bg-white dark:bg-white/5 border border-[#e5e7eb] dark:border-white/10 text-[#111118] dark:text-white text-sm font-bold hover:bg-gray-50 transition-colors">
+<span class="material-symbols-outlined">file_download</span>
+                        Экспорт
+                    </button>
+<button class="flex items-center gap-2 rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:opacity-90 transition-opacity shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-lg">add</span>
+                        Добавить запись
+                    </button>
+</div>
+</div>
+<!-- View & Navigation Controls -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-white dark:bg-background-dark/40 p-2 rounded-xl border border-[#e5e7eb] dark:border-white/5 shadow-sm">
+<div class="flex items-center gap-4">
+<div class="flex bg-[#f0f0f5] dark:bg-white/5 p-1 rounded-lg">
+<button class="px-4 py-1.5 text-sm font-medium text-[#60608a] dark:text-gray-400 hover:text-primary">День</button>
+<button class="px-4 py-1.5 text-sm font-bold text-primary bg-white dark:bg-white/10 rounded-md shadow-sm">Неделя</button>
+<button class="px-4 py-1.5 text-sm font-medium text-[#60608a] dark:text-gray-400 hover:text-primary">Месяц</button>
+</div>
+<div class="h-6 w-px bg-[#e5e7eb] dark:bg-white/10"></div>
+<div class="flex items-center gap-2">
+<button class="p-1.5 rounded-full hover:bg-[#f0f0f5] dark:hover:bg-white/5 text-[#111118] dark:text-white">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex items-center gap-2 px-2">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+<span class="text-sm font-bold text-[#111118] dark:text-white">18-24 марта 2024</span>
+</div>
+<button class="p-1.5 rounded-full hover:bg-[#f0f0f5] dark:hover:bg-white/5 text-[#111118] dark:text-white">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                    Сегодня: 4.5 ч
+                </div>
+</div>
+<!-- Timesheet Grid -->
+<div class="bg-white dark:bg-white/5 rounded-xl border border-[#e5e7eb] dark:border-white/10 overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50 dark:bg-white/5 text-xs font-bold text-[#60608a] dark:text-gray-400 uppercase tracking-wider border-b border-[#e5e7eb] dark:border-white/10">
+<th class="py-4 px-6 min-w-[300px]">Проект / Задача</th>
+<th class="py-4 px-2 text-center w-24">Пн 18</th>
+<th class="py-4 px-2 text-center w-24">Вт 19</th>
+<th class="py-4 px-2 text-center w-24 bg-primary/5 text-primary">Ср 20</th>
+<th class="py-4 px-2 text-center w-24">Чт 21</th>
+<th class="py-4 px-2 text-center w-24">Пт 22</th>
+<th class="py-4 px-2 text-center w-16 text-gray-400">Сб 23</th>
+<th class="py-4 px-2 text-center w-16 text-gray-400">Вс 24</th>
+<th class="py-4 px-6 text-right w-24 border-l border-gray-200 dark:border-white/10 bg-gray-100/50 dark:bg-white/5 text-[#111118] dark:text-white">Итого</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-white/5">
+<!-- Project Group 1 -->
+<tr class="bg-gray-50/50 dark:bg-white/5">
+<td class="py-3 px-6 text-sm font-bold text-primary flex items-center gap-2" colspan="9">
+<span class="material-symbols-outlined text-lg">folder</span>
+                                CRM System v2.0
+                            </td>
+</tr>
+<tr class="group hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
+<td class="py-4 px-8 text-sm font-medium text-[#111118] dark:text-white">
+<div class="flex flex-col">
+<span>Разработка API авторизации</span>
+<span class="text-[10px] text-[#60608a] uppercase tracking-tighter">Backend</span>
+</div>
+</td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-[#111118] dark:text-white" type="text" value="4.0"/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-[#111118] dark:text-white" type="text" value="6.5"/></td>
+<td class="p-1 bg-primary/5"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm font-bold text-primary" type="text" value="1.5"/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-[#111118] dark:text-white" type="text" value="3.0"/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="py-4 px-6 text-right font-bold text-sm text-[#111118] dark:text-white border-l border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/5">15.0</td>
+</tr>
+<tr class="group hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
+<td class="py-4 px-8 text-sm font-medium text-[#111118] dark:text-white">UI Components Library</td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-[#111118] dark:text-white" type="text" value="2.0"/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="p-1 bg-primary/5"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm font-bold text-primary" type="text" value="3.0"/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-[#111118] dark:text-white" type="text" value="1.5"/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-[#111118] dark:text-white" type="text" value="4.0"/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="py-4 px-6 text-right font-bold text-sm text-[#111118] dark:text-white border-l border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/5">10.5</td>
+</tr>
+<!-- Project Group 2 -->
+<tr class="bg-gray-50/50 dark:bg-white/5">
+<td class="py-3 px-6 text-sm font-bold text-primary flex items-center gap-2" colspan="9">
+<span class="material-symbols-outlined text-lg">folder</span>
+                                Mobile App Design
+                            </td>
+</tr>
+<tr class="group hover:bg-gray-50 dark:hover:bg-white/10 transition-colors">
+<td class="py-4 px-8 text-sm font-medium text-[#111118] dark:text-white">Фикс багов верстки</td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-[#111118] dark:text-white" type="text" value="1.0"/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-[#111118] dark:text-white" type="text" value="2.0"/></td>
+<td class="p-1 bg-primary/5"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="p-1"><input class="w-full text-center bg-transparent border-none focus:ring-2 focus:ring-primary/50 rounded text-sm text-gray-300" type="text" value=""/></td>
+<td class="py-4 px-6 text-right font-bold text-sm text-[#111118] dark:text-white border-l border-gray-100 dark:border-white/10 bg-gray-50/50 dark:bg-white/5">3.0</td>
+</tr>
+<!-- Footer Row -->
+<tr class="bg-gray-100 dark:bg-white/10 border-t-2 border-[#e5e7eb] dark:border-white/20">
+<td class="py-4 px-6 text-sm font-black text-[#111118] dark:text-white text-right">Итого за день:</td>
+<td class="py-4 text-center font-bold text-sm text-[#111118] dark:text-white">7.0</td>
+<td class="py-4 text-center font-bold text-sm text-[#111118] dark:text-white">8.5</td>
+<td class="py-4 text-center font-bold text-sm text-primary bg-primary/10">4.5</td>
+<td class="py-4 text-center font-bold text-sm text-[#111118] dark:text-white">4.5</td>
+<td class="py-4 text-center font-bold text-sm text-[#111118] dark:text-white">4.0</td>
+<td class="py-4 text-center font-bold text-sm text-[#60608a] dark:text-gray-400">0.0</td>
+<td class="py-4 text-center font-bold text-sm text-[#60608a] dark:text-gray-400">0.0</td>
+<td class="py-4 px-6 text-right font-black text-lg text-primary border-l border-gray-200 dark:border-white/10">28.5</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Bottom Summary Bar -->
+<div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-6 p-6 bg-white dark:bg-white/5 rounded-xl border border-[#e5e7eb] dark:border-white/10 shadow-sm">
+<div class="flex-1 w-full sm:w-auto">
+<div class="flex justify-between items-end mb-2">
+<div class="flex flex-col">
+<p class="text-xs font-bold text-[#60608a] dark:text-gray-400 uppercase tracking-widest">Прогресс недели</p>
+<p class="text-2xl font-black text-[#111118] dark:text-white">28.5 ч <span class="text-sm font-medium text-[#60608a]">/ 40 ч цель</span></p>
+</div>
+<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded">71% выполнено</span>
+</div>
+<div class="h-3 w-full bg-[#f0f0f5] dark:bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full shadow-[0_0_12px_rgba(60,61,246,0.4)]" style="width: 71.25%"></div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="flex flex-col items-center px-6 border-l border-[#e5e7eb] dark:border-white/10">
+<p class="text-[10px] font-bold text-[#60608a] dark:text-gray-400 uppercase">Осталось</p>
+<p class="text-xl font-bold text-[#111118] dark:text-white">11.5 ч</p>
+</div>
+<div class="flex flex-col items-center px-6 border-l border-[#e5e7eb] dark:border-white/10">
+<p class="text-[10px] font-bold text-[#60608a] dark:text-gray-400 uppercase">Овертайм</p>
+<p class="text-xl font-bold text-green-500">0.0 ч</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

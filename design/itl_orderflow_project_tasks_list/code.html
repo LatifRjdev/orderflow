@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Задачи проекта</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white antialiased">
+<div class="relative flex min-h-screen flex-col">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full border-b border-[#f0f2f5] dark:border-slate-800 bg-white dark:bg-slate-900 px-4 md:px-10 py-3">
+<div class="mx-auto flex max-w-[1200px] items-center justify-between gap-8">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">account_tree</span>
+</div>
+<h2 class="hidden md:block text-lg font-bold leading-tight tracking-tight">ITL OrderFlow</h2>
+</div>
+<label class="flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#60708a] flex border-none bg-[#f0f2f5] dark:bg-slate-800 items-center justify-center pl-4 rounded-l-lg">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-[#f0f2f5] dark:bg-slate-800 text-[#111418] dark:text-white focus:ring-0 h-full placeholder:text-[#60708a] px-3 rounded-r-lg text-sm" placeholder="Поиск задач..." value=""/>
+</div>
+</label>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Проекты</a>
+<a class="text-sm font-medium text-primary" href="#">Задачи</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Команда</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Отчеты</a>
+</nav>
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-9 border border-gray-200" data-alt="User avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCPb5xyT9CGci9-Q4PoMHyg3oDxzMAjY7Zxx5yZEc9P8SK6ym2ZFiSzY9XkDIKtLZFOuvsbzcn5uDtTxkyt6kbs8w8B2FWedYe8caoTNN4tNr8kQoVF1bg8P7uYRg5Ww-SulJiFJFlBhvqwTe7_BmeHK5kmrECaU48OZ1wxNefjs6WLePmvI5B-9j18hchfMdFa4_Xjy1NRXdTilbS8wEZ6q3fInnbjb1a6iBeyqT5S94hu6nnuBHar-VjdvFgVV-nOd3v_ruGOqPbY");'></div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto">
+<div class="mx-auto max-w-[1200px] px-4 md:px-10 py-8">
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between items-end gap-4 mb-6">
+<div class="flex flex-col gap-1">
+<p class="text-sm font-medium text-primary uppercase tracking-wider">Заказ #2405</p>
+<h1 class="text-3xl md:text-4xl font-black leading-tight tracking-tight">Веб-сайт: Редизайн платформы</h1>
+<p class="text-[#60708a] dark:text-slate-400 text-base">Управление этапами и задачами проекта</p>
+</div>
+<button class="flex items-center justify-center gap-2 rounded-lg h-11 px-6 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all">
+<span class="material-symbols-outlined text-lg">add</span>
+<span>Добавить этап</span>
+</button>
+</div>
+<!-- Tabs -->
+<div class="mb-6">
+<div class="flex border-b border-[#dbdfe6] dark:border-slate-800 gap-8 overflow-x-auto">
+<a class="flex items-center gap-2 border-b-2 border-transparent text-[#60708a] pb-3 px-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">dashboard</span>
+<span class="text-sm font-bold whitespace-nowrap">Обзор</span>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-primary text-primary pb-3 px-1" href="#">
+<span class="material-symbols-outlined text-xl">list_alt</span>
+<span class="text-sm font-bold whitespace-nowrap">Этапы и задачи</span>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent text-[#60708a] pb-3 px-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">folder</span>
+<span class="text-sm font-bold whitespace-nowrap">Файлы</span>
+</a>
+<a class="flex items-center gap-2 border-b-2 border-transparent text-[#60708a] pb-3 px-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">history</span>
+<span class="text-sm font-bold whitespace-nowrap">История</span>
+</a>
+</div>
+</div>
+<!-- ToolBar -->
+<div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+<div class="flex items-center gap-2">
+<button class="p-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-lg hover:bg-gray-50 transition-colors">
+<span class="material-symbols-outlined text-xl">filter_list</span>
+</button>
+<button class="p-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-lg hover:bg-gray-50 transition-colors">
+<span class="material-symbols-outlined text-xl">sort</span>
+</button>
+</div>
+<div class="inline-flex p-1 bg-[#f0f2f5] dark:bg-slate-800 rounded-lg">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-700 shadow-sm rounded-md text-primary text-xs font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">format_list_bulleted</span>
+                            Список
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 text-[#60708a] hover:text-[#111418] dark:text-slate-400 dark:hover:text-white text-xs font-bold uppercase tracking-wider transition-colors">
+<span class="material-symbols-outlined text-sm">view_kanban</span>
+                            Канбан
+                        </button>
+</div>
+</div>
+<!-- Task List / Accordions -->
+<div class="space-y-4">
+<!-- Milestone 1: Expanded -->
+<div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm">
+<!-- Milestone Header -->
+<div class="flex items-center justify-between p-4 bg-gray-50/50 dark:bg-slate-800/50 border-b border-gray-100 dark:border-slate-800">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-gray-400 cursor-grab">drag_indicator</span>
+<div class="flex items-center gap-3">
+<h3 class="font-bold text-lg">Дизайн</h3>
+<span class="bg-primary/10 text-primary px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide">В работе</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex flex-col items-end gap-1">
+<div class="w-32 h-1.5 bg-gray-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 66%"></div>
+</div>
+<span class="text-xs font-medium text-gray-500">4 / 6 задач выполнено</span>
+</div>
+<span class="material-symbols-outlined text-gray-500 cursor-pointer">expand_less</span>
+</div>
+</div>
+<!-- Task Rows -->
+<div class="divide-y divide-gray-100 dark:divide-slate-800">
+<!-- Task 1 -->
+<div class="flex items-center gap-4 p-4 pl-12 hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+<input checked="" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/>
+<span class="material-symbols-outlined text-red-500 filled-icon text-sm">circle</span>
+<p class="flex-1 text-sm font-medium text-gray-400 line-through">Создание UI-кита и дизайн-системы</p>
+<div class="flex items-center gap-4">
+<div class="flex -space-x-2">
+<div class="size-7 rounded-full border-2 border-white dark:border-slate-900 bg-cover bg-center" data-alt="Assignee 1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCkq0vzTxn_stFUf4lTQ_QOR7vUVIWfOYib15za3X06B08KzDIsJUu5zbD_FtAUcjYJUELJVddNESDJsYQss66QOQY8KSWqMnRNeLojH43l0UR9bPpIf2v3b-Of78l8l_L5lOgvvGSzzVYSkGzpQFMBxH5ijsGoCBBz8h7ZEij9CzyBtQZ-W3t8PoRNRmW-NPuujaZfiw0V6R7u8Q9o-6lZGqAd2ag2C0EqPGk79Eod71_5SZnHWDfiwvEJlWiJfE-DDFNT9v4mByyN");'></div>
+</div>
+<span class="text-xs font-bold text-gray-400 bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded">12ч</span>
+</div>
+</div>
+<!-- Task 2 -->
+<div class="flex items-center gap-4 p-4 pl-12 hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+<input class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/>
+<span class="material-symbols-outlined text-orange-400 filled-icon text-sm">circle</span>
+<p class="flex-1 text-sm font-medium">Прототипирование личного кабинета</p>
+<div class="flex items-center gap-4">
+<div class="flex -space-x-2">
+<div class="size-7 rounded-full border-2 border-white dark:border-slate-900 bg-blue-500 flex items-center justify-center text-[10px] text-white font-bold">АС</div>
+</div>
+<span class="text-xs font-bold text-gray-500 bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded">8ч</span>
+</div>
+</div>
+<!-- Task 3 -->
+<div class="flex items-center gap-4 p-4 pl-12 hover:bg-gray-50 dark:hover:bg-slate-800/50 transition-colors">
+<input class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/>
+<span class="material-symbols-outlined text-blue-400 filled-icon text-sm">circle</span>
+<p class="flex-1 text-sm font-medium">Подготовка ассетов для разработки</p>
+<div class="flex items-center gap-4">
+<div class="flex -space-x-2">
+<div class="size-7 rounded-full border-2 border-white dark:border-slate-900 bg-cover bg-center" data-alt="Assignee 3" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB31ytq6SKxqPKuFuDAvgsHVw70J6_jpmPN0xrY3MzIHSIkkXNEUzBLXQQCpEL64uSKCk-AX63p1yaINdZUtEno3W19ILGtij3fx_cWjG4-WkFc7QlkLdz4dzChXTlpLcP8NZFciaipc18DlLG5rtAOek3qIk9DubNLsvHWbLDHjtO7KI1C83imnPaHtR57-W6_5woe2tO8k4o4rOSJZhhwXJ75lv2snsZ_YAXS7ZO_yflpOkxYGdb5-9r7CfykgghbCvyPOFT-nFCn");'></div>
+</div>
+<span class="text-xs font-bold text-gray-500 bg-gray-100 dark:bg-slate-800 px-2 py-1 rounded">4ч</span>
+</div>
+</div>
+<!-- Add Task Button -->
+<button class="w-full flex items-center gap-2 p-3 pl-12 text-sm text-primary font-medium hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined text-xl">add_circle</span>
+                                Добавить задачу
+                            </button>
+</div>
+</div>
+<!-- Milestone 2: Collapsed -->
+<div class="bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm hover:border-primary/30 transition-colors cursor-pointer">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-gray-400 cursor-grab">drag_indicator</span>
+<div class="flex items-center gap-3">
+<h3 class="font-bold text-lg">Разработка</h3>
+<span class="bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide">В очереди</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex flex-col items-end gap-1">
+<span class="text-xs font-medium text-gray-500">0 / 12 задач</span>
+</div>
+<span class="material-symbols-outlined text-gray-500">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Milestone 3: Completed -->
+<div class="bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-sm opacity-75">
+<div class="flex items-center justify-between p-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-green-500 filled-icon">check_circle</span>
+<div class="flex items-center gap-3">
+<h3 class="font-bold text-lg text-gray-500 line-through">Аналитика</h3>
+<span class="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 px-2.5 py-0.5 rounded-full text-xs font-bold uppercase tracking-wide">Завершено</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex flex-col items-end gap-1">
+<span class="text-xs font-medium text-green-600 font-bold">100% выполнено</span>
+</div>
+<span class="material-symbols-outlined text-gray-400">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Детали проекта</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        @keyframes pulse-blue {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(60, 60, 246, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(60, 60, 246, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(60, 60, 246, 0); }
+        }
+        .pulse-dot {
+            animation: pulse-blue 2s infinite;
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white antialiased">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- TopNavBar Component -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#282839] px-6 lg:px-40 py-3 bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">ITL OrderFlow</h2>
+</div>
+<div class="hidden md:flex items-center gap-9">
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Проекты</a>
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Отчеты</a>
+<a class="text-white text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Команда</a>
+</div>
+</div>
+<div class="flex flex-1 justify-end gap-4 lg:gap-8 items-center">
+<label class="hidden md:flex flex-col min-w-40 !h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full">
+<div class="text-[#9c9cba] flex border-none bg-[#282839] items-center justify-center pl-4 rounded-l-lg" data-icon="search">
+<span class="material-symbols-outlined text-xl">search</span>
+</div>
+<input class="form-input flex w-full min-w-0 flex-1 border-none bg-[#282839] text-white focus:ring-0 h-full placeholder:text-[#9c9cba] px-4 rounded-r-lg pl-2 text-sm" placeholder="Поиск по проекту" value=""/>
+</div>
+</label>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center rounded-lg h-10 px-4 bg-primary text-white text-sm font-bold hover:bg-opacity-90 transition-all">
+<span class="truncate">Экспорт отчета</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/30" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAys-g6567x7kU5gn_stwfAmR4h62zKN0vDe_spvi1ScUNREjUCu4SkqvoCWPbFLTChLqDa9lz5qEJ3XBDHX29F8eQcwADM70TUoJuzkRmhVgWKxWS68X7p5Dc854e-dq6WcEkD5AKHb5Hu0rdEQabWPhv8R14CCdq8PFv0xgL2pG4XV0Wg_bfOoVrDwsLJoPoZXhcrLdBxDoF_aMALgzjflJZRKeI8eog4Tn2tH79uZZWNQ_5d2ihwsB-YC_PwHEAZOAZJ-dMFBbQp");'></div>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-8">
+<div class="layout-content-container flex flex-col max-w-[1200px] w-full px-6 lg:px-10">
+<!-- Hero Section with Circular Progress -->
+<div class="flex flex-col lg:flex-row gap-8 items-center bg-[#1a1a2e] rounded-xl p-8 border border-[#282839] mb-8">
+<div class="relative size-48 flex items-center justify-center">
+<svg class="size-48">
+<circle class="text-[#282839]" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-primary progress-ring__circle" cx="96" cy="96" fill="transparent" r="80" stroke="currentColor" stroke-dasharray="502.65" stroke-dashoffset="175.93" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="text-4xl font-black text-white">65%</span>
+<span class="text-xs text-[#9c9cba] uppercase tracking-wider">Готово</span>
+</div>
+</div>
+<div class="flex-1 text-center lg:text-left">
+<div class="flex flex-wrap justify-center lg:justify-between items-start gap-4 mb-4">
+<div class="flex flex-col gap-1">
+<h1 class="text-white text-3xl lg:text-4xl font-black tracking-tight">Разработка ERP системы</h1>
+<p class="text-[#9c9cba] text-base">ID проекта: #ITL-2024-0892 • Клиент: TechCorp Solutions</p>
+</div>
+<button class="flex min-w-[120px] items-center justify-center rounded-lg h-10 px-4 bg-[#282839] text-white text-sm font-bold border border-[#3b3b54] hover:bg-[#3b3b54] transition-colors">
+<span class="material-symbols-outlined mr-2 text-sm">support_agent</span>
+<span class="truncate">Связаться с менеджером</span>
+</button>
+</div>
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/20 text-primary rounded-full border border-primary/30">
+<span class="size-2 bg-primary rounded-full pulse-dot"></span>
+<span class="text-sm font-bold">Текущий этап: Разработка функционала</span>
+</div>
+</div>
+</div>
+<!-- Tabs Component -->
+<div class="mb-6">
+<div class="flex border-b border-[#3b3b54] px-0 gap-8">
+<a class="flex flex-col items-center justify-center border-b-[3px] border-primary text-white pb-[13px] pt-4 transition-all" href="#">
+<p class="text-sm font-bold tracking-[0.015em]">Прогресс</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-[#9c9cba] pb-[13px] pt-4 hover:text-white transition-all" href="#">
+<p class="text-sm font-bold tracking-[0.015em]">Документы</p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-[#9c9cba] pb-[13px] pt-4 hover:text-white transition-all" href="#">
+<p class="text-sm font-bold tracking-[0.015em]">Обсуждение <span class="ml-1 inline-flex items-center justify-center size-5 bg-primary text-[10px] text-white rounded-full">3</span></p>
+</a>
+<a class="flex flex-col items-center justify-center border-b-[3px] border-transparent text-[#9c9cba] pb-[13px] pt-4 hover:text-white transition-all" href="#">
+<p class="text-sm font-bold tracking-[0.015em]">Счета</p>
+</a>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Timeline Column -->
+<div class="lg:col-span-1 space-y-6">
+<h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">account_tree</span>
+                                Таймлайн проекта
+                            </h3>
+<div class="relative bg-[#1a1a2e] p-6 rounded-xl border border-[#282839]">
+<div class="grid grid-cols-[40px_1fr] gap-x-2">
+<!-- Step 1 (Completed) -->
+<div class="flex flex-col items-center gap-1">
+<div class="text-green-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-[2px] bg-green-500/30 h-12"></div>
+</div>
+<div class="flex flex-col pb-6">
+<p class="text-white text-base font-bold">Аналитика и ТЗ</p>
+<p class="text-[#9c9cba] text-xs">Завершено 15 мая</p>
+</div>
+<!-- Step 2 (Completed) -->
+<div class="flex flex-col items-center gap-1">
+<div class="text-green-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="w-[2px] bg-green-500/30 h-12"></div>
+</div>
+<div class="flex flex-col pb-6">
+<p class="text-white text-base font-bold">UI/UX Дизайн</p>
+<p class="text-[#9c9cba] text-xs">Завершено 2 июня</p>
+</div>
+<!-- Step 3 (Active) -->
+<div class="flex flex-col items-center gap-1">
+<div class="text-primary flex items-center justify-center">
+<div class="size-4 bg-primary rounded-full pulse-dot"></div>
+</div>
+<div class="w-[2px] bg-[#3b3b54] h-12"></div>
+</div>
+<div class="flex flex-col pb-6">
+<p class="text-primary text-base font-bold">Разработка функционала</p>
+<p class="text-primary/70 text-xs font-medium">В процессе (Текущий этап)</p>
+</div>
+<!-- Step 4 (Upcoming) -->
+<div class="flex flex-col items-center gap-1">
+<div class="text-[#3b3b54] flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">circle</span>
+</div>
+<div class="w-[2px] bg-[#3b3b54] h-12"></div>
+</div>
+<div class="flex flex-col pb-6">
+<p class="text-[#9c9cba] text-base font-medium">Тестирование и QA</p>
+<p class="text-[#55556d] text-xs">Ожидание (План: 20 июля)</p>
+</div>
+<!-- Step 5 (Upcoming) -->
+<div class="flex flex-col items-center gap-1">
+<div class="text-[#3b3b54] flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl">circle</span>
+</div>
+</div>
+<div class="flex flex-col">
+<p class="text-[#9c9cba] text-base font-medium">Запуск и поддержка</p>
+<p class="text-[#55556d] text-xs">Ожидание</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Details & Discussion Column -->
+<div class="lg:col-span-2 flex flex-col gap-8">
+<!-- Current Stage Card -->
+<div class="bg-gradient-to-br from-[#1a1a2e] to-[#111118] p-6 rounded-xl border border-[#282839] shadow-lg">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-xl font-bold text-white">Детали текущего этапа</h3>
+<span class="bg-[#282839] text-[#9c9cba] text-xs font-bold px-3 py-1 rounded">Sprint 4/8</span>
+</div>
+<p class="text-[#9c9cba] text-base leading-relaxed mb-6">
+                                    На данный момент команда работает над интеграцией API складского учета и разработкой модуля отчетности. Все работы идут согласно графику.
+                                </p>
+<div class="space-y-4">
+<div class="flex justify-between text-sm">
+<span class="text-[#9c9cba]">Прогресс этапа</span>
+<span class="text-white font-bold">45%</span>
+</div>
+<div class="h-2 w-full bg-[#282839] rounded-full overflow-hidden">
+<div class="h-full bg-primary rounded-full transition-all duration-1000" style="width: 45%;"></div>
+</div>
+<div class="flex items-center gap-4 pt-2">
+<div class="flex -space-x-2">
+<div class="size-8 rounded-full border-2 border-[#111118] bg-cover" data-alt="Developer 1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDL_7O0ktT4drOtnn00W4KYY4iuDmJ6m3yflHQdzEFF1sz0yTzMJAojaXxNWHGICtxTqCQCsHtPyFTjvJhUIy0OE0T4qydTpKqC4olnacJmCZN_ZBDghudoA4Yij9yvZTHDclj8HuG8O6j4oHcSnAkdUK52QlIMl3Qz14xsOHPtgwUPD5vA871Zun-qEaF4d7d-FlauLiHRKy8cJFIZPgHEDO9hlwJYv7sLJE4uvjE1UALZ9dh8fyOeJQPUnz-Hpzc1JYlMMLDOJxMQ");'></div>
+<div class="size-8 rounded-full border-2 border-[#111118] bg-cover" data-alt="Developer 2" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAwJA7BXxYTtFgdloDrEt3kRLfvW7F4FiNWaExPhMNTSFzyI6Ex8azn01r7J_t5tyd2RJkEPeL7zPfU-Dmo4fhq24WYIy56gtx394nE9qTJ4WJTOv3y8gDhiGhnhCRa4VcofEwqJ8V3TRtbngo1UlVMKnJ2OwwBscS2GyGH3Q8DatLew_J3Nj-Wc7b5QQIbyMLsHNQmGEp7ZcBIMXtxy70ttFKLdpLkCxF5mLInA5zlMGGqQ_7XwX6cek-9sWS-K9YXr58M4DVKgA2S");'></div>
+<div class="size-8 rounded-full border-2 border-[#111118] bg-primary flex items-center justify-center text-[10px] font-bold">+3</div>
+</div>
+<p class="text-xs text-[#9c9cba]">5 разработчиков на задаче</p>
+</div>
+</div>
+</div>
+<!-- Discussion Tab Content (Chat) -->
+<div class="bg-[#1a1a2e] rounded-xl border border-[#282839] flex flex-col overflow-hidden h-[450px]">
+<div class="p-4 border-b border-[#282839] bg-[#22223b] flex justify-between items-center">
+<h4 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">chat_bubble</span>
+                                        Обсуждение проекта
+                                    </h4>
+<span class="text-xs text-green-400 flex items-center gap-1">
+<span class="size-1.5 bg-green-400 rounded-full"></span>
+                                        Менеджер в сети
+                                    </span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4 flex flex-col">
+<!-- Team Message -->
+<div class="flex gap-3 max-w-[85%]">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 border border-primary/40">
+<span class="material-symbols-outlined text-sm text-primary">engineering</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="bg-[#282839] p-3 rounded-tr-xl rounded-b-xl">
+<p class="text-sm">Здравствуйте! Мы обновили макеты для личного кабинета. Ознакомьтесь, пожалуйста, во вкладке "Документы".</p>
+</div>
+<span class="text-[10px] text-[#55556d]">Команда ITL • 10:45</span>
+</div>
+</div>
+<!-- Client Message -->
+<div class="flex gap-3 max-w-[85%] self-end flex-row-reverse">
+<div class="size-8 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 border border-white/20">
+<span class="material-symbols-outlined text-sm text-white">person</span>
+</div>
+<div class="flex flex-col gap-1 items-end">
+<div class="bg-primary p-3 rounded-tl-xl rounded-b-xl shadow-lg">
+<p class="text-sm text-white">Привет! Посмотрел, всё отлично. Единственный момент — кнопка экспорта должна быть ярче.</p>
+</div>
+<span class="text-[10px] text-[#55556d]">Вы • 11:20</span>
+</div>
+</div>
+<!-- Team Message -->
+<div class="flex gap-3 max-w-[85%]">
+<div class="size-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0 border border-primary/40">
+<span class="material-symbols-outlined text-sm text-primary">engineering</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="bg-[#282839] p-3 rounded-tr-xl rounded-b-xl">
+<p class="text-sm">Принято, поправим в рамках текущего спринта!</p>
+</div>
+<span class="text-[10px] text-[#55556d]">Команда ITL • 11:45</span>
+</div>
+</div>
+</div>
+<div class="p-4 bg-[#22223b] border-t border-[#282839]">
+<div class="relative flex items-center">
+<input class="w-full bg-[#111118] border border-[#3b3b54] rounded-lg py-3 px-4 text-sm focus:ring-1 focus:ring-primary focus:border-primary" placeholder="Напишите сообщение..." type="text"/>
+<button class="absolute right-2 size-8 bg-primary rounded-md flex items-center justify-center hover:bg-opacity-80">
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Stats/Quick Links -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 mb-20">
+<div class="bg-[#1a1a2e] p-5 rounded-xl border border-[#282839] flex items-center gap-4">
+<div class="size-12 rounded-lg bg-orange-500/10 flex items-center justify-center text-orange-500">
+<span class="material-symbols-outlined">calendar_month</span>
+</div>
+<div>
+<p class="text-[10px] uppercase text-[#9c9cba] font-bold">Дедлайн</p>
+<p class="text-white font-bold">15 авг. 2024</p>
+</div>
+</div>
+<div class="bg-[#1a1a2e] p-5 rounded-xl border border-[#282839] flex items-center gap-4">
+<div class="size-12 rounded-lg bg-green-500/10 flex items-center justify-center text-green-500">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<div>
+<p class="text-[10px] uppercase text-[#9c9cba] font-bold">Оплачено</p>
+<p class="text-white font-bold">1,250,000 ₽</p>
+</div>
+</div>
+<div class="bg-[#1a1a2e] p-5 rounded-xl border border-[#282839] flex items-center gap-4">
+<div class="size-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">attachment</span>
+</div>
+<div>
+<p class="text-[10px] uppercase text-[#9c9cba] font-bold">Артефактов</p>
+<p class="text-white font-bold">12 файлов</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="border-t border-[#282839] py-10 px-6 lg:px-40 bg-background-dark">
+<div class="max-w-[1200px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2 text-[#55556d]">
+<div class="size-5 bg-[#282839] rounded flex items-center justify-center">
+<svg class="size-3 text-[#9c9cba]" fill="none" viewbox="0 0 48 48">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522" fill="currentColor"></path>
+</svg>
+</div>
+<p class="text-xs">© 2024 ITL OrderFlow. Все права защищены.</p>
+</div>
+<div class="flex gap-8">
+<a class="text-xs text-[#55556d] hover:text-white transition-colors" href="#">Политика конфиденциальности</a>
+<a class="text-xs text-[#55556d] hover:text-white transition-colors" href="#">Техподдержка</a>
+<a class="text-xs text-[#55556d] hover:text-white transition-colors" href="#">Telegram Bot</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white antialiased">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-[#dbdfe6] dark:border-gray-800 bg-white dark:bg-background-dark flex flex-col h-full">
+<div class="p-6">
+<div class="flex items-center gap-3">
+<div class="bg-primary size-10 rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">layers</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-[#111418] dark:text-white text-base font-bold leading-none">ITL OrderFlow</h1>
+<p class="text-[#60708a] text-[10px] uppercase tracking-wider font-semibold mt-1">SaaS Management</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined">grid_view</span>
+<p class="text-sm font-semibold">Главная</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-[#60708a] hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">folder</span>
+<p class="text-sm font-medium">Проекты</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-[#60708a] hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">person</span>
+<p class="text-sm font-medium">Клиенты</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-[#60708a] hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">assignment</span>
+<p class="text-sm font-medium">Заказы</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-[#60708a] hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">group</span>
+<p class="text-sm font-medium">Команда</p>
+</div>
+</nav>
+<div class="p-4 border-t border-[#dbdfe6] dark:border-gray-800 space-y-1">
+<div class="flex items-center gap-3 px-3 py-2.5 text-[#60708a] hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<p class="text-sm font-medium">Настройки</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 text-[#60708a] hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg cursor-pointer transition-colors">
+<span class="material-symbols-outlined">help</span>
+<p class="text-sm font-medium">Поддержка</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col overflow-y-auto">
+<!-- Top Header -->
+<header class="h-16 border-b border-[#dbdfe6] dark:border-gray-800 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md flex items-center justify-between px-8 sticky top-0 z-10">
+<div class="flex items-center gap-4">
+<span class="text-[#60708a] text-sm font-medium">Главная</span>
+<span class="text-gray-300">/</span>
+<span class="text-[#111418] dark:text-white text-sm font-semibold">Начало работы</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-[#60708a] text-lg">search</span>
+<input class="bg-[#f0f2f5] dark:bg-gray-800 border-none rounded-lg pl-10 pr-4 py-2 text-sm w-64 focus:ring-2 focus:ring-primary/20" placeholder="Поиск по системе..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="size-10 flex items-center justify-center bg-[#f0f2f5] dark:bg-gray-800 rounded-lg text-[#111418] dark:text-white">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-[1px] bg-gray-200 dark:bg-gray-800"></div>
+<div class="flex items-center gap-3">
+<div class="text-right">
+<p class="text-sm font-bold leading-none">Александр И.</p>
+<p class="text-[11px] text-[#60708a] font-medium mt-1">Администратор</p>
+</div>
+<div class="size-10 rounded-full bg-primary/20 bg-cover bg-center border-2 border-white dark:border-gray-800 shadow-sm" data-alt="User profile avatar circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA8uVDt9gozNozR1-h6Iy7IdCCaJEot1-2o26UaPldvw4zrHta8XofXPpPTz7iQ3jkoRGdMajI1FdifHf3X_X8EOjfF864XmpuLuKww-7Z_Td74LejNFAF3rlwv18XzPRS33x4v1XzSXh1p0JWFYTX-lIpYGDEjFbW0zTwEJZ5Wyv26kNuWwuRoRyIJ1CJvVJVBKNb_r25hZougPZfka9zcn85yPAikUmOpjP1B-HeNV6g4YiW5kPJFtj-17o_5SD3qBBe1SstGhQis");'></div>
+</div>
+</div>
+</div>
+</header>
+<!-- Onboarding Content -->
+<div class="flex-1 flex flex-col items-center justify-center p-12 max-w-6xl mx-auto w-full">
+<!-- Hero Section -->
+<div class="text-center mb-12 flex flex-col items-center">
+<div class="w-full max-w-lg mb-8 relative">
+<!-- Simulated Isometric Illustration -->
+<div class="aspect-video w-full rounded-2xl bg-gradient-to-tr from-primary/10 via-white to-primary/5 dark:from-primary/20 dark:via-background-dark dark:to-primary/10 border border-primary/20 flex items-center justify-center shadow-xl overflow-hidden">
+<div class="relative w-full h-full flex items-center justify-center">
+<!-- Abstract Shapes simulating an isometric scene -->
+<div class="absolute w-48 h-32 bg-primary/20 rounded-xl transform -rotate-12 skew-x-12 translate-y-4"></div>
+<div class="absolute w-48 h-32 bg-primary/40 rounded-xl transform -rotate-12 skew-x-12 -translate-y-4 translate-x-4 border-2 border-white/50"></div>
+<div class="absolute inset-0 bg-cover bg-center opacity-80" data-alt="Isometric illustration of person organizing digital project boards" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC1kjPWw9O9XACkTlooCSqfKfQ-d0Tzr894ZFRNxDirRxrltW3PqVSUhFxXtjaNStEGKcZ6Wnij_nvO1x68oBx7mhqNLSxCDQvDgPECqAOCqKjF_aFY1VdWWjDMQVZ-CsIK1NzCAtFuOPXVW7bzwWQGiWd_voWULPsY_476UpuQDZUSkb64JcbY7gV71zNddkKSzpH1GJTLkb80vJZL5EbIsOjQJirXzn5Yyq0MRzPL5HeLJzhuCK1VWXCv_LplzPnEFklvTn5hdVMf");'></div>
+</div>
+</div>
+</div>
+<h2 class="text-3xl font-bold text-[#111418] dark:text-white mb-3">Добро пожаловать в ITL OrderFlow!</h2>
+<p class="text-[#60708a] text-lg max-w-xl">Настройте рабочее пространство за несколько шагов, чтобы начать эффективно управлять вашими IT-проектами.</p>
+</div>
+<!-- Quick Start Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-16">
+<!-- Card 1 -->
+<div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-[#dbdfe6] dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow group">
+<div class="size-12 rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">person_add</span>
+</div>
+<h3 class="text-lg font-bold mb-2">Добавить клиента</h3>
+<p class="text-[#60708a] text-sm leading-relaxed mb-6">Начните с управления базой ваших клиентов для быстрого доступа к контактам.</p>
+<button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">add</span>
+                            Добавить
+                        </button>
+</div>
+<!-- Card 2 -->
+<div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-[#dbdfe6] dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow group">
+<div class="size-12 rounded-lg bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">description</span>
+</div>
+<h3 class="text-lg font-bold mb-2">Создать заказ</h3>
+<p class="text-[#60708a] text-sm leading-relaxed mb-6">Оформите первый проект или сервисную заявку для контроля сроков.</p>
+<button class="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-bold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">post_add</span>
+                            Создать
+                        </button>
+</div>
+<!-- Card 3 -->
+<div class="bg-white dark:bg-gray-800 p-6 rounded-xl border border-[#dbdfe6] dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow group">
+<div class="size-12 rounded-lg bg-purple-50 dark:bg-purple-900/30 text-purple-600 dark:text-purple-400 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">group_add</span>
+</div>
+<h3 class="text-lg font-bold mb-2">Пригласить команду</h3>
+<p class="text-[#60708a] text-sm leading-relaxed mb-6">Подключите коллег для совместной работы над проектами и задачами.</p>
+<button class="w-full py-2.5 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-bold transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">mail</span>
+                            Пригласить
+                        </button>
+</div>
+</div>
+<!-- Footer Support -->
+<div class="w-full pt-8 border-t border-[#dbdfe6] dark:border-gray-800 flex flex-col md:flex-row items-center justify-center gap-8 text-[#60708a]">
+<span class="text-sm font-medium text-[#111418] dark:text-white">Нужна помощь?</span>
+<div class="flex items-center gap-6">
+<a class="flex items-center gap-2 text-sm hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">play_circle</span>
+                            Видео-инструкция
+                        </a>
+<a class="flex items-center gap-2 text-sm hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">article</span>
+                            Документация
+                        </a>
+<a class="flex items-center gap-2 text-sm hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-xl">chat_bubble</span>
+                            Чат поддержки
+                        </a>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

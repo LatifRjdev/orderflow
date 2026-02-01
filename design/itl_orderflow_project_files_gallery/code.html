@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Файлы проекта</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .file-card:hover .file-actions {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-white dark:bg-background-dark border-b border-gray-200 dark:border-gray-800">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-white">
+<span class="material-symbols-outlined">account_tree</span>
+</div>
+<h2 class="text-lg font-bold tracking-tight">ITL OrderFlow</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary" href="#">Проекты</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary" href="#">Задачи</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary" href="#">Команда</a>
+<a class="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary" href="#">Отчеты</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-400">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="block w-64 pl-10 pr-3 py-2 border-none bg-gray-100 dark:bg-gray-800 rounded-lg text-sm placeholder-gray-500 focus:ring-2 focus:ring-primary" placeholder="Поиск файлов..." type="text"/>
+</div>
+<div class="size-9 rounded-full bg-cover bg-center border border-gray-200 dark:border-gray-700" data-alt="User profile avatar photo" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFw_FRHWGTUIWatgyTXBnZHDdY4U_Kq11--Z8sX0uIl01GbeEj7Zwg3ECqWzX6q-nCyKxIQeeea3it6p4dwsjkarWC1UzqAQqADGM1bDjE0t5ARd9nZAf-k5SiXpx0gO8O_m2xMJYVYiTW_In_hAN3Bip_4Hc726ZtSeebG98sDkZx9ygZaF5qc9Fde92SsJLMh79zQZX1dqyr5Ti5Iv09rCNHr27Bvs18HlqChHZrc0HZ4IJGFwfDw7l0zCZ7XwYgxVahRXAKddI3')"></div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-4 text-sm font-medium">
+<a class="text-gray-500 hover:text-primary" href="#">Проекты</a>
+<span class="material-symbols-outlined text-gray-400 text-xs">chevron_right</span>
+<a class="text-gray-500 hover:text-primary" href="#">Заказ №12345</a>
+<span class="material-symbols-outlined text-gray-400 text-xs">chevron_right</span>
+<span class="text-primary">Файлы</span>
+</nav>
+<!-- Page Heading & Actions -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
+<h1 class="text-3xl font-bold tracking-tight">Файлы проекта</h1>
+<button class="inline-flex items-center justify-center gap-2 px-4 py-2.5 bg-primary text-white rounded-lg font-semibold hover:bg-blue-600 transition-colors">
+<span class="material-symbols-outlined">upload_file</span>
+<span>Загрузить файл</span>
+</button>
+</div>
+<!-- Upload Dropzone -->
+<div class="mb-8">
+<div class="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-xl bg-white/50 dark:bg-gray-800/50 p-10 hover:border-primary hover:bg-primary/5 transition-all cursor-pointer group">
+<div class="size-14 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined !text-3xl">cloud_upload</span>
+</div>
+<div class="text-center">
+<p class="text-lg font-bold mb-1">Перетащите файлы сюда</p>
+<p class="text-sm text-gray-500 dark:text-gray-400">или <span class="text-primary font-semibold">выберите на компьютере</span></p>
+<p class="text-xs text-gray-400 mt-2">Максимальный размер файла 50MB. Поддерживаются PNG, PDF, FIG, ZIP.</p>
+</div>
+</div>
+</div>
+<!-- Toolbar: View Switch & Filters -->
+<div class="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6 bg-white dark:bg-gray-800 p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+<div class="flex items-center gap-1 bg-gray-100 dark:bg-gray-900 p-1 rounded-lg">
+<button class="p-2 rounded-md bg-white dark:bg-gray-700 shadow-sm text-primary">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="p-2 rounded-md text-gray-500 hover:bg-white dark:hover:bg-gray-700">
+<span class="material-symbols-outlined">list</span>
+</button>
+</div>
+<div class="flex items-center gap-3 w-full sm:w-auto">
+<div class="flex items-center gap-2 text-sm font-medium text-gray-600 dark:text-gray-300">
+<span class="material-symbols-outlined text-gray-400">sort</span>
+<select class="bg-transparent border-none focus:ring-0 cursor-pointer text-sm">
+<option>Сначала новые</option>
+<option>По имени (А-Я)</option>
+<option>По размеру</option>
+</select>
+</div>
+<div class="h-6 w-px bg-gray-200 dark:bg-gray-700"></div>
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-bold text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-900">
+<span class="material-symbols-outlined text-gray-400">filter_list</span>
+<span>Фильтры</span>
+</button>
+</div>
+</div>
+<!-- Files Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+<!-- File Card 1: Image -->
+<div class="file-card group relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="aspect-[4/3] relative bg-gray-100 dark:bg-gray-900">
+<img class="w-full h-full object-cover" data-alt="UI Design mockup screenshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuByiG_ui8vsC6W-YfuJBT4zptm9aH_1AYPpLDyaJY_OskYl4gerY4jx0u5_jPLDSH3iOxylB1NbztMkDRUXZsAvNFYpqTO5Y4HTEKZtdVGtqca0PyLMtqnTOZYO9YfQJaO3ywOhpfNiyQhRBpMinj3mHysFhCXIoRbl1fu_ARCig7sJmoVlv13sGkORfMetMwdvMzJK61iaExAE6fJRWoUL3Q7jCO6ivIJW3d7kQIXiBnFrsptbgUKuuttZMSA_I634fteDFUfz5jWO"/>
+<!-- Hover Actions -->
+<div class="file-actions absolute inset-0 bg-black/40 flex items-center justify-center gap-3 opacity-0 transition-opacity">
+<button class="size-9 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">visibility</span>
+</button>
+<button class="size-9 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+</button>
+<button class="size-9 bg-white rounded-full flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+<div class="absolute top-2 left-2">
+<span class="px-2 py-1 bg-primary text-[10px] font-bold text-white rounded uppercase tracking-wider">Клиент видит</span>
+</div>
+</div>
+<div class="p-4">
+<p class="font-semibold truncate mb-1" title="Главная страница v2.png">Главная страница v2.png</p>
+<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+<span>PNG • 2.4 MB</span>
+<span>Вчера</span>
+</div>
+</div>
+</div>
+<!-- File Card 2: PDF -->
+<div class="file-card group relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="aspect-[4/3] relative bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined !text-5xl text-red-500">picture_as_pdf</span>
+</div>
+<div class="file-actions absolute inset-0 bg-black/40 flex items-center justify-center gap-3 opacity-0 transition-opacity">
+<button class="size-9 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+</button>
+<button class="size-9 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">share</span>
+</button>
+</div>
+<div class="absolute top-2 left-2">
+<span class="px-2 py-1 bg-gray-500 text-[10px] font-bold text-white rounded uppercase tracking-wider">Только для команды</span>
+</div>
+</div>
+<div class="p-4">
+<p class="font-semibold truncate mb-1" title="Техническое задание.pdf">Техническое задание.pdf</p>
+<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+<span>PDF • 1.1 MB</span>
+<span>2 часа назад</span>
+</div>
+</div>
+</div>
+<!-- File Card 3: FIGMA (Placeholder Icon) -->
+<div class="file-card group relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="aspect-[4/3] relative bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined !text-5xl text-purple-500">design_services</span>
+</div>
+<div class="file-actions absolute inset-0 bg-black/40 flex items-center justify-center gap-3 opacity-0 transition-opacity">
+<button class="size-9 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">open_in_new</span>
+</button>
+<button class="size-9 bg-white rounded-full flex items-center justify-center text-red-500 hover:bg-red-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+<div class="absolute top-2 left-2">
+<span class="px-2 py-1 bg-primary text-[10px] font-bold text-white rounded uppercase tracking-wider">Клиент видит</span>
+</div>
+</div>
+<div class="p-4">
+<p class="font-semibold truncate mb-1" title="Макет мобильного приложения.fig">Макет мобильного приложения.fig</p>
+<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+<span>FIG • 8.5 MB</span>
+<span>3 дня назад</span>
+</div>
+</div>
+</div>
+<!-- File Card 4: Generic Image -->
+<div class="file-card group relative bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+<div class="aspect-[4/3] relative bg-gray-100 dark:bg-gray-900">
+<img class="w-full h-full object-cover" data-alt="Code editor screenshot on screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC45q5zGPURYVY6LStBFCCVTZ5oTTuu1aZwsiS3FrIYB-8ebWLXAM7SiLPZbVyan2P8TBd_uYnuYg8hGULrkFo8Bgy8ySCgx3sHWrTTWwpUxFqoKjLyENHabnLBEbP-cNrGPKE-7mwNY99UtBZzvbcDdisK2RRoJRsnQIpquFJBj_ps2rQs-VCc75pqvKc6SF0Y3413fkeSgoyLgIEGErtPvyoNlDykX6Vf4NpENS9gn3oA_Vk0dcTHficBXqCDiQgt8tUI-6tMuare"/>
+<div class="file-actions absolute inset-0 bg-black/40 flex items-center justify-center gap-3 opacity-0 transition-opacity">
+<button class="size-9 bg-white rounded-full flex items-center justify-center text-gray-900 hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-sm">download</span>
+</button>
+</div>
+<div class="absolute top-2 left-2">
+<span class="px-2 py-1 bg-primary text-[10px] font-bold text-white rounded uppercase tracking-wider">Клиент видит</span>
+</div>
+</div>
+<div class="p-4">
+<p class="font-semibold truncate mb-1" title="Code_Snippet_Auth.jpg">Code_Snippet_Auth.jpg</p>
+<div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+<span>JPG • 450 KB</span>
+<span>1 неделя назад</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Pagination (Simple) -->
+<div class="mt-12 flex justify-center">
+<nav class="flex items-center gap-2">
+<button class="size-10 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-400 hover:text-primary disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="size-10 rounded-lg flex items-center justify-center bg-primary text-white font-bold">1</button>
+<button class="size-10 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary hover:text-primary transition-colors">2</button>
+<button class="size-10 rounded-lg flex items-center justify-center border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</nav>
+</div>
+</main>
+<!-- Selection Footer Action Bar (Contextual) -->
+<!-- This would normally appear when files are selected -->
+<div class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-gray-900 text-white px-6 py-3 rounded-full shadow-2xl flex items-center gap-6 z-[60] hidden">
+<span class="text-sm font-medium">3 файла выбрано</span>
+<div class="h-4 w-px bg-gray-700"></div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">download</span>
+<span>Скачать</span>
+</button>
+<button class="flex items-center gap-2 text-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">group</span>
+<span>Доступ</span>
+</button>
+<button class="flex items-center gap-2 text-sm text-red-400 hover:text-red-300 transition-colors">
+<span class="material-symbols-outlined text-lg">delete</span>
+<span>Удалить</span>
+</button>
+</div>
+<button class="ml-4 size-6 flex items-center justify-center rounded-full hover:bg-gray-800 transition-colors">
+<span class="material-symbols-outlined text-sm">close</span>
+</button>
+</div>
+</body></html>

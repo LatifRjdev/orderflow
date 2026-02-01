@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Пустое состояние</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bg-mesh {
+            background-color: #101022;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(60, 60, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(60, 60, 246, 0.1) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col text-slate-900 dark:text-white">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-[#282839] px-6 py-3 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary size-8 flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">rocket_launch</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">ITL OrderFlow</h2>
+</div>
+<div class="flex flex-1 justify-center max-md:hidden">
+<nav class="flex items-center gap-8">
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Панель управления</a>
+<a class="text-primary dark:text-white text-sm font-bold border-b-2 border-primary py-1" href="#">Заказы</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Склад</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Клиенты</a>
+<a class="text-slate-500 dark:text-slate-400 hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Отчеты</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2">
+<button class="flex size-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-[#282839] hover:bg-slate-200 dark:hover:bg-[#34344d] transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex size-10 items-center justify-center rounded-lg bg-slate-100 dark:bg-[#282839] hover:bg-slate-200 dark:hover:bg-[#34344d] transition-colors">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+<div class="h-10 w-px bg-slate-200 dark:bg-[#282839] mx-1"></div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200 dark:border-slate-700" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDNpWl0IKnOIb_236Td-sCnleT2GolUQXn2Mgq42-5e6nanqyqm3bA8Gu4gQduElpMAaFbVUoGcfCcLRy9VER4bR4oecOyeM40NJYtZFdo8pNhBMSOXchCcc5aNvTy1C5dUQqWWreA-F8gL-Ft_W_ABpbv2gQU2wW8x5VwmSuZJ341BSLzOO4mlFXYcVYojQX9-FJiCiBVHGzu_6w5YzhvU3TDMN2Nm6aL6ZvrxDzBmXFFJ-AqI9Wa7P4uQENWcDu91NPCg1TvZyZPZ");'></div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden h-[calc(100vh-65px)]">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-[#282839] bg-white dark:bg-background-dark hidden lg:flex flex-col p-4 shrink-0">
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3 px-2">
+<div class="bg-primary/10 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-sm font-bold leading-tight">OrderFlow</h1>
+<p class="text-slate-500 text-[11px] uppercase tracking-wider font-semibold">SaaS Management</p>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1a1a2e] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">dashboard</span>
+<p class="text-sm font-medium">Обзор</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary text-white shadow-lg shadow-primary/20 cursor-pointer">
+<span class="material-symbols-outlined">shopping_cart</span>
+<p class="text-sm font-semibold">Заказы</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1a1a2e] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">inventory_2</span>
+<p class="text-sm font-medium">Инвентаризация</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1a1a2e] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">group</span>
+<p class="text-sm font-medium">Клиенты</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1a1a2e] transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary">monitoring</span>
+<p class="text-sm font-medium">Аналитика</p>
+</div>
+</div>
+</div>
+<div class="mt-auto">
+<div class="bg-slate-50 dark:bg-[#1a1a2e] p-4 rounded-xl border border-slate-200 dark:border-[#282839]">
+<p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Хранилище</p>
+<div class="h-1.5 w-full bg-slate-200 dark:bg-[#282839] rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/4"></div>
+</div>
+<p class="text-[11px] mt-2 text-slate-500">2.4 GB из 10 GB использовано</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-mesh relative">
+<!-- Ghost Table Header (Context) -->
+<div class="p-6 border-b border-slate-200 dark:border-[#282839] bg-white/50 dark:bg-background-dark/50 backdrop-blur-sm flex justify-between items-center">
+<div class="flex flex-col gap-1">
+<h1 class="text-2xl font-bold tracking-tight">Список заказов</h1>
+<div class="flex items-center gap-2 text-xs text-slate-500">
+<span>Заказы</span>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span class="text-primary font-medium">Все</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-[#282839] rounded-lg text-sm font-medium hover:bg-white dark:hover:bg-[#282839] transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+                        Фильтры
+                    </button>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all shadow-lg shadow-primary/25">
+<span class="material-symbols-outlined text-[18px]">add</span>
+                        Создать заказ
+                    </button>
+</div>
+</div>
+<!-- Empty State Template -->
+<div class="flex flex-col items-center justify-center min-h-[70vh] p-8">
+<div class="max-w-xl w-full flex flex-col items-center text-center animate-fade-in">
+<!-- Isometric Illustration Mockup -->
+<div class="relative w-full max-w-[420px] mb-8 group">
+<div class="absolute inset-0 bg-primary/20 blur-[80px] rounded-full -z-10 transition-all duration-700 group-hover:bg-primary/30"></div>
+<div class="aspect-video bg-gradient-to-br from-slate-100/50 to-slate-200/50 dark:from-[#1a1a2e]/50 dark:to-[#111118]/50 border border-white/20 dark:border-white/5 rounded-3xl backdrop-blur-md flex items-center justify-center relative overflow-hidden shadow-2xl">
+<!-- Abstract isometric shapes representing an empty folder/container -->
+<div class="relative flex flex-col items-center">
+<span class="material-symbols-outlined text-[120px] text-primary/30 dark:text-primary/20 select-none">folder_off</span>
+<div class="absolute -bottom-2 w-24 h-4 bg-primary/20 blur-xl rounded-full"></div>
+<div class="absolute -top-4 -right-4 size-16 bg-primary/10 rounded-2xl rotate-12 border border-primary/20 flex items-center justify-center backdrop-blur-xl">
+<span class="material-symbols-outlined text-primary/40">shopping_bag</span>
+</div>
+<div class="absolute -bottom-6 -left-6 size-20 bg-primary/5 rounded-full border border-primary/10 flex items-center justify-center backdrop-blur-xl -rotate-12">
+<span class="material-symbols-outlined text-primary/30 text-[32px]">assignment_turned_in</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Text Stack -->
+<div class="flex flex-col gap-4 mb-10">
+<h2 class="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">Пока нет заказов</h2>
+<p class="text-slate-500 dark:text-slate-400 text-lg leading-relaxed max-w-sm mx-auto">
+                            Создайте первый заказ, чтобы начать работу с вашей торговой платформой.
+                        </p>
+</div>
+<!-- Action Button -->
+<div class="flex flex-col items-center gap-4">
+<button class="flex items-center justify-center gap-3 min-w-[240px] px-8 py-4 bg-primary text-white rounded-xl text-base font-bold transition-all hover:scale-[1.02] active:scale-95 shadow-xl shadow-primary/30 hover:shadow-primary/40 group">
+<span class="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform duration-300">add_circle</span>
+<span>Создать заказ</span>
+</button>
+<button class="text-slate-400 hover:text-primary text-sm font-medium transition-colors flex items-center gap-1">
+                            Узнать больше о заказах
+                            <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Background Decorative Elements -->
+<div class="absolute top-1/4 left-10 size-64 bg-primary/5 rounded-full blur-[100px] pointer-events-none"></div>
+<div class="absolute bottom-1/4 right-10 size-80 bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+</main>
+<!-- Utility Panel / Quick Help -->
+<div class="fixed bottom-6 right-6 z-40">
+<button class="size-12 bg-white dark:bg-[#282839] border border-slate-200 dark:border-[#3c3c5a] rounded-full flex items-center justify-center shadow-lg hover:bg-slate-50 dark:hover:bg-[#34344d] transition-all group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">help</span>
+<span class="absolute right-full mr-3 px-3 py-1 bg-slate-900 text-white text-[10px] rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Нужна помощь?</span>
+</button>
+</div>
+</div>
+</body></html>

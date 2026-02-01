@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow Notification Preferences</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #282839;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<div class="layout-container flex h-full grow flex-col">
+<!-- TopNavBar Component -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-[#282839] px-6 lg:px-10 py-3 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-4 text-slate-900 dark:text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">ITL OrderFlow</h2>
+</div>
+<div class="flex flex-1 justify-end gap-8">
+<nav class="hidden md:flex items-center gap-9">
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Дашборд</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Заказы</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Задачи</a>
+<a class="text-primary text-sm font-medium leading-normal" href="#">Настройки</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-[#282839] hover:bg-slate-200 dark:hover:bg-[#3b3b54] transition-colors">
+<span class="material-symbols-outlined text-[20px]">doorbell</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-[#282839] hover:bg-slate-200 dark:hover:bg-[#3b3b54] transition-colors">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar Component -->
+<aside class="hidden lg:flex w-64 flex-col border-r border-slate-200 dark:border-[#282839] bg-white dark:bg-background-dark p-4 gap-6">
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-normal">Настройки</h1>
+<p class="text-slate-500 dark:text-[#9c9cba] text-xs">Управление организацией</p>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1b1b27] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<p class="text-sm font-medium">Общие</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1b1b27] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<p class="text-sm font-medium">Команда</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary" href="#">
+<span class="material-symbols-outlined text-[20px] fill-current">notifications</span>
+<p class="text-sm font-bold">Уведомления</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1b1b27] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">extension</span>
+<p class="text-sm font-medium">Интеграции</p>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#1b1b27] transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">security</span>
+<p class="text-sm font-medium">Безопасность</p>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto custom-scrollbar pb-24">
+<div class="max-w-5xl mx-auto py-8 px-6 lg:px-10">
+<!-- PageHeading Component -->
+<div class="mb-8">
+<h1 class="text-3xl lg:text-4xl font-black leading-tight tracking-[-0.033em] mb-2">Настройки уведомлений</h1>
+<p class="text-slate-500 dark:text-[#9c9cba] text-base">Настройте способы и время получения оповещений о событиях в системе ITL OrderFlow.</p>
+</div>
+<!-- Channel Status (TextGrid Component Style) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+<div class="flex flex-col gap-3 rounded-xl border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27] p-5">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-[24px]">mail</span>
+<div class="bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Активен</div>
+</div>
+<div>
+<h3 class="font-bold text-base">Электронная почта</h3>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm">admin@itl-flow.com</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-xl border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27] p-5">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-slate-400 text-[24px]">send</span>
+<button class="bg-primary text-white px-3 py-1 rounded text-xs font-bold hover:bg-primary/90 transition-colors">Подключить</button>
+</div>
+<div>
+<h3 class="font-bold text-base">Telegram Bot</h3>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm">Не привязано</p>
+</div>
+</div>
+<div class="flex flex-col gap-3 rounded-xl border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27] p-5">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-[24px]">notifications_active</span>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-slate-300 peer-focus:outline-none dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div>
+<h3 class="font-bold text-base">Браузерные пуш</h3>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm">Включено на этом устройстве</p>
+</div>
+</div>
+</div>
+<!-- Notification Preference Matrix -->
+<div class="bg-white dark:bg-[#1b1b27] rounded-xl border border-slate-200 dark:border-[#3b3b54] overflow-hidden mb-8">
+<div class="p-5 border-b border-slate-200 dark:border-[#3b3b54] flex justify-between items-center">
+<h2 class="text-lg font-bold">Матрица уведомлений</h2>
+<span class="text-xs text-slate-500 dark:text-[#9c9cba]">Автоматическое сохранение отключено</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-[#282839]/30">
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba]">Тип события</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba] text-center w-32">В системе</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba] text-center w-32">Email</th>
+<th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-[#9c9cba] text-center w-32">Telegram</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-[#282839]">
+<tr class="hover:bg-slate-50 dark:hover:bg-[#282839]/20 transition-colors">
+<td class="p-4">
+<p class="text-sm font-bold">Новый заказ</p>
+<p class="text-xs text-slate-500 dark:text-[#9c9cba]">При поступлении заказа в систему</p>
+</td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#282839]/20 transition-colors">
+<td class="p-4">
+<p class="text-sm font-bold">Назначена задача</p>
+<p class="text-xs text-slate-500 dark:text-[#9c9cba]">Когда вы становитесь ответственным</p>
+</td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#282839]/20 transition-colors">
+<td class="p-4">
+<p class="text-sm font-bold">Статус изменен</p>
+<p class="text-xs text-slate-500 dark:text-[#9c9cba]">Обновление статуса вашего заказа</p>
+</td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#282839]/20 transition-colors">
+<td class="p-4">
+<p class="text-sm font-bold">Новый комментарий</p>
+<p class="text-xs text-slate-500 dark:text-[#9c9cba]">Ответ в обсуждении задачи</p>
+</td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#282839]/20 transition-colors">
+<td class="p-4">
+<p class="text-sm font-bold">Системные оповещения</p>
+<p class="text-xs text-slate-500 dark:text-[#9c9cba]">Технические работы и обновления</p>
+</td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+<td class="p-4 text-center"><input checked="" class="rounded border-slate-300 dark:border-[#3b3b54] text-primary focus:ring-primary bg-transparent" type="checkbox"/></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+<!-- Quiet Hours Section -->
+<section class="bg-white dark:bg-[#1b1b27] rounded-xl border border-slate-200 dark:border-[#3b3b54] p-6">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">bedtime</span>
+<h2 class="text-xl font-bold">Тихие часы</h2>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none dark:bg-slate-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<p class="text-sm text-slate-500 dark:text-[#9c9cba] mb-6">В это время мы не будем беспокоить вас уведомлениями, за исключением критических системных ошибок.</p>
+<div class="flex items-center gap-4">
+<div class="flex-1">
+<label class="block text-xs font-bold uppercase text-slate-500 dark:text-[#9c9cba] mb-2">С</label>
+<div class="relative">
+<input class="w-full bg-slate-50 dark:bg-[#282839] border border-slate-200 dark:border-[#3b3b54] rounded-lg px-4 py-2 text-sm focus:ring-primary focus:border-primary" type="time" value="22:00"/>
+</div>
+</div>
+<div class="flex-1">
+<label class="block text-xs font-bold uppercase text-slate-500 dark:text-[#9c9cba] mb-2">До</label>
+<div class="relative">
+<input class="w-full bg-slate-50 dark:bg-[#282839] border border-slate-200 dark:border-[#3b3b54] rounded-lg px-4 py-2 text-sm focus:ring-primary focus:border-primary" type="time" value="08:00"/>
+</div>
+</div>
+</div>
+<div class="mt-6 flex items-center gap-2 text-xs text-primary bg-primary/10 p-3 rounded-lg">
+<span class="material-symbols-outlined text-sm">info</span>
+<span>Учитывается часовой пояс: (UTC+03:00) Москва</span>
+</div>
+</section>
+<!-- Telegram Bot Setup -->
+<section class="bg-white dark:bg-[#1b1b27] rounded-xl border border-slate-200 dark:border-[#3b3b54] p-6">
+<h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+                                Настройка Telegram
+                            </h2>
+<div class="flex flex-col md:flex-row gap-6">
+<div class="flex-shrink-0 flex flex-col items-center">
+<div class="bg-white p-3 rounded-lg mb-2 shadow-sm">
+<img alt="QR Code for Telegram Bot" class="size-24 lg:size-28" data-alt="QR code leading to Telegram notification bot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY-wIC_bRAkvnzGK9wGjc3EB_7CNN6Ifxm6fLFpVNhv8w0IFWZTAd4YdKVmBq7cN4eFJRlf3GxAZo0ko3LLlwfW5DTfyuCeRoxNijFStiSDZsnvNrx1l9_hURitf1OwAMPUfo_lxI_nwm6eg1MgMUqRvsEtCX6lDZtw57mQi-O-uLoUX--XbFmkmJjr5hb9dFYt-oA6zW23NsvQ5IHA7WLTNffxL93UqODhXoZoqhwccBbCFH4uetr1W9NvSTx36qWOBNtEHX9sxjn"/>
+</div>
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">@itl_bot</span>
+</div>
+<div class="flex flex-col gap-3">
+<h4 class="text-sm font-bold">Инструкция:</h4>
+<ol class="text-sm text-slate-500 dark:text-[#9c9cba] space-y-2 list-decimal list-inside">
+<li>Откройте Telegram на телефоне</li>
+<li>Отсканируйте QR-код или перейдите по <a class="text-primary hover:underline" href="#">ссылке</a></li>
+<li>Нажмите кнопку <b>/start</b> в чате</li>
+<li>Отправьте ваш ID: <code class="bg-slate-100 dark:bg-[#282839] px-1 rounded text-primary font-mono">829103</code></li>
+</ol>
+<button class="mt-2 flex items-center justify-center gap-2 bg-slate-100 dark:bg-[#282839] hover:bg-slate-200 dark:hover:bg-[#3b3b54] transition-colors py-2 rounded-lg text-sm font-bold">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+                                        Копировать ссылку
+                                    </button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+<!-- Sticky Save Button -->
+<div class="fixed bottom-0 left-0 lg:left-64 right-0 bg-white/80 dark:bg-background-dark/80 backdrop-blur-md border-t border-slate-200 dark:border-[#282839] p-4 z-40">
+<div class="max-w-5xl mx-auto flex items-center justify-between gap-4">
+<div class="hidden md:block">
+<p class="text-xs text-slate-500 dark:text-[#9c9cba]">Последнее изменение: 15.05.2024 в 14:30</p>
+</div>
+<div class="flex gap-3 w-full md:w-auto">
+<button class="flex-1 md:flex-none px-6 py-2 rounded-lg text-sm font-bold border border-slate-200 dark:border-[#3b3b54] hover:bg-slate-50 dark:hover:bg-[#282839] transition-colors">Отмена</button>
+<button class="flex-1 md:flex-none px-8 py-2 rounded-lg bg-primary text-white text-sm font-bold shadow-lg shadow-primary/25 hover:bg-primary/90 transition-all">Сохранить изменения</button>
+</div>
+</div>
+</div>
+</div>
+</body></html>

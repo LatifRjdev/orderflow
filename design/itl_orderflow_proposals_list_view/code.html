@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Коммерческие предложения</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen">
+<div class="flex h-screen overflow-hidden">
+<!-- Side Navigation -->
+<aside class="w-64 flex-shrink-0 border-r border-slate-200 dark:border-[#282839] bg-white dark:bg-[#111118] hidden lg:flex flex-col">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="bg-primary rounded-lg p-1.5 text-white">
+<span class="material-symbols-outlined block">rocket_launch</span>
+</div>
+<div>
+<h1 class="text-base font-bold leading-tight">ITL OrderFlow</h1>
+<p class="text-slate-500 dark:text-[#9c9cba] text-xs font-normal">SaaS Management</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#282839] cursor-pointer group transition-colors">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">dashboard</span>
+<p class="text-sm font-medium">Дашборд</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#282839] cursor-pointer group transition-colors">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">work</span>
+<p class="text-sm font-medium">Проекты</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#282839] cursor-pointer group transition-colors">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">group</span>
+<p class="text-sm font-medium">Клиенты</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary border border-primary/20">
+<span class="material-symbols-outlined">description</span>
+<p class="text-sm font-bold">КП</p>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#282839] cursor-pointer group transition-colors mt-4">
+<span class="material-symbols-outlined text-slate-400 group-hover:text-primary transition-colors">settings</span>
+<p class="text-sm font-medium">Настройки</p>
+</div>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-slate-200 dark:border-[#282839]">
+<div class="flex items-center gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border border-slate-200 dark:border-[#3b3b54]" data-alt="User avatar of a project manager" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC-XCykcYXjKlBrHUJHb8Zq5nRsNcVWR8FAZUirJ4S0UGRzL33qRVSZxV_syewcVSsiyvBe0XDb6EsbTb6q0MST61HQ3oXUNsC_TzK5SUg6mdvPP638fVghV52dCYiH6w0D9DonJbdgBgALpWZX-vcgE94eHLIhTVWWjSLl025-HYaH4hIX99_b4n7ujfOVg-mTkqtrsWYNYtaJkZaYKxGOazVqQXdwrX446i2uUusxtqIzxWCjVmQCtNX_7cE4OkH6lnZIRAjk2iIl");'></div>
+<div class="flex flex-col">
+<p class="text-sm font-bold truncate">Александр Б.</p>
+<p class="text-xs text-slate-500 dark:text-[#9c9cba]">Admin Account</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<!-- Top Nav Bar -->
+<header class="flex items-center justify-between h-16 px-8 border-b border-slate-200 dark:border-[#282839] bg-white dark:bg-[#111118]">
+<div class="flex items-center flex-1 max-w-md">
+<label class="relative w-full">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3">
+<span class="material-symbols-outlined text-slate-400 text-xl">search</span>
+</span>
+<input class="w-full bg-slate-50 dark:bg-[#282839] border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:outline-none transition-all placeholder:text-slate-400" placeholder="Поиск КП или клиентов..." type="text"/>
+</label>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-[#111118]"></span>
+</button>
+<div class="h-8 w-px bg-slate-200 dark:bg-[#282839] mx-2"></div>
+<button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-lg">add</span>
+<span>Создать КП</span>
+</button>
+</div>
+</header>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8">
+<!-- Page Heading & Tabs -->
+<div class="flex flex-col gap-6">
+<div class="flex flex-wrap justify-between items-end gap-4">
+<div>
+<h2 class="text-4xl font-black tracking-tight mb-2">Коммерческие предложения</h2>
+<p class="text-slate-500 dark:text-[#9c9cba]">Управление и отслеживание статусов предложений для клиентов.</p>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex border-b border-slate-200 dark:border-[#3b3b54] gap-8">
+<a class="flex items-center border-b-2 border-primary text-primary pb-3 px-1 transition-all" href="#">
+<p class="text-sm font-bold">Все КП</p>
+<span class="ml-2 bg-primary/10 text-[10px] px-1.5 py-0.5 rounded-full">42</span>
+</a>
+<a class="flex items-center border-b-2 border-transparent text-slate-500 dark:text-[#9c9cba] hover:text-slate-700 dark:hover:text-white pb-3 px-1 transition-all" href="#">
+<p class="text-sm font-bold">Черновики</p>
+</a>
+<a class="flex items-center border-b-2 border-transparent text-slate-500 dark:text-[#9c9cba] hover:text-slate-700 dark:hover:text-white pb-3 px-1 transition-all" href="#">
+<p class="text-sm font-bold">В работе</p>
+</a>
+<a class="flex items-center border-b-2 border-transparent text-slate-500 dark:text-[#9c9cba] hover:text-slate-700 dark:hover:text-white pb-3 px-1 transition-all" href="#">
+<p class="text-sm font-bold">Архив</p>
+</a>
+</div>
+</div>
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="bg-white dark:bg-[#111118] border border-slate-200 dark:border-[#3b3b54] p-6 rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-slate-400">send</span>
+<span class="text-[#0bda68] text-xs font-bold px-2 py-1 bg-[#0bda68]/10 rounded-full">+12%</span>
+</div>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium mb-1">Отправлено</p>
+<p class="text-3xl font-bold tracking-tight">128</p>
+</div>
+<div class="bg-white dark:bg-[#111118] border border-slate-200 dark:border-[#3b3b54] p-6 rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-slate-400">visibility</span>
+<span class="text-[#0bda68] text-xs font-bold px-2 py-1 bg-[#0bda68]/10 rounded-full">+5%</span>
+</div>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium mb-1">Просмотрено</p>
+<p class="text-3xl font-bold tracking-tight">84</p>
+</div>
+<div class="bg-white dark:bg-[#111118] border border-slate-200 dark:border-[#3b3b54] p-6 rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-slate-400">task_alt</span>
+<span class="text-[#fa6938] text-xs font-bold px-2 py-1 bg-[#fa6938]/10 rounded-full">-2%</span>
+</div>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium mb-1">Принято</p>
+<p class="text-3xl font-bold tracking-tight">42</p>
+</div>
+<div class="bg-white dark:bg-[#111118] border border-slate-200 dark:border-[#3b3b54] p-6 rounded-xl shadow-sm border-l-4 border-l-primary">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<span class="text-[#0bda68] text-xs font-bold px-2 py-1 bg-[#0bda68]/10 rounded-full">+8%</span>
+</div>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium mb-1">Конверсия</p>
+<p class="text-3xl font-bold tracking-tight">50%</p>
+</div>
+</div>
+<!-- Proposals Table -->
+<div class="bg-white dark:bg-[#111118] border border-slate-200 dark:border-[#3b3b54] rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50/50 dark:bg-[#1a1a2e] text-slate-500 dark:text-[#9c9cba] text-xs font-bold uppercase tracking-wider">
+<th class="px-6 py-4">#</th>
+<th class="px-6 py-4">Название предложения</th>
+<th class="px-6 py-4">Клиент</th>
+<th class="px-6 py-4">Дата</th>
+<th class="px-6 py-4">Срок действия</th>
+<th class="px-6 py-4 text-right">Сумма</th>
+<th class="px-6 py-4">Статус</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-[#282839]">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a2e] transition-colors group">
+<td class="px-6 py-4 text-sm font-medium text-slate-400">1024</td>
+<td class="px-6 py-4 text-sm font-bold">Разработка CRM системы</td>
+<td class="px-6 py-4 text-sm">ООО "Вектор Плюс"</td>
+<td class="px-6 py-4 text-sm">12.10.2023</td>
+<td class="px-6 py-4 text-sm">12.11.2023</td>
+<td class="px-6 py-4 text-sm font-bold text-right">540 000 ₽</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-purple-500/10 text-purple-500 border border-purple-500/20">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                                            Просмотрено
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a2e] transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-400">1025</td>
+<td class="px-6 py-4 text-sm font-bold">Поддержка инфраструктуры</td>
+<td class="px-6 py-4 text-sm">АО "ТехноПарк"</td>
+<td class="px-6 py-4 text-sm">14.10.2023</td>
+<td class="px-6 py-4 text-sm">14.11.2023</td>
+<td class="px-6 py-4 text-sm font-bold text-right">1 250 000 ₽</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-[#0bda68]/10 text-[#0bda68] border border-[#0bda68]/20">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                                            Принято
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a2e] transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-400">1026</td>
+<td class="px-6 py-4 text-sm font-bold">Дизайн мобильного приложения</td>
+<td class="px-6 py-4 text-sm">ИП Соколов А.В.</td>
+<td class="px-6 py-4 text-sm">15.10.2023</td>
+<td class="px-6 py-4 text-sm">30.10.2023</td>
+<td class="px-6 py-4 text-sm font-bold text-right">85 000 ₽</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-500 border border-red-500/20">
+<span class="material-symbols-outlined text-sm">cancel</span>
+                                            Отклонено
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a2e] transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-400">1027</td>
+<td class="px-6 py-4 text-sm font-bold">Аудит безопасности сети</td>
+<td class="px-6 py-4 text-sm">Банк "Новация"</td>
+<td class="px-6 py-4 text-sm">18.10.2023</td>
+<td class="px-6 py-4 text-sm">18.11.2023</td>
+<td class="px-6 py-4 text-sm font-bold text-right">2 100 000 ₽</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-purple-500/10 text-purple-500 border border-purple-500/20">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                                            Просмотрено
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1a1a2e] transition-colors">
+<td class="px-6 py-4 text-sm font-medium text-slate-400">1028</td>
+<td class="px-6 py-4 text-sm font-bold">Миграция в облако Azure</td>
+<td class="px-6 py-4 text-sm">Global Retail Group</td>
+<td class="px-6 py-4 text-sm">20.10.2023</td>
+<td class="px-6 py-4 text-sm">20.11.2023</td>
+<td class="px-6 py-4 text-sm font-bold text-right">890 000 ₽</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-slate-500/10 text-slate-400 border border-slate-500/20">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                                            В работе
+                                        </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-slate-50/50 dark:bg-[#1a1a2e] border-t border-slate-100 dark:border-[#282839] flex items-center justify-between">
+<p class="text-sm text-slate-500 dark:text-[#9c9cba]">Показано 5 из 42 предложений</p>
+<div class="flex items-center gap-2">
+<button class="p-1 rounded hover:bg-slate-200 dark:hover:bg-[#282839] transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<span class="text-sm font-bold px-2">1</span>
+<button class="p-1 rounded hover:bg-slate-200 dark:hover:bg-[#282839] transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

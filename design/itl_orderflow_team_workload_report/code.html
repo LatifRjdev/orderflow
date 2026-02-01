@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Отчет по загрузке команды</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white transition-colors duration-200">
+<div class="layout-container flex flex-col min-h-screen">
+<!-- Navigation Bar -->
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-slate-200 dark:border-[#282839] px-4 md:px-10 py-3 bg-white dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">ITL OrderFlow</h2>
+</div>
+<div class="hidden lg:flex items-center gap-9">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Отчеты</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Команда</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Проекты</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Настройки</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-[#282839] hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-100 dark:bg-[#282839] hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/30" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBBp6K_lkyprMpb7mbq8e-ym4cQP2-N8751icCvVpSO2idUW-Z98iiJH6k0Eo3v77oulp4uDL42BURwTV4Tqixocv_iWJDbQ15T9One-0grQc3-z66eT4q8vz6DnG7mxXnTAaIuZefycAFLC7S4ZkvYKmNMEmix5dF-U6xA7cG4CpSVwj1NWblxpLz0fRQGEGEZUTBBzbv-fqfw6SKasUlRgOjVtj_6aoZAxpSTzYFGmnpZaCzH3tNz8Pk8hvgyp_JfG9q6m0ZF7ZZn");'>
+</div>
+</div>
+</header>
+<main class="flex-1 px-4 md:px-10 lg:px-40 py-8 max-w-[1440px] mx-auto w-full">
+<!-- Page Heading -->
+<div class="flex flex-wrap justify-between items-end gap-4 mb-8">
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-2 text-slate-500 dark:text-[#9c9cba] mb-1">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<span class="text-sm font-medium">Назад к дашборду</span>
+</div>
+<h1 class="text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">Отчет по загрузке команды</h1>
+<p class="text-slate-500 dark:text-[#9c9cba] text-base font-normal leading-normal">Аналитика и показатели эффективности SaaS ITL OrderFlow за текущий месяц</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center justify-center gap-2 rounded-lg h-11 px-6 bg-slate-100 dark:bg-[#282839] font-bold text-sm tracking-wide hover:bg-slate-200 dark:hover:bg-[#34344a] transition-all">
+<span class="material-symbols-outlined text-[18px]">ios_share</span>
+<span>Поделиться</span>
+</button>
+<button class="flex items-center justify-center gap-2 rounded-lg h-11 px-6 bg-primary text-white font-bold text-sm tracking-wide hover:bg-primary/90 shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span>Экспорт</span>
+<span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Stats Summary Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium uppercase tracking-wider">Всего часов</p>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold leading-tight">1,245</p>
+<span class="text-[#0bda68] text-sm font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>+5%
+                        </span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full w-[75%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium uppercase tracking-wider">Среднее на чел.</p>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold leading-tight">156</p>
+<span class="text-[#0bda68] text-sm font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>+2%
+                        </span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-[#0bda68] h-full w-[92%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium uppercase tracking-wider">Утилизация</p>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold leading-tight">78%</p>
+<span class="text-[#fa6938] text-sm font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[16px]">trending_down</span>-3%
+                        </span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-[#fa6938] h-full w-[78%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium uppercase tracking-wider">Сверхурочные</p>
+<div class="flex items-baseline gap-2">
+<p class="text-3xl font-bold leading-tight">45ч</p>
+<span class="text-[#0bda68] text-sm font-bold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>+12%
+                        </span>
+</div>
+<div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full w-[30%]"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+<!-- Main Chart Visualization -->
+<div class="lg:col-span-2 flex flex-col gap-4 bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-[#3b3b54] rounded-xl p-6">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-xl font-bold">Нагрузка по сотрудникам (Часы)</h2>
+<div class="flex gap-4 items-center text-xs font-semibold">
+<div class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-primary"></span>CRM</div>
+<div class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-[#0bda68]"></span>Web Portal</div>
+<div class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-[#fa6938]"></span>API</div>
+</div>
+</div>
+<div class="relative flex flex-col gap-6 py-4">
+<!-- Target Line (160h) -->
+<div class="absolute top-0 bottom-0 border-l-2 border-dashed border-primary/50 z-10 pointer-events-none" style="left: 75.5%;">
+<span class="absolute -top-6 left-1/2 -translate-x-1/2 bg-primary text-white text-[10px] px-1.5 py-0.5 rounded font-bold">ЦЕЛЬ 160ч</span>
+</div>
+<!-- Employee Rows -->
+<div class="grid grid-cols-[140px_1fr] items-center gap-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBCGtK_UJJqYIQEg92WT28HXoKH2IcKk_dWfopB97B1YIIr7Q1rJ8_hejjHY5YD3Kp9hxZcqMZkvnlPkFjKVNGjpZ2nyx6NYnl1AbeHE_85i-EduvxxMkY5GCSTekzgsHuZcFsvYvoNJFo9kKlAnJK-lZNd-9jOFi4uLd7hI72gPcpYxoOK_rc2v1st_JJMUvn-A65YLhQWo2GtFSyXfkoznDUh5tmKXRD1xyUpoEc1u1jypeO5DyJdIjulUUFiUnbmqo-hYN_cW1kq'); background-size: cover;"></div>
+<span class="text-sm font-medium">Иван Иванов</span>
+</div>
+<div class="h-8 flex rounded overflow-hidden">
+<div class="bg-primary w-[50%] flex items-center justify-center text-[10px] font-bold text-white">100ч</div>
+<div class="bg-[#0bda68] w-[20%] flex items-center justify-center text-[10px] font-bold text-white">40ч</div>
+<div class="bg-[#fa6938] w-[15%] flex items-center justify-center text-[10px] font-bold text-white">30ч</div>
+</div>
+</div>
+<div class="grid grid-cols-[140px_1fr] items-center gap-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuByho-BSOgFoYaPZz1Fwd6qQvkZgdg2DYJ4_nO6BlX_YAm5XI1Uy7e-fH2b7r8ZO-XpPy70b5iQar9fDD-U4qEsom6HJ8241f-CEmvTp-IH-Ivme46u2EwiJjimIjSnv1XgswSLlKli6sDtVb1X4vct2L7JjcEXatDF1y4q0SqFi4havP0iUdjk6MZArhtuLL7bvENeU8HxutA0jfE7iqV9beaQYn_TynffsdZZvLFrKTVwl_Sy6nsGOHcjCkj9sMN0mJhy9gAPmGsp'); background-size: cover;"></div>
+<span class="text-sm font-medium">Анна Петрова</span>
+</div>
+<div class="h-8 flex rounded overflow-hidden">
+<div class="bg-primary w-[30%]"></div>
+<div class="bg-[#0bda68] w-[45%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[140px_1fr] items-center gap-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA1TX0sw0dxRz68chTP_bzODgt9Rgs5WDUiEkFhtaYqYwfF8nPynnd4FpKOFhea3bQxk45Q1l8OkYkO-XsaQTh7PQVYybMf0KCQbFWBeXEKeEXZiyiwvxiJqsu2VpryyyPTfD-RrV8g0By0ZTUSKjMRc1YPLjxhcyWyW0Avsp85c-tQBk2hT4m-1wko9EcAxpq7hVa2-Sw7ckH93UomlsqgYnyWhe4FzaHgXruvuquxm5PGodA-VGFeA5W5o8Mur78s48s76mHCx8li'); background-size: cover;"></div>
+<span class="text-sm font-medium">Сергей Воробьев</span>
+</div>
+<div class="h-8 flex rounded overflow-hidden">
+<div class="bg-primary w-[60%]"></div>
+<div class="bg-[#fa6938] w-[35%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[140px_1fr] items-center gap-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDbPNFGM5IxhX2UOI-tPxL92oDQc93SKK_3FzXdPDpUj-xsD0C46uSxU7SJNaGCVP_te638COEkRQXDrltZ8JLLASbWRDiYkVLV4J18dc9pb-GX_SBiyyKIVhAdSNpIRJCHsZDoxDFy9lwXwHM_WvAJk7W8nr9Ur_yZtIePb1D7bnnp72KY0gyaXxtXOjYPhRI_9PYexlZxXY6LUmb-OxnJeMGHpXqX0L3OkfZKTtVfJdtIVslwiAaNdJzY1mFHB6rfSosLDDTx4Byg'); background-size: cover;"></div>
+<span class="text-sm font-medium">Мария Куликова</span>
+</div>
+<div class="h-8 flex rounded overflow-hidden">
+<div class="bg-primary w-[25%]"></div>
+<div class="bg-[#0bda68] w-[25%]"></div>
+<div class="bg-[#fa6938] w-[10%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-[140px_1fr] items-center gap-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full bg-slate-200" data-alt="Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAsQVIBYG6RR16xRtIhCUe6az3s6a3_j6r4vGlvsjrjZ_ritVdR9Z2-JUj4s49SZ1eS9rbZ6UsOtjb9R6IUzCzoxjYHn3K_9umd7eRiVdESBTbejmQ533P3qMnvEYIwpE_YcddA1bwoepPJPznKmvK9F4vM34No2H5VxTl9HU7KsCzvAccUxyfYYDf1FxqOmj43PenOxhW1wanC93fMUIJP9BT1yY9uQq-fr78XGwQ6APvAFRxmDyxCV0H6QOCskG5WCJ4AB8sWqaNA'); background-size: cover;"></div>
+<span class="text-sm font-medium">Дмитрий Серов</span>
+</div>
+<div class="h-8 flex rounded overflow-hidden">
+<div class="bg-primary w-[85%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Insights Panel -->
+<div class="flex flex-col gap-6 bg-gradient-to-br from-primary/10 to-transparent border border-primary/20 rounded-xl p-6 shadow-xl">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<h2 class="text-xl font-bold">AI Рекомендации</h2>
+</div>
+<div class="space-y-4">
+<div class="p-4 rounded-lg bg-white/5 border border-white/10">
+<p class="text-sm font-semibold mb-1">Высокая нагрузка: Дмитрий С.</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Дмитрий превысил порог 160ч на 15%. Рекомендуется перераспределить 10ч задач CRM на Анну П.</p>
+</div>
+<div class="p-4 rounded-lg bg-white/5 border border-white/10">
+<p class="text-sm font-semibold mb-1">Оптимизация API проекта</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Затраты на API выросли на 22%. Требуется пересмотр спецификаций или аудит производительности.</p>
+</div>
+<div class="p-4 rounded-lg bg-white/5 border border-white/10">
+<p class="text-sm font-semibold mb-1">Прогноз на след. месяц</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Ожидаемая загрузка команды составит 1310ч. Необходим наем 1 frontend разработчика.</p>
+</div>
+</div>
+<button class="mt-auto w-full py-3 bg-white/10 hover:bg-white/20 rounded-lg text-sm font-bold transition-all border border-white/10">
+                        Подробный AI аудит
+                    </button>
+</div>
+</div>
+<!-- Detailed Table -->
+<div class="bg-white dark:bg-[#1e1e2d] border border-slate-200 dark:border-[#3b3b54] rounded-xl overflow-hidden shadow-sm">
+<div class="p-6 border-b border-slate-200 dark:border-[#3b3b54] flex justify-between items-center">
+<h2 class="text-xl font-bold">Детальная утилизация</h2>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-[#3b3b54] text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-[16px]">filter_list</span> Фильтр
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 dark:bg-slate-800/50">
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500">Сотрудник</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">Всего часов</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">Биллинг</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">Утилизация</th>
+<th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 text-center">Статус</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-[#3b3b54]">
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full" data-alt="Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuChGhitFhJpuyI6j3mR_Zwrc-6992wFvdmElSlDyDGY5VkyeF2C3LWB2nM1U0HhebfdPi9YuLSbcpgyUTh8se3yH30X8aV-qgin0iGT92zBBob0gyY2QPzzhlKNabYCxh1cW0DUKRzFsIcYIwQN2gB0zKYhtAMl-FSYRfc1DBg0ReDeKV8cuaGtFAtZ-Sz01L5gQiBPzNvBfCqRZ_Je89YlApQeQBVSAATtuUclzDkc9ggMg0dJsYOCxVu0liIllCC9kTk3w7quzUpi'); background-size: cover;"></div>
+<span class="font-medium">Иван Иванов</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center font-bold">170ч</td>
+<td class="px-6 py-4 text-center">145ч</td>
+<td class="px-6 py-4 text-center">
+<div class="bg-red-500/20 text-red-500 py-1 rounded-lg text-xs font-bold border border-red-500/30">
+                                        106% (Перегруз)
+                                    </div>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="size-2.5 rounded-full bg-red-500 inline-block shadow-[0_0_8px_rgba(239,68,68,0.5)]"></span>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full" data-alt="Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAUKD_wVhy2g2Z0lvT4yPjKut_8mFv7F14DAFB5StWIex0U7iOBB9ZCRKZ4umQSTWwt5npnffBcJRHk8fLMwQKwyAoOFUGaNVVS1O4KPHpyLbfrB806fiLrYpl6F8qLcUtUbyCPGXBObaCYoPnXaUc8TWunvrxHpz-V_NRxa3jB-aSFisjiCLZhqXOGuxZN1l-MnQ3GPJ4s8u1vgTI2pP_Qla1gInsyVUd9KHfJmDsVoy0p6xLUVHnB5At2Z4NP8mDpHbilFg8W1uy2'); background-size: cover;"></div>
+<span class="font-medium">Анна Петрова</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center font-bold">120ч</td>
+<td class="px-6 py-4 text-center">90ч</td>
+<td class="px-6 py-4 text-center">
+<div class="bg-amber-500/20 text-amber-500 py-1 rounded-lg text-xs font-bold border border-amber-500/30">
+                                        75% (Низкая)
+                                    </div>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="size-2.5 rounded-full bg-amber-500 inline-block"></span>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full" data-alt="Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuClhKwutZdGec1y0AFuiDM-r7WmBlB-o4c9UnaiKVMDM2fJ78TxXagsw_GaN44T_Ib7U_ztL747wcGrvqT6GGqQTZzihOdgf5hppSjX9NyxIDM7zkQZQJap20EbnGLtblhuwvay-zC2WTw4lpRli84oADNHvafVjF7pa6GZ_j5xf-n-oi1WPoof2dCXNFBwCBIMQYv_2Tc9TC_3jr27e97sz076BXGRsAxUXRJvS6QGERPdsAcuf6X5LzoL-_2-KAZPEeDGrElLw-LP'); background-size: cover;"></div>
+<span class="font-medium">Сергей Воробьев</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center font-bold">155ч</td>
+<td class="px-6 py-4 text-center">140ч</td>
+<td class="px-6 py-4 text-center">
+<div class="bg-green-500/20 text-green-500 py-1 rounded-lg text-xs font-bold border border-green-500/30">
+                                        97% (Оптимально)
+                                    </div>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="size-2.5 rounded-full bg-green-500 inline-block shadow-[0_0_8px_rgba(34,197,94,0.5)]"></span>
+</td>
+</tr>
+<tr>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded-full" data-alt="Avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDFtL-lG1TTm4hDML7JuxCp_DRauZAh1zcZ90RQaOAlVSdDm-81UFNtWIcTChN9HCH-ofsK7vmMVTjahm6QKxIZKydW9OK8NJt8uPMKJX5E7xOqJtuUR2ex_G4gs7wDkRDSvDYVjv53OT2BTadb6qnxnjXkNTM2-Zf_dhalTJ_7fTdL60sv-bi9pdxvfVMFNhASbm6SlR0DMlOePKxVJz_oJfRpLbqriKxr-BcF5x_SrRp5HWQHpdmdQiZa8umn5CyY-M6uv5b13g5V'); background-size: cover;"></div>
+<span class="font-medium">Мария Куликова</span>
+</div>
+</td>
+<td class="px-6 py-4 text-center font-bold">160ч</td>
+<td class="px-6 py-4 text-center">152ч</td>
+<td class="px-6 py-4 text-center">
+<div class="bg-green-500/20 text-green-500 py-1 rounded-lg text-xs font-bold border border-green-500/30">
+                                        100% (Цель)
+                                    </div>
+</td>
+<td class="px-6 py-4 text-center">
+<span class="size-2.5 rounded-full bg-green-500 inline-block shadow-[0_0_8px_rgba(34,197,94,0.5)]"></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<footer class="mt-auto border-t border-slate-200 dark:border-[#282839] py-6 text-center text-slate-500 dark:text-[#9c9cba] text-sm">
+<p>© 2024 ITL OrderFlow SaaS Analytics. Все права защищены.</p>
+</footer>
+</div>
+</body></html>

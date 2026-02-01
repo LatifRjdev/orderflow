@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Список счетов</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen text-[#111118] dark:text-white transition-colors duration-200">
+<div class="relative flex flex-col w-full">
+<!-- Top Navigation -->
+<header class="w-full bg-white dark:bg-background-dark border-b border-[#dbdbe6] dark:border-white/10 sticky top-0 z-50">
+<div class="max-w-[1280px] mx-auto px-6 h-16 flex items-center justify-between gap-8">
+<div class="flex items-center gap-8 flex-1">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center text-white">
+<span class="material-symbols-outlined">account_tree</span>
+</div>
+<h2 class="text-lg font-extrabold tracking-tight">ITL OrderFlow</h2>
+</div>
+<div class="hidden md:flex items-center gap-1 flex-1 max-w-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#60608a] text-xl">search</span>
+<input class="w-full h-10 pl-10 pr-4 bg-background-light dark:bg-white/5 border-none rounded-lg focus:ring-2 focus:ring-primary text-sm transition-all placeholder:text-[#60608a]" placeholder="Поиск счетов, клиентов..." type="text"/>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-sm font-semibold text-[#60608a] hover:text-primary transition-colors" href="#">Проекты</a>
+<a class="text-sm font-semibold text-[#60608a] hover:text-primary transition-colors" href="#">Клиенты</a>
+<a class="text-sm font-semibold text-primary" href="#">Счета</a>
+<a class="text-sm font-semibold text-[#60608a] hover:text-primary transition-colors" href="#">Отчеты</a>
+<a class="text-sm font-semibold text-[#60608a] hover:text-primary transition-colors" href="#">Настройки</a>
+</nav>
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-background-light dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-9 h-9 rounded-full bg-cover bg-center border border-[#dbdbe6] dark:border-white/20" data-alt="User profile avatar circle" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBJimfWILq4cJqHQg_2DZ5T8QLzjqyjtTo9MytVydW9K1NhJ2s5FrGNZGSFHCyCwRaNrG-GWmtvKT6_q9W0LN3IUK44VZMfFO_IVKn_f38I3lC6jrsO8TXUcpm0kGZc17UlS6u1Sd2cFBO-QA0lYxNquaVeQw-j6gCJ4TBOtZQQCfbB9RYx3FHwvkeaQcSMCCd7WuU-T3VHEiGxImSqQJj7S_eXnDAzXcKuwzeyMrfgO4ksFwg2R08n07zNP0yqKeNikiYFN5xwem1P')"></div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto w-full p-6 space-y-6">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-1">
+<h1 class="text-4xl font-black tracking-tight">Счета</h1>
+<p class="text-[#60608a] dark:text-gray-400">Управление финансовыми потоками компании</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-white/5 border border-[#dbdbe6] dark:border-white/10 rounded-lg font-bold text-sm hover:bg-background-light transition-all">
+<span class="material-symbols-outlined text-lg">file_download</span>
+                        Экспорт
+                    </button>
+<button class="flex items-center gap-2 px-6 py-2.5 bg-primary text-white rounded-lg font-bold text-sm shadow-lg shadow-primary/20 hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-lg">add</span>
+                        Создать счёт
+                    </button>
+</div>
+</div>
+<!-- Dashboard Stats Summary -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-[#dbdbe6] dark:border-white/10 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-sm font-semibold text-[#60608a] dark:text-gray-400">Итого выставлено</p>
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<p class="text-2xl font-black mt-2">1 005 000 ₽</p>
+<p class="text-xs text-green-600 font-bold mt-1">+12% с прошлого месяца</p>
+</div>
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-[#dbdbe6] dark:border-white/10 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-sm font-semibold text-[#60608a] dark:text-gray-400">Оплачено</p>
+<span class="material-symbols-outlined text-green-500">check_circle</span>
+</div>
+<p class="text-2xl font-black mt-2">295 000 ₽</p>
+<div class="w-full bg-background-light dark:bg-white/5 h-1.5 rounded-full mt-3">
+<div class="bg-green-500 h-1.5 rounded-full" style="width: 29.3%"></div>
+</div>
+</div>
+<div class="bg-white dark:bg-background-dark p-6 rounded-xl border border-[#dbdbe6] dark:border-white/10 shadow-sm">
+<div class="flex justify-between items-start">
+<p class="text-sm font-semibold text-[#60608a] dark:text-gray-400">Остаток</p>
+<span class="material-symbols-outlined text-amber-500">pending_actions</span>
+</div>
+<p class="text-2xl font-black mt-2">710 000 ₽</p>
+<p class="text-xs text-amber-600 font-bold mt-1">5 счетов требуют внимания</p>
+</div>
+</div>
+<!-- Tabs Navigation -->
+<div class="border-b border-[#dbdbe6] dark:border-white/10 flex items-center justify-between">
+<div class="flex gap-8">
+<a class="border-b-2 border-primary text-primary pb-4 px-1 text-sm font-bold flex items-center gap-2" href="#">
+                        Все <span class="bg-primary/10 text-primary px-2 py-0.5 rounded-full text-[10px]">24</span>
+</a>
+<a class="border-b-2 border-transparent text-[#60608a] dark:text-gray-400 hover:text-primary pb-4 px-1 text-sm font-bold transition-all" href="#">Черновики</a>
+<a class="border-b-2 border-transparent text-[#60608a] dark:text-gray-400 hover:text-primary pb-4 px-1 text-sm font-bold transition-all" href="#">Отправлены</a>
+<a class="border-b-2 border-transparent text-[#60608a] dark:text-gray-400 hover:text-primary pb-4 px-1 text-sm font-bold transition-all" href="#">Оплачены</a>
+<a class="border-b-2 border-transparent text-[#60608a] dark:text-gray-400 hover:text-primary pb-4 px-1 text-sm font-bold transition-all" href="#">Просрочены</a>
+</div>
+<div class="flex items-center gap-2 pb-3">
+<button class="p-1.5 text-[#60608a] hover:bg-background-light rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Main Table Section -->
+<div class="bg-white dark:bg-background-dark rounded-xl border border-[#dbdbe6] dark:border-white/10 overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-background-light/50 dark:bg-white/5 border-b border-[#dbdbe6] dark:border-white/10">
+<th class="p-4 w-10">
+<input class="rounded border-gray-300 dark:border-white/20 text-primary focus:ring-primary dark:bg-background-dark" type="checkbox"/>
+</th>
+<th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#60608a] dark:text-gray-400">№</th>
+<th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#60608a] dark:text-gray-400">Клиент</th>
+<th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#60608a] dark:text-gray-400">Проект</th>
+<th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#60608a] dark:text-gray-400">Дата</th>
+<th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#60608a] dark:text-gray-400">Срок оплаты</th>
+<th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#60608a] dark:text-gray-400">Сумма</th>
+<th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#60608a] dark:text-gray-400">Оплачено</th>
+<th class="px-4 py-3 text-xs font-bold uppercase tracking-wider text-[#60608a] dark:text-gray-400">Статус</th>
+<th class="px-4 py-3 w-10"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-[#dbdbe6] dark:divide-white/10">
+<!-- Row 1: Paid -->
+<tr class="hover:bg-background-light/30 dark:hover:bg-white/5 transition-colors group">
+<td class="p-4">
+<input class="rounded border-gray-300 dark:border-white/20 text-primary focus:ring-primary dark:bg-background-dark" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-bold text-primary hover:underline cursor-pointer">INV-001</td>
+<td class="px-4 py-4 text-sm font-medium">ООО Вектор</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400 truncate max-w-[200px]">Разработка мобильного приложения</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">12.10.2023</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">26.10.2023</td>
+<td class="px-4 py-4 text-sm font-bold">250 000 ₽</td>
+<td class="px-4 py-4 text-sm text-green-600 font-semibold">250 000 ₽</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                                        Оплачено
+                                    </span>
+</td>
+<td class="px-4 py-4">
+<button class="opacity-0 group-hover:opacity-100 p-1 hover:bg-background-light dark:hover:bg-white/10 rounded transition-all">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Sent -->
+<tr class="hover:bg-background-light/30 dark:hover:bg-white/5 transition-colors group">
+<td class="p-4">
+<input class="rounded border-gray-300 dark:border-white/20 text-primary focus:ring-primary dark:bg-background-dark" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-bold text-primary hover:underline cursor-pointer">INV-002</td>
+<td class="px-4 py-4 text-sm font-medium">Альфа Банк</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400 truncate max-w-[200px]">Cloud Migration</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">15.10.2023</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">29.10.2023</td>
+<td class="px-4 py-4 text-sm font-bold">480 000 ₽</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">0 ₽</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-primary/10 text-primary">
+                                        Отправлен
+                                    </span>
+</td>
+<td class="px-4 py-4">
+<button class="opacity-0 group-hover:opacity-100 p-1 hover:bg-background-light dark:hover:bg-white/10 rounded transition-all">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Partial -->
+<tr class="hover:bg-background-light/30 dark:hover:bg-white/5 transition-colors group">
+<td class="p-4">
+<input class="rounded border-gray-300 dark:border-white/20 text-primary focus:ring-primary dark:bg-background-dark" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-bold text-primary hover:underline cursor-pointer">INV-003</td>
+<td class="px-4 py-4 text-sm font-medium">ИП Иванов</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400 truncate max-w-[200px]">UI/UX Редизайн</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">18.10.2023</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">01.11.2023</td>
+<td class="px-4 py-4 text-sm font-bold">95 000 ₽</td>
+<td class="px-4 py-4 text-sm text-amber-600 font-semibold">45 000 ₽</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400">
+                                        Частично
+                                    </span>
+</td>
+<td class="px-4 py-4">
+<button class="opacity-0 group-hover:opacity-100 p-1 hover:bg-background-light dark:hover:bg-white/10 rounded transition-all">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4: Draft -->
+<tr class="hover:bg-background-light/30 dark:hover:bg-white/5 transition-colors group">
+<td class="p-4">
+<input class="rounded border-gray-300 dark:border-white/20 text-primary focus:ring-primary dark:bg-background-dark" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-bold text-primary hover:underline cursor-pointer">INV-004</td>
+<td class="px-4 py-4 text-sm font-medium">ТехноПром</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400 truncate max-w-[200px]">Security Audit</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">20.10.2023</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">03.11.2023</td>
+<td class="px-4 py-4 text-sm font-bold">120 000 ₽</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">0 ₽</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-gray-100 text-gray-700 dark:bg-white/10 dark:text-gray-400">
+                                        Черновик
+                                    </span>
+</td>
+<td class="px-4 py-4">
+<button class="opacity-0 group-hover:opacity-100 p-1 hover:bg-background-light dark:hover:bg-white/10 rounded transition-all">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 5: Overdue -->
+<tr class="hover:bg-background-light/30 dark:hover:bg-white/5 transition-colors group bg-red-50/20 dark:bg-red-950/5">
+<td class="p-4">
+<input class="rounded border-gray-300 dark:border-white/20 text-primary focus:ring-primary dark:bg-background-dark" type="checkbox"/>
+</td>
+<td class="px-4 py-4 text-sm font-bold text-primary hover:underline cursor-pointer">INV-005</td>
+<td class="px-4 py-4 text-sm font-medium">Global IT</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400 truncate max-w-[200px]">Support &amp; Maintenance</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">01.10.2023</td>
+<td class="px-4 py-4 text-sm text-red-600 font-bold">15.10.2023</td>
+<td class="px-4 py-4 text-sm font-bold">60 000 ₽</td>
+<td class="px-4 py-4 text-sm text-[#60608a] dark:text-gray-400">0 ₽</td>
+<td class="px-4 py-4">
+<span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                                        Просрочен
+                                    </span>
+</td>
+<td class="px-4 py-4">
+<button class="opacity-0 group-hover:opacity-100 p-1 hover:bg-background-light dark:hover:bg-white/10 rounded transition-all">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-4 py-4 bg-background-light/30 dark:bg-white/5 flex items-center justify-between">
+<p class="text-sm text-[#60608a] dark:text-gray-400">Показано 5 из 24 счетов</p>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 flex items-center justify-center rounded border border-[#dbdbe6] dark:border-white/10 hover:bg-white transition-colors disabled:opacity-50">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center rounded bg-primary text-white text-sm font-bold">1</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-[#dbdbe6] dark:border-white/10 hover:bg-white text-sm font-bold transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-[#dbdbe6] dark:border-white/10 hover:bg-white text-sm font-bold transition-colors">3</button>
+<button class="w-8 h-8 flex items-center justify-center rounded border border-[#dbdbe6] dark:border-white/10 hover:bg-white transition-colors">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Fixed Summary Footer (optional behavior, here styled as static summary block) -->
+<footer class="mt-auto border-t border-[#dbdbe6] dark:border-white/10 bg-white dark:bg-background-dark">
+<div class="max-w-[1280px] mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="flex gap-8 items-center text-sm font-medium">
+<div class="flex flex-col">
+<span class="text-[#60608a] text-[10px] uppercase font-bold tracking-widest">Общая сумма</span>
+<span class="text-lg font-black">1 005 000 ₽</span>
+</div>
+<div class="w-px h-8 bg-[#dbdbe6] dark:bg-white/10"></div>
+<div class="flex flex-col">
+<span class="text-[#60608a] text-[10px] uppercase font-bold tracking-widest">Сумма оплат</span>
+<span class="text-lg font-black text-green-600">295 000 ₽</span>
+</div>
+<div class="w-px h-8 bg-[#dbdbe6] dark:bg-white/10"></div>
+<div class="flex flex-col">
+<span class="text-[#60608a] text-[10px] uppercase font-bold tracking-widest">Дебиторка</span>
+<span class="text-lg font-black text-amber-600">710 000 ₽</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="text-sm font-bold text-[#60608a] hover:text-primary transition-colors">Помощь</button>
+<button class="text-sm font-bold text-[#60608a] hover:text-primary transition-colors">Конфиденциальность</button>
+<p class="text-sm text-[#60608a] dark:text-gray-500">© 2023 ITL OrderFlow</p>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

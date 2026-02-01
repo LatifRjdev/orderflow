@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Toast Notifications</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                        "success": "#10b981",
+                        "error": "#ef4444",
+                        "warning": "#f59e0b",
+                        "info": "#3c3cf6",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen relative overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-solid border-[#e5e7eb] dark:border-[#282839] px-6 py-3 bg-white dark:bg-background-dark sticky top-0 z-40">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="text-primary">
+<span class="material-symbols-outlined text-3xl">rocket_launch</span>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">ITL OrderFlow</h2>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Заказы</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Склад</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Логистика</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Отчеты</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex bg-[#f3f4f6] dark:bg-[#282839] items-center px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-slate-400 text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm p-0 w-40" placeholder="Поиск..." type="text"/>
+</div>
+<button class="p-2 rounded-lg bg-[#f3f4f6] dark:bg-[#282839] text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<div class="size-9 rounded-full bg-cover bg-center border border-slate-200 dark:border-slate-700" data-alt="User profile avatar circle" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBdv-RKNy4EV5pfikB-SugCY3xwGlEKBcxI5Y9ueCoao71aJBuHNARH39YS5V1AdLhEUtyITfEka01B0T3Q9yuQXqJ4-ra2aTipNBL3roV8MWGmBymNjJiwmP4R-8F4tgJ1fztJopHshnOLTwuyEJBlxzCSrXNf0i9MSaIgnc-JYYbPQLdD_leB399ocXqFKH3FI3hiPjqrRzaGdmgb0Lo3iSXBnonyzjC3N74orxBv4OiNBVg9LjEsXZOjOFF2AnkjsuQS-7K_DJPY");'></div>
+</div>
+</header>
+<div class="flex">
+<!-- Sidebar -->
+<aside class="hidden lg:flex w-64 flex-col border-r border-[#e5e7eb] dark:border-[#282839] h-[calc(100vh-64px)] p-4 gap-2 bg-white dark:bg-background-dark">
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#282839] cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-slate-500">grid_view</span>
+<span class="text-sm font-medium">Дашборд</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/10 text-primary cursor-pointer">
+<span class="material-symbols-outlined">assignment</span>
+<span class="text-sm font-medium">Заказы</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#282839] cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-slate-500">group</span>
+<span class="text-sm font-medium">Клиенты</span>
+</div>
+<div class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#282839] cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-slate-500">account_balance_wallet</span>
+<span class="text-sm font-medium">Финансы</span>
+</div>
+<div class="mt-auto flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-slate-100 dark:hover:bg-[#282839] cursor-pointer transition-colors text-error">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-sm font-medium">Выход</span>
+</div>
+</aside>
+<!-- Main Content (Dashboard Simulation) -->
+<main class="flex-1 p-8 overflow-y-auto">
+<div class="max-w-5xl mx-auto">
+<div class="flex flex-wrap justify-between items-end gap-4 mb-8">
+<div class="flex flex-col gap-2">
+<h1 class="text-3xl font-extrabold tracking-tight">Управление заказами</h1>
+<p class="text-slate-500 dark:text-slate-400">Мониторинг и обработка входящих заявок в реальном времени</p>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg font-bold text-sm flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Создать заказ
+                    </button>
+</div>
+<!-- Summary Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+<div class="bg-white dark:bg-[#1b1b27] border border-slate-200 dark:border-[#3b3b54] p-5 rounded-xl">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Всего заказов</p>
+<h3 class="text-2xl font-bold">1,284</h3>
+<div class="flex items-center gap-1 text-success text-xs font-bold mt-2">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+12% за неделю</span>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1b1b27] border border-slate-200 dark:border-[#3b3b54] p-5 rounded-xl">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">В обработке</p>
+<h3 class="text-2xl font-bold">42</h3>
+<div class="flex items-center gap-1 text-warning text-xs font-bold mt-2">
+<span class="material-symbols-outlined text-xs">schedule</span>
+<span>Требуют внимания</span>
+</div>
+</div>
+<div class="bg-white dark:bg-[#1b1b27] border border-slate-200 dark:border-[#3b3b54] p-5 rounded-xl">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-1">Выручка (мес)</p>
+<h3 class="text-2xl font-bold">2.4M ₽</h3>
+<div class="flex items-center gap-1 text-success text-xs font-bold mt-2">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+<span>План выполнен на 85%</span>
+</div>
+</div>
+</div>
+<!-- Main Table Placeholder -->
+<div class="bg-white dark:bg-[#1b1b27] border border-slate-200 dark:border-[#3b3b54] rounded-xl overflow-hidden">
+<div class="px-6 py-4 border-b border-slate-200 dark:border-[#3b3b54] flex justify-between items-center bg-slate-50/50 dark:bg-[#1b1b27]">
+<h4 class="font-bold">Последние операции</h4>
+<button class="text-primary text-xs font-bold uppercase tracking-wider">Все операции</button>
+</div>
+<table class="w-full text-left">
+<thead>
+<tr class="text-xs font-bold text-slate-400 dark:text-slate-500 border-b border-slate-100 dark:border-[#3b3b54]">
+<th class="px-6 py-4">ID</th>
+<th class="px-6 py-4">КЛИЕНТ</th>
+<th class="px-6 py-4">СТАТУС</th>
+<th class="px-6 py-4">ДАТА</th>
+<th class="px-6 py-4 text-right">СУММА</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-[#3b3b54]">
+<tr class="hover:bg-slate-50 dark:hover:bg-[#282839] transition-colors">
+<td class="px-6 py-4 text-sm font-semibold">#4051</td>
+<td class="px-6 py-4 text-sm">Иван Иванов</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-warning/10 text-warning text-[10px] font-black uppercase rounded-full">В обработке</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">24.05.2023</td>
+<td class="px-6 py-4 text-sm font-bold text-right">15,400 ₽</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#282839] transition-colors">
+<td class="px-6 py-4 text-sm font-semibold">#4050</td>
+<td class="px-6 py-4 text-sm">ООО Вектор</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-success/10 text-success text-[10px] font-black uppercase rounded-full">Доставлено</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">23.05.2023</td>
+<td class="px-6 py-4 text-sm font-bold text-right">42,000 ₽</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#282839] transition-colors">
+<td class="px-6 py-4 text-sm font-semibold">#4049</td>
+<td class="px-6 py-4 text-sm">Мария Петрова</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-400 text-[10px] font-black uppercase rounded-full">Отменено</span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-500">23.05.2023</td>
+<td class="px-6 py-4 text-sm font-bold text-right">8,900 ₽</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<!-- Toast Notifications Layer (Bottom Right) -->
+<div class="fixed bottom-6 right-6 z-50 flex flex-col gap-4 w-[360px] pointer-events-none">
+<!-- Error Toast -->
+<div class="pointer-events-auto w-full bg-white dark:bg-[#1e1e2d] border border-error/20 rounded-xl shadow-2xl overflow-hidden flex animate-slide-in">
+<div class="w-1.5 bg-error shrink-0"></div>
+<div class="flex items-start gap-3 p-4 w-full">
+<div class="text-error mt-0.5">
+<span class="material-symbols-outlined">error</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<h5 class="text-sm font-bold leading-none">Ошибка сохранения</h5>
+<p class="text-xs text-slate-500 dark:text-slate-400">Произошел сбой при обновлении базы данных.</p>
+<button class="text-primary text-xs font-bold hover:underline self-start mt-1">Повторить</button>
+</div>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+<!-- Warning Toast -->
+<div class="pointer-events-auto w-full bg-white dark:bg-[#1e1e2d] border border-warning/20 rounded-xl shadow-2xl overflow-hidden flex animate-slide-in">
+<div class="w-1.5 bg-warning shrink-0"></div>
+<div class="flex items-start gap-3 p-4 w-full">
+<div class="text-warning mt-0.5">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<h5 class="text-sm font-bold leading-none">Низкий баланс</h5>
+<p class="text-xs text-slate-500 dark:text-slate-400">На вашем счету осталось менее 5,000 ₽. Пополните для продолжения отгрузок.</p>
+</div>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+<!-- Success Toast -->
+<div class="pointer-events-auto w-full bg-white dark:bg-[#1e1e2d] border border-success/20 rounded-xl shadow-2xl overflow-hidden flex animate-slide-in">
+<div class="w-1.5 bg-success shrink-0"></div>
+<div class="flex items-start gap-3 p-4 w-full">
+<div class="text-success mt-0.5">
+<span class="material-symbols-outlined text-fill-1">check_circle</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<h5 class="text-sm font-bold leading-none">Заказ создан</h5>
+<p class="text-xs text-slate-500 dark:text-slate-400">Заказ #4052 успешно добавлен в очередь на упаковку.</p>
+</div>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+<!-- Info Toast -->
+<div class="pointer-events-auto w-full bg-white dark:bg-[#1e1e2d] border border-info/20 rounded-xl shadow-2xl overflow-hidden flex animate-slide-in">
+<div class="w-1.5 bg-info shrink-0"></div>
+<div class="flex items-start gap-3 p-4 w-full">
+<div class="text-info mt-0.5">
+<span class="material-symbols-outlined">info</span>
+</div>
+<div class="flex-1 flex flex-col gap-1">
+<h5 class="text-sm font-bold leading-none">Обновление статуса</h5>
+<p class="text-xs text-slate-500 dark:text-slate-400">Статус заказа #3991 изменен на «В пути».</p>
+</div>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+<span class="material-symbols-outlined text-[20px]">close</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Theme Switcher (for demonstration) -->
+<div class="fixed bottom-6 left-6 flex gap-2">
+<button class="flex items-center gap-2 bg-white dark:bg-[#282839] px-4 py-2 rounded-lg border border-slate-200 dark:border-[#3b3b54] text-xs font-bold transition-all hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined text-sm">palette</span>
+            UI Library: Toasts
+        </button>
+</div>
+</body></html>

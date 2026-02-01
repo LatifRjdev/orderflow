@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow Client Portal Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Space Grotesk", "Noto Sans", sans-serif;
+        }
+        .bg-gradient-mesh {
+            background-color: #f5f5f8;
+            background-image: radial-gradient(at 0% 0%, rgba(60, 60, 246, 0.05) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(60, 60, 246, 0.05) 0px, transparent 50%);
+        }
+        .dark .bg-gradient-mesh {
+            background-color: #101022;
+            background-image: radial-gradient(at 0% 0%, rgba(60, 60, 246, 0.1) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(60, 60, 246, 0.1) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111118] dark:text-white transition-colors duration-300">
+<div class="relative flex min-h-screen w-full flex-col bg-gradient-mesh overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Main Content Area -->
+<div class="flex flex-1 items-center justify-center px-6 py-12">
+<div class="layout-content-container flex flex-col w-full max-w-[440px] bg-white dark:bg-[#1a1a3a] rounded-xl shadow-xl shadow-primary/5 p-8 border border-[#dbdbe6]/30 dark:border-[#3c3cf6]/20">
+<!-- Logo / Brand Header -->
+<div class="flex flex-col items-center mb-8">
+<div class="w-16 h-16 bg-primary rounded-xl flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-white text-4xl" data-icon="hub">hub</span>
+</div>
+<div class="text-center">
+<h1 class="text-[#111118] dark:text-white font-display text-2xl font-bold tracking-tight">ITL OrderFlow</h1>
+<p class="text-[#60608a] dark:text-gray-400 text-sm mt-1">Клиентский портал</p>
+</div>
+</div>
+<!-- Heading Text -->
+<div class="mb-6">
+<h2 class="text-[#111118] dark:text-white tracking-light text-[24px] font-bold leading-tight text-center">Войти в портал</h2>
+<p class="text-[#60608a] dark:text-gray-400 text-sm font-normal leading-normal text-center mt-2">
+                            Введите ваш email, и мы отправим вам магическую ссылку для входа.
+                        </p>
+</div>
+<!-- Email Input Field -->
+<div class="flex flex-col gap-4 py-2">
+<label class="flex flex-col w-full">
+<p class="text-[#111118] dark:text-gray-200 text-sm font-medium leading-normal pb-2">Email</p>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#60608a] text-xl">mail</span>
+<input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-[#111118] dark:text-white focus:outline-0 focus:ring-2 focus:ring-primary/20 border border-[#dbdbe6] dark:border-gray-700 bg-white dark:bg-[#101022] focus:border-primary h-14 placeholder:text-[#60608a] pl-12 pr-4 text-base font-normal leading-normal transition-all" placeholder="email@example.com" type="email" value=""/>
+</div>
+</label>
+</div>
+<!-- Action Button -->
+<div class="flex py-4">
+<button class="flex min-w-[84px] w-full cursor-pointer items-center justify-center overflow-hidden rounded-lg h-14 px-5 flex-1 bg-primary hover:bg-primary/90 text-white text-base font-bold leading-normal tracking-[0.015em] transition-all active:scale-[0.98]">
+<span class="truncate">Отправить ссылку для входа</span>
+</button>
+</div>
+<!-- Divider -->
+<div class="relative flex items-center py-4">
+<div class="flex-grow border-t border-[#dbdbe6] dark:border-gray-700"></div>
+<span class="flex-shrink mx-4 text-[#60608a] text-xs font-medium uppercase tracking-wider">или</span>
+<div class="flex-grow border-t border-[#dbdbe6] dark:border-gray-700"></div>
+</div>
+<!-- Secondary Option -->
+<div class="flex">
+<button class="flex w-full cursor-pointer items-center justify-center rounded-lg h-12 px-5 border border-[#dbdbe6] dark:border-gray-700 bg-transparent text-[#111118] dark:text-white text-sm font-medium hover:bg-gray-50 dark:hover:bg-white/5 transition-all">
+<span class="truncate">Связаться с менеджером</span>
+</button>
+</div>
+<!-- Footer MetaText -->
+<div class="mt-8">
+<p class="text-[#60608a] dark:text-gray-500 text-xs font-normal leading-normal text-center">
+                            Работает на <span class="font-bold text-primary/80">ITL OrderFlow</span>
+</p>
+</div>
+</div>
+</div>
+<!-- Footer Image (Optional Decorative/Pattern) -->
+<div class="layout-content-container flex flex-col max-w-[960px] mx-auto w-full px-40">
+<div class="flex w-full grow p-4 opacity-30">
+<div class="w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"></div>
+</div>
+</div>
+<!-- Background Decoration (Abstract) -->
+<div class="fixed bottom-0 left-0 w-full h-64 pointer-events-none z-[-1] overflow-hidden">
+<div class="absolute -bottom-10 -left-10 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-20 -right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+</div>
+</div>
+</body></html>

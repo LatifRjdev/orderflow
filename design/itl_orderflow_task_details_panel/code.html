@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow Task Details Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #dbdbe6;
+            border-radius: 10px;
+        }
+        .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+            background: #c0c0cf;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-end min-h-screen">
+<!-- Task Details Slide-over Panel (500px) -->
+<div class="w-[500px] h-screen bg-white dark:bg-background-dark shadow-2xl flex flex-col relative border-l border-gray-200 dark:border-gray-800">
+<!-- Header Section -->
+<div class="flex flex-col border-b border-gray-100 dark:border-gray-800 p-6 gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="w-7 h-7 rounded border-2 border-gray-300 dark:border-gray-600 flex items-center justify-center hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-transparent hover:text-primary text-xl">check</span>
+</button>
+<div class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                        В работе
+                    </div>
+</div>
+<button class="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors text-gray-500">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex flex-col gap-1">
+<input class="text-xl font-bold text-[#111118] dark:text-white border-none p-0 focus:ring-0 bg-transparent w-full" type="text" value="Обновить API документацию для модуля заказов"/>
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap items-center gap-2 text-sm">
+<a class="text-primary font-medium hover:underline" href="#">Проект: Документация</a>
+<span class="text-gray-400">/</span>
+<span class="text-gray-500 dark:text-gray-400">Мильстоун: Релиз 1.0</span>
+</div>
+</div>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Details Grid -->
+<div class="p-6">
+<h3 class="text-[#111118] dark:text-white text-sm font-bold uppercase tracking-wider mb-4">Детали</h3>
+<div class="grid grid-cols-2 gap-3">
+<div class="flex items-center gap-3 rounded-lg border border-[#dbdbe6] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-3">
+<span class="material-symbols-outlined text-red-500">flag</span>
+<div class="flex flex-col">
+<span class="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-bold">Приоритет</span>
+<span class="text-[#111118] dark:text-gray-200 text-sm font-medium">Высокий</span>
+</div>
+</div>
+<div class="flex items-center gap-3 rounded-lg border border-[#dbdbe6] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-3">
+<div class="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-blue-600">person</span>
+</div>
+<div class="flex flex-col">
+<span class="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-bold">Исполнитель</span>
+<span class="text-[#111118] dark:text-gray-200 text-sm font-medium">Иван Иванов</span>
+</div>
+</div>
+<div class="flex items-center gap-3 rounded-lg border border-[#dbdbe6] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-3">
+<span class="material-symbols-outlined text-gray-400">calendar_today</span>
+<div class="flex flex-col">
+<span class="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-bold">Срок</span>
+<span class="text-[#111118] dark:text-gray-200 text-sm font-medium">25 Окт 2023</span>
+</div>
+</div>
+<div class="flex items-center gap-3 rounded-lg border border-[#dbdbe6] dark:border-gray-700 bg-white dark:bg-gray-800/50 p-3">
+<span class="material-symbols-outlined text-gray-400">schedule</span>
+<div class="flex flex-col">
+<span class="text-gray-500 dark:text-gray-400 text-[10px] uppercase font-bold">Оценка</span>
+<span class="text-[#111118] dark:text-gray-200 text-sm font-medium">4ч</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Description Section -->
+<div class="px-6 py-4">
+<h3 class="text-[#111118] dark:text-white text-sm font-bold uppercase tracking-wider mb-3">Описание</h3>
+<div class="bg-gray-50 dark:bg-gray-800/30 rounded-lg p-4">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-sm text-gray-700 dark:text-gray-300 resize-none min-h-[100px]" placeholder="Введите описание задачи...">Необходимо обновить Swagger-документацию для эндпоинтов оформления заказа. Добавить описание новых параметров в JSON-схеме.</textarea>
+</div>
+</div>
+<!-- Checklist Section -->
+<div class="px-6 py-4">
+<div class="flex items-center justify-between mb-3">
+<h3 class="text-[#111118] dark:text-white text-sm font-bold uppercase tracking-wider">Чек-лист</h3>
+<span class="text-xs font-bold text-primary">2 / 5 (40%)</span>
+</div>
+<div class="w-full bg-gray-200 dark:bg-gray-700 h-1.5 rounded-full mb-4">
+<div class="bg-primary h-1.5 rounded-full" style="width: 40%"></div>
+</div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">check_box</span>
+<span class="text-sm text-gray-400 line-through">Анализ текущей схемы</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">check_box</span>
+<span class="text-sm text-gray-400 line-through">Подготовка JSON примеров</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-300 dark:text-gray-600 text-xl">check_box_outline_blank</span>
+<span class="text-sm text-gray-700 dark:text-gray-300">Обновить типы данных в Swagger</span>
+</div>
+<div class="flex items-center gap-3 text-primary cursor-pointer hover:bg-primary/5 p-1 rounded -ml-1 w-fit">
+<span class="material-symbols-outlined text-lg">add</span>
+<span class="text-xs font-bold">ДОБАВИТЬ ПУНКТ</span>
+</div>
+</div>
+</div>
+<!-- Attachments Section -->
+<div class="px-6 py-4">
+<h3 class="text-[#111118] dark:text-white text-sm font-bold uppercase tracking-wider mb-3">Вложения</h3>
+<div class="grid grid-cols-4 gap-2">
+<div class="aspect-square rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center p-2 text-center group relative overflow-hidden">
+<img class="absolute inset-0 w-full h-full object-cover opacity-50" data-alt="Abstract gradient preview for image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd3MXq4i4sx1fBZTaO7VTxlbqfZF6BjY74yq1o-aNBvhuibwmxyGn0pjn2WOgiKEXLYUuCOOLvPqHaoeAxnfDROQkXAcInqk3-iklJKvlVLf5tf8akTOVgLgBDqp_lUH-F5wOH8-BbmZQgtp-VOR9UaXRQIE5KOJ_HKqZqpR84M579vIq6D6VmJ_d2rcNiHekrhkZsVxIgOemjepkbql4p7mW40JA14jo2fCyN3QyGFmtAOH7ZiWf5qj8Y61dcnVQy1fLMSF2eLSRu"/>
+<span class="material-symbols-outlined text-gray-400 relative z-10">description</span>
+<span class="text-[10px] text-gray-600 dark:text-gray-400 truncate w-full relative z-10">spec_v2.pdf</span>
+</div>
+<div class="aspect-square rounded-lg border-2 border-dashed border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 hover:border-primary hover:text-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined">add</span>
+</div>
+</div>
+</div>
+<!-- Comments Section -->
+<div class="px-6 py-4 pb-20">
+<h3 class="text-[#111118] dark:text-white text-sm font-bold uppercase tracking-wider mb-4">Комментарии</h3>
+<div class="flex flex-col gap-6">
+<!-- Comment 1 -->
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-full bg-purple-100 flex-shrink-0 flex items-center justify-center">
+<span class="text-xs font-bold text-purple-600">ОК</span>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2">
+<span class="text-sm font-bold text-gray-900 dark:text-gray-200">Олег Кузнецов</span>
+<span class="text-[10px] text-gray-400">10:45 AM</span>
+</div>
+<p class="text-sm text-gray-600 dark:text-gray-400">Примеры уже готовы, можно брать из папки /docs/api/v2</p>
+</div>
+</div>
+<!-- Comment Input -->
+<div class="flex gap-3 mt-2">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex-shrink-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">person</span>
+</div>
+<div class="flex-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 shadow-sm">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-sm p-0 resize-none" placeholder="Написать комментарий..." rows="1"></textarea>
+<div class="flex justify-between items-center mt-2">
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-gray-400 text-lg cursor-pointer hover:text-gray-600">attach_file</span>
+<span class="material-symbols-outlined text-gray-400 text-lg cursor-pointer hover:text-gray-600">sentiment_satisfied</span>
+</div>
+<button class="bg-primary text-white p-1 px-3 rounded text-xs font-bold">ОТПРАВИТЬ</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Footer Actions -->
+<div class="p-4 border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-background-dark flex items-center justify-between">
+<button class="text-red-500 text-sm font-medium hover:underline flex items-center gap-1">
+<span class="material-symbols-outlined text-lg">delete</span>
+                Удалить
+            </button>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-[#dbdbe6] dark:border-gray-700 text-[#111118] dark:text-gray-200 text-sm font-bold rounded hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    Лог времени
+                </button>
+<button class="px-6 py-2 bg-primary text-white text-sm font-bold rounded hover:bg-opacity-90 transition-all shadow-lg shadow-primary/20">
+                    Готово
+                </button>
+</div>
+</div>
+</div>
+</body></html>

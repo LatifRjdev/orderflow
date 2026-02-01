@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Добавить клиента</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e5e7eb;
+            border-radius: 10px;
+        }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center p-4">
+<!-- Modal Backdrop -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-40 flex items-center justify-center">
+<!-- Modal Container -->
+<div class="bg-white dark:bg-[#1a222c] w-full max-w-[600px] h-[90vh] max-h-[850px] flex flex-col rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+<!-- Header -->
+<div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 dark:border-gray-800 shrink-0">
+<h1 class="text-[#111418] dark:text-white text-xl font-bold leading-tight">Новый клиент</h1>
+<button class="flex items-center justify-center w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<form id="addClientForm">
+<!-- Section: Основная информация -->
+<div class="px-6 pt-6 pb-2">
+<h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">corporate_fare</span>
+                            Основная информация
+                        </h2>
+<div class="space-y-4">
+<!-- Company Name -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Название компании <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm placeholder:text-gray-400" placeholder="ООО Ромашка" type="text"/>
+</div>
+<!-- Legal Name -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Юридическое название</label>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm placeholder:text-gray-400" placeholder="Общество с ограниченной ответственностью" type="text"/>
+</div>
+<!-- INN & Industry -->
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">ИНН <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm placeholder:text-gray-400" placeholder="77XXXXXXXX" type="text"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Отрасль</label>
+<select class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm">
+<option value="">Выберите отрасль</option>
+<option value="it">ИТ-услуги</option>
+<option value="retail">Ритейл</option>
+<option value="finance">Финансы</option>
+<option value="other">Другое</option>
+</select>
+</div>
+</div>
+<!-- Website -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Сайт</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+<span class="material-symbols-outlined text-sm">language</span>
+</span>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 pl-10 pr-3.5 text-sm placeholder:text-gray-400" placeholder="https://example.com" type="url"/>
+</div>
+</div>
+<!-- Address -->
+<div class="flex flex-col gap-1.5 pb-6">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Адрес</label>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm placeholder:text-gray-400" placeholder="г. Москва, ул. Примерная, д. 1" type="text"/>
+</div>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px bg-gray-100 dark:bg-gray-800 mx-6"></div>
+<!-- Section: Основной контакт -->
+<div class="px-6 py-6">
+<h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">person</span>
+                            Основной контакт
+                        </h2>
+<div class="space-y-4">
+<!-- Name & Position -->
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">ФИО <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm placeholder:text-gray-400" placeholder="Иванов Иван" type="text"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Должность</label>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm placeholder:text-gray-400" placeholder="Генеральный директор" type="text"/>
+</div>
+</div>
+<!-- Email -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Email <span class="text-red-500">*</span></label>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm placeholder:text-gray-400" placeholder="mail@example.com" type="email"/>
+</div>
+<!-- Phone & Telegram -->
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Телефон</label>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm placeholder:text-gray-400" placeholder="+7 (900) 000-00-00" type="tel"/>
+</div>
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Telegram</label>
+<input class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm placeholder:text-gray-400" placeholder="@username" type="text"/>
+</div>
+</div>
+<!-- LPR Checkbox -->
+<div class="flex items-center gap-3 pt-1">
+<input class="w-5 h-5 rounded border-gray-300 dark:border-gray-700 text-primary focus:ring-primary cursor-pointer" id="lpr" type="checkbox"/>
+<label class="text-sm font-medium text-[#111418] dark:text-gray-200 cursor-pointer" for="lpr">Лицо, принимающее решения (ЛПР)</label>
+</div>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px bg-gray-100 dark:bg-gray-800 mx-6"></div>
+<!-- Section: Дополнительно -->
+<div class="px-6 py-6 mb-4">
+<h2 class="text-[#111418] dark:text-white text-lg font-bold leading-tight mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">add_circle</span>
+                            Дополнительно
+                        </h2>
+<div class="space-y-4">
+<!-- Tags Multi-select -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Теги</label>
+<div class="flex flex-wrap gap-2 p-2 border border-[#dbdfe6] dark:border-gray-700 rounded-lg bg-white dark:bg-gray-800 min-h-11">
+<span class="flex items-center gap-1 px-2 py-0.5 bg-primary/10 text-primary rounded text-xs font-semibold border border-primary/20">
+                                        Крупный бизнес <button class="material-symbols-outlined text-xs hover:text-blue-700" type="button">close</button>
+</span>
+<span class="flex items-center gap-1 px-2 py-0.5 bg-primary/10 text-primary rounded text-xs font-semibold border border-primary/20">
+                                        Лояльный <button class="material-symbols-outlined text-xs hover:text-blue-700" type="button">close</button>
+</span>
+<input class="flex-1 outline-none bg-transparent text-sm border-none ring-0 focus:ring-0 p-0 h-7 min-w-20" placeholder="Добавить тег..." type="text"/>
+</div>
+</div>
+<!-- Source Dropdown -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Источник</label>
+<select class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary h-11 px-3.5 text-sm">
+<option value="">Выберите источник</option>
+<option value="referral">Рекомендация</option>
+<option value="ads">Реклама</option>
+<option value="cold_call">Холодный звонок</option>
+<option value="website">Сайт</option>
+</select>
+</div>
+<!-- Notes -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[#111418] dark:text-gray-200 text-sm font-medium">Заметки</label>
+<textarea class="w-full rounded-lg border border-[#dbdfe6] dark:border-gray-700 bg-white dark:bg-gray-800 text-[#111418] dark:text-white focus:border-primary focus:ring-1 focus:ring-primary min-h-[100px] p-3.5 text-sm placeholder:text-gray-400 resize-none" placeholder="Дополнительная информация о клиенте..."></textarea>
+</div>
+</div>
+</div>
+</form>
+</div>
+<!-- Footer -->
+<div class="px-6 py-4 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 flex justify-end gap-3 shrink-0">
+<button class="px-5 py-2.5 rounded-lg text-[#111418] dark:text-white text-sm font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" type="button">
+                    Отмена
+                </button>
+<button class="px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary/90 transition-all shadow-md shadow-primary/20" form="addClientForm" type="submit">
+                    Создать клиента
+                </button>
+</div>
+</div>
+</div>
+</body></html>

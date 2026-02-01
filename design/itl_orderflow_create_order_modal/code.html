@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Создать заказ</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #dbdbe6;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex flex-col items-center justify-center p-4">
+<!-- Modal Backdrop -->
+<div class="fixed inset-0 bg-black/40 backdrop-blur-sm z-0"></div>
+<!-- Main Modal Container (800px width) -->
+<div class="relative z-10 w-full max-w-[800px] bg-white dark:bg-[#1a1a2e] rounded-xl shadow-2xl flex flex-col overflow-hidden">
+<!-- Header -->
+<header class="flex items-center justify-between px-8 py-6 border-b border-[#f0f0f5] dark:border-[#2a2a3e]">
+<div class="flex flex-col gap-1">
+<h2 class="text-[#111118] dark:text-white text-2xl font-bold leading-tight tracking-tight">Новый заказ</h2>
+<p class="text-[#60608a] dark:text-[#a0a0c0] text-sm">Шаг 1: Основная информация</p>
+</div>
+<!-- Step Indicators -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2">
+<div class="size-3 rounded-full bg-primary shadow-[0_0_8px_rgba(60,60,246,0.5)]"></div>
+<div class="size-3 rounded-full bg-[#dbdbe6] dark:bg-[#3a3a50]"></div>
+<div class="size-3 rounded-full bg-[#dbdbe6] dark:bg-[#3a3a50]"></div>
+</div>
+</div>
+</header>
+<!-- Progress Bar (Integrated) -->
+<div class="h-1.5 w-full bg-[#f0f0f5] dark:bg-[#2a2a3e]">
+<div class="h-full bg-primary transition-all duration-500" style="width: 33.33%;"></div>
+</div>
+<!-- Step Content -->
+<div class="flex-1 px-8 py-8 overflow-y-auto custom-scrollbar max-h-[70vh]">
+<div class="grid grid-cols-2 gap-6">
+<!-- Client Selection (Full Width) -->
+<div class="col-span-2 flex flex-col gap-2">
+<label class="text-[#111118] dark:text-white text-sm font-semibold">Клиент <span class="text-red-500">*</span></label>
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[#60608a] pointer-events-none">search</span>
+<select class="appearance-none w-full bg-white dark:bg-[#252540] border border-[#dbdbe6] dark:border-[#3a3a50] rounded-lg h-12 pl-12 pr-4 text-[#111118] dark:text-white text-base focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer">
+<option value="">Поиск клиента или компании...</option>
+<option value="1">ООО "ТехноПром"</option>
+<option value="2">ИП Алексеев А.В.</option>
+<option value="3">Digital Solutions Ltd.</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#60608a] pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Project Name -->
+<div class="col-span-1 flex flex-col gap-2">
+<label class="text-[#111118] dark:text-white text-sm font-semibold">Название проекта</label>
+<input class="w-full bg-white dark:bg-[#252540] border border-[#dbdbe6] dark:border-[#3a3a50] rounded-lg h-12 px-4 text-[#111118] dark:text-white text-base focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="Введите название" type="text" value="Разработка CRM системы"/>
+</div>
+<!-- Order Type -->
+<div class="col-span-1 flex flex-col gap-2">
+<label class="text-[#111118] dark:text-white text-sm font-semibold">Тип заказа</label>
+<div class="relative">
+<select class="appearance-none w-full bg-white dark:bg-[#252540] border border-[#dbdbe6] dark:border-[#3a3a50] rounded-lg h-12 px-4 text-[#111118] dark:text-white text-base focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all cursor-pointer">
+<option value="dev">Разработка ПО</option>
+<option value="support">Техподдержка</option>
+<option value="audit">IT Аудит</option>
+<option value="consult">Консалтинг</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#60608a] pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Priority Radio Cards (Full Width) -->
+<div class="col-span-2 flex flex-col gap-3 mt-2">
+<label class="text-[#111118] dark:text-white text-sm font-semibold">Приоритет выполнения</label>
+<div class="grid grid-cols-3 gap-4">
+<!-- Priority: Low -->
+<label class="cursor-pointer">
+<input class="sr-only peer" name="priority" type="radio" value="low"/>
+<div class="flex flex-col items-center justify-center gap-2 p-4 border border-[#dbdbe6] dark:border-[#3a3a50] rounded-xl peer-checked:border-primary peer-checked:bg-primary/5 hover:bg-background-light dark:hover:bg-[#2a2a4a] transition-all">
+<span class="material-symbols-outlined text-green-500">signal_cellular_1_bar</span>
+<span class="text-sm font-medium text-[#111118] dark:text-white">Низкий</span>
+</div>
+</label>
+<!-- Priority: Medium -->
+<label class="cursor-pointer">
+<input checked="" class="sr-only peer" name="priority" type="radio" value="medium"/>
+<div class="flex flex-col items-center justify-center gap-2 p-4 border border-[#dbdbe6] dark:border-[#3a3a50] rounded-xl peer-checked:border-primary peer-checked:bg-primary/5 hover:bg-background-light dark:hover:bg-[#2a2a4a] transition-all">
+<span class="material-symbols-outlined text-yellow-500">signal_cellular_3_bar</span>
+<span class="text-sm font-medium text-[#111118] dark:text-white">Средний</span>
+</div>
+</label>
+<!-- Priority: High -->
+<label class="cursor-pointer">
+<input class="sr-only peer" name="priority" type="radio" value="high"/>
+<div class="flex flex-col items-center justify-center gap-2 p-4 border border-[#dbdbe6] dark:border-[#3a3a50] rounded-xl peer-checked:border-primary peer-checked:bg-primary/5 hover:bg-background-light dark:hover:bg-[#2a2a4a] transition-all">
+<span class="material-symbols-outlined text-red-500">signal_cellular_4_bar</span>
+<span class="text-sm font-medium text-[#111118] dark:text-white">Высокий</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Tags -->
+<div class="col-span-2 flex flex-col gap-2">
+<label class="text-[#111118] dark:text-white text-sm font-semibold">Теги</label>
+<div class="flex flex-wrap items-center gap-2 p-2 min-h-[56px] bg-white dark:bg-[#252540] border border-[#dbdbe6] dark:border-[#3a3a50] rounded-lg focus-within:ring-2 focus-within:ring-primary/20 focus-within:border-primary transition-all">
+<div class="flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/20 text-primary text-sm font-medium rounded-full">
+                            Frontend
+                            <span class="material-symbols-outlined text-[16px] cursor-pointer hover:text-primary/70">close</span>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/20 text-primary text-sm font-medium rounded-full">
+                            SaaS
+                            <span class="material-symbols-outlined text-[16px] cursor-pointer hover:text-primary/70">close</span>
+</div>
+<input class="flex-1 min-w-[120px] bg-transparent border-none focus:ring-0 text-sm text-[#111118] dark:text-white" placeholder="Добавить тег..." type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="flex items-center justify-between px-8 py-6 bg-[#fcfcfd] dark:bg-[#15152a] border-t border-[#f0f0f5] dark:border-[#2a2a3e]">
+<button class="px-6 py-2.5 text-[#60608a] dark:text-[#a0a0c0] text-sm font-bold hover:bg-[#f0f0f5] dark:hover:bg-[#252540] rounded-lg transition-all">
+                Отмена
+            </button>
+<div class="flex gap-4">
+<button class="flex items-center justify-center gap-2 px-8 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-[#2b2bd6] shadow-[0_4px_12px_rgba(60,60,246,0.3)] transition-all">
+                    Далее
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</footer>
+</div>
+<!-- Hidden floating info for UI context -->
+<div class="fixed bottom-6 right-6 text-xs text-[#60608a] opacity-50 select-none">
+        ITL OrderFlow UI Framework v2.4
+    </div>
+</body></html>

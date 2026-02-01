@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow — Портал счетов</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md border-b border-slate-200 dark:border-[#282839] px-4 md:px-10 lg:px-40 py-3">
+<div class="flex items-center justify-between whitespace-nowrap">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary dark:text-white">
+<div class="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+</div>
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">ITL OrderFlow</h2>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-600 dark:text-[#9c9cba] hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Проекты</a>
+<a class="text-primary dark:text-white text-sm font-bold border-b-2 border-primary pb-1" href="#">Счета</a>
+<a class="text-slate-600 dark:text-[#9c9cba] hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Документы</a>
+<a class="text-slate-600 dark:text-[#9c9cba] hover:text-primary dark:hover:text-white text-sm font-medium transition-colors" href="#">Поддержка</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<label class="hidden sm:flex flex-col min-w-40 h-10 max-w-64">
+<div class="flex w-full flex-1 items-stretch rounded-lg h-full overflow-hidden">
+<div class="text-[#9c9cba] flex border-none bg-slate-100 dark:bg-[#282839] items-center justify-center px-3">
+<span class="material-symbols-outlined text-sm">search</span>
+</div>
+<input class="form-input flex w-full border-none bg-slate-100 dark:bg-[#282839] focus:ring-0 text-sm placeholder:text-[#9c9cba] pl-1" placeholder="Поиск счетов..." value=""/>
+</div>
+</label>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-primary/20" data-alt="User profile avatar showing a professional portrait" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBTLYdtFGJgn75UTDWVQqZqgAV5iEvK0zT_QGHIM9GcNx20gcdAwvop5K0XFhHhwjE9p9UesdcZWHzd0yhWrfxYDq5d9C9U0gbuqd65xWqIMUchJ6HPPXgEEjQsrxbkCCRIYJ5zbhbSU_plZfKykU64M63MgnMsbBupAyTibtyC-GijgtU3gQk6xT9mUFYF13FpLh4So_w3WReViLmSBvpg6MlAs8lPgECh4dT0hmKIY2HRqrjs0YRdVgxJ_qvr17I2HjfxUAJ7X5ft");'>
+</div>
+</div>
+</div>
+</header>
+<main class="px-4 md:px-10 lg:px-40 py-8 max-w-[1400px] mx-auto">
+<!-- Page Heading Section -->
+<div class="flex flex-wrap justify-between items-end gap-6 mb-8">
+<div class="flex flex-col gap-2">
+<h1 class="text-slate-900 dark:text-white text-4xl font-black leading-tight tracking-[-0.033em]">Счета</h1>
+<p class="text-slate-500 dark:text-[#9c9cba] text-base font-normal">Управляйте вашими платежами и отслеживайте историю транзакций по проектам</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 rounded-lg h-11 px-5 bg-slate-100 dark:bg-[#282839] text-slate-900 dark:text-white text-sm font-bold transition-all hover:bg-slate-200 dark:hover:bg-[#34344a]">
+<span class="material-symbols-outlined text-sm">history</span>
+<span>История выплат</span>
+</button>
+<button class="flex items-center gap-2 rounded-lg h-11 px-5 bg-primary text-white text-sm font-bold transition-all hover:bg-blue-700 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-sm">file_download</span>
+<span>Отчет за месяц</span>
+</button>
+</div>
+</div>
+<!-- Stats Overview -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27]">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium uppercase tracking-wider">К оплате</p>
+<p class="text-slate-900 dark:text-white tracking-light text-2xl font-bold">250 000 ₽</p>
+<div class="flex items-center gap-1 text-[#0bda68] text-sm font-bold">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+15% к прошлому месяцу</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27]">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium uppercase tracking-wider">Оплачено всего</p>
+<p class="text-slate-900 dark:text-white tracking-light text-2xl font-bold">1 450 000 ₽</p>
+<div class="flex items-center gap-1 text-[#0bda68] text-sm font-bold">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>5 транзакций</span>
+</div>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27]">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium uppercase tracking-wider">В работе</p>
+<p class="text-slate-900 dark:text-white tracking-light text-2xl font-bold">3 проекта</p>
+<p class="text-slate-400 dark:text-[#9c9cba] text-sm">Активные этапы</p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27]">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium uppercase tracking-wider">Кэшбэк</p>
+<p class="text-primary tracking-light text-2xl font-bold">12 400 ₽</p>
+<p class="text-slate-400 dark:text-[#9c9cba] text-sm">Бонусная программа ITL</p>
+</div>
+</div>
+<!-- Filter Tabs -->
+<div class="mb-8 overflow-x-auto">
+<div class="flex border-b border-slate-200 dark:border-[#3b3b54] gap-8 min-w-max">
+<a class="flex flex-col items-center border-b-[3px] border-b-primary text-primary pb-3 font-bold text-sm tracking-[0.015em]" href="#">
+                    Все счета
+                </a>
+<a class="flex flex-col items-center border-b-[3px] border-b-transparent text-slate-500 dark:text-[#9c9cba] hover:text-slate-800 dark:hover:text-white pb-3 font-bold text-sm tracking-[0.015em] transition-all" href="#">
+                    Ожидают оплаты (2)
+                </a>
+<a class="flex flex-col items-center border-b-[3px] border-b-transparent text-slate-500 dark:text-[#9c9cba] hover:text-slate-800 dark:hover:text-white pb-3 font-bold text-sm tracking-[0.015em] transition-all" href="#">
+                    Оплаченные
+                </a>
+<a class="flex flex-col items-center border-b-[3px] border-b-transparent text-slate-500 dark:text-[#9c9cba] hover:text-slate-800 dark:hover:text-white pb-3 font-bold text-sm tracking-[0.015em] transition-all" href="#">
+                    Черновики
+                </a>
+</div>
+</div>
+<!-- Invoice Cards Grid -->
+<div class="grid grid-cols-1 gap-6">
+<!-- Card 1 (Active) -->
+<div class="group flex flex-col md:flex-row items-stretch rounded-xl border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27] overflow-hidden transition-all hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5">
+<div class="w-full md:w-64 bg-center bg-no-repeat aspect-video md:aspect-auto bg-cover shrink-0 relative" data-alt="Thumbnail showing architectural software wireframe layout" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAsuIiTSirESAeEcB54eq9RKuHMn2daLMznk2k_YVl9EcYJpwiSHxsZC_yRGbsF-QYqfz30ARc5NMa2xOPvNE9pD9k7qsop_2hPepcIfcPTgut0eIWwQojreOO57mrxS72Yhz6s5y_ksF8wVWVWXpduyk74ZkG1wJwFg2F1sNXTOSBzJpjrJnNCeFw9zdfGBZX5QuDbiRHLFIMA7TESqvRUhhaw0os_GDo1QUkLzbWEeJBwVMizEabOphw-2hRA3hJR0djRGkyxRsJV");'>
+<div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-between gap-4">
+<div class="flex flex-wrap justify-between items-start gap-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">К ОПЛАТЕ</span>
+<span class="text-slate-400 dark:text-[#9c9cba] text-xs font-medium">Счет №445-02 от 15.10.2023</span>
+</div>
+<h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">Разработка — этап 2 (Backend &amp; API)</h3>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm mt-1">Проект: E-commerce Mobile App</p>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-white text-3xl font-black leading-tight">150 000 ₽</p>
+<p class="text-slate-400 dark:text-[#9c9cba] text-xs">НДС включен (20%)</p>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-100 dark:border-[#282839]">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 text-slate-600 dark:text-[#9c9cba] hover:text-primary transition-colors text-sm font-bold">
+<span class="material-symbols-outlined text-base">picture_as_pdf</span>
+<span>Скачать PDF</span>
+</button>
+<button class="flex items-center gap-2 text-slate-600 dark:text-[#9c9cba] hover:text-primary transition-colors text-sm font-bold">
+<span class="material-symbols-outlined text-base">info</span>
+<span>Детализация</span>
+</button>
+</div>
+<button class="flex items-center gap-2 px-6 h-10 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-base">payments</span>
+<span>Оплатить онлайн</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 2 (Paid) -->
+<div class="group flex flex-col md:flex-row items-stretch rounded-xl border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27] overflow-hidden opacity-90 hover:opacity-100 transition-all">
+<div class="w-full md:w-64 bg-center bg-no-repeat aspect-video md:aspect-auto bg-cover shrink-0 grayscale group-hover:grayscale-0 transition-all" data-alt="Thumbnail showing UI design components in Figma" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBv7jcNhD-QeTCtIIvwahmdw1mowE5-L8AxqltK9DDDec5yuFzffJIZIygtu-zAAHiLgforimDI1k1GApF00lU2im5LZaeSpNGatcxT68bwfUV0te-F1qLVZjW--9mL0UBxBJ-D9rn6NfxMd4QFcVnxQdSYXQr_o9DlCXHExR2F6-I50OMEp7OSchQPv55FsOCGwzfpJfD6YJmQ-WN5VyaT3Gy5Aa8BIiPmJNZ7Ysk5eNzQ_5gcyQR51Zg3LBZm35P5bpUE0kEEH5uO");'>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-between gap-4">
+<div class="flex flex-wrap justify-between items-start gap-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 text-[10px] font-bold uppercase tracking-wider">ОПЛАЧЕН</span>
+<span class="text-slate-400 dark:text-[#9c9cba] text-xs font-medium">Счет №445-01 от 01.10.2023</span>
+</div>
+<h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">Дизайн-система и прототипирование</h3>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm mt-1">Проект: E-commerce Mobile App</p>
+</div>
+<div class="text-right">
+<p class="text-slate-400 dark:text-slate-500 line-through text-lg font-bold">100 000 ₽</p>
+<p class="text-emerald-500 text-2xl font-black leading-tight">Оплачено</p>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-100 dark:border-[#282839]">
+<div class="flex items-center gap-4 text-emerald-500 text-xs font-medium">
+<span class="material-symbols-outlined text-sm">event_available</span>
+<span>Платеж подтвержден 03.10.2023</span>
+</div>
+<div class="flex items-center gap-3">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">print</span>
+</button>
+<button class="flex items-center gap-2 px-4 h-9 bg-slate-100 dark:bg-[#282839] text-slate-900 dark:text-white rounded-lg text-sm font-bold transition-all hover:bg-slate-200 dark:hover:bg-[#34344a]">
+<span>Просмотреть чек</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Card 3 (Active/Pending) -->
+<div class="group flex flex-col md:flex-row items-stretch rounded-xl border border-slate-200 dark:border-[#3b3b54] bg-white dark:bg-[#1b1b27] overflow-hidden transition-all hover:border-primary/50 hover:shadow-xl hover:shadow-primary/5">
+<div class="w-full md:w-64 bg-center bg-no-repeat aspect-video md:aspect-auto bg-cover shrink-0 relative" data-alt="Thumbnail showing project documentation folders" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB9AhJ-oqCgNFCxh7jrGiFLU2YvhAeAwYFkKYjS4EtqP5H_FluxADvusRqxFJ8XMk_pog1p6r_gpIfnHnUrDoq5yQRfDzW7-cV4W0yEQpXqsQlB5YXHY22RhdM3gsyQhw57A-ATUAyEd7nRXu_1KFCswwB_OGhu_exRmNREiBW8p-yIFYe_TwqTPYPeDpHpmtDg3eACA0gjbl59ipvcjs_3b9lrb3n0tptESCb-ckKfRf5p0GN3TQgz0lKQk4t1TMV1YvEahXz5vpco");'>
+<div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
+</div>
+<div class="flex-1 p-6 flex flex-col justify-between gap-4">
+<div class="flex flex-wrap justify-between items-start gap-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="px-2 py-0.5 rounded bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider">К ОПЛАТЕ</span>
+<span class="text-slate-400 dark:text-[#9c9cba] text-xs font-medium">Счет №446-01 от 20.10.2023</span>
+</div>
+<h3 class="text-slate-900 dark:text-white text-xl font-bold leading-tight tracking-[-0.015em]">Техническая поддержка (Октябрь)</h3>
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm mt-1">Проект: CRM Integration</p>
+</div>
+<div class="text-right">
+<p class="text-slate-900 dark:text-white text-3xl font-black leading-tight">100 000 ₽</p>
+<p class="text-slate-400 dark:text-[#9c9cba] text-xs">Срок до 30.10.2023</p>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-100 dark:border-[#282839]">
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 text-slate-600 dark:text-[#9c9cba] hover:text-primary transition-colors text-sm font-bold">
+<span class="material-symbols-outlined text-base">picture_as_pdf</span>
+<span>Скачать PDF</span>
+</button>
+</div>
+<button class="flex items-center gap-2 px-6 h-10 bg-primary hover:bg-blue-700 text-white rounded-lg text-sm font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-base">payments</span>
+<span>Оплатить онлайн</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Detail Modal Preview (Simplified Visual) -->
+<div class="mt-12 p-8 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-200 dark:from-[#1b1b27] dark:to-[#111118] border border-slate-200 dark:border-[#3b3b54]">
+<div class="flex flex-col md:flex-row gap-8">
+<div class="flex-1">
+<h4 class="text-slate-900 dark:text-white text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                        Детализация последнего счета
+                    </h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-slate-300 dark:border-[#282839]">
+<span class="text-slate-500 dark:text-[#9c9cba] text-sm">Разработка API (60ч)</span>
+<span class="text-slate-900 dark:text-white font-medium">90 000 ₽</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-slate-300 dark:border-[#282839]">
+<span class="text-slate-500 dark:text-[#9c9cba] text-sm">Настройка серверов (20ч)</span>
+<span class="text-slate-900 dark:text-white font-medium">40 000 ₽</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-slate-300 dark:border-[#282839]">
+<span class="text-slate-500 dark:text-[#9c9cba] text-sm">QA Тестирование (10ч)</span>
+<span class="text-slate-900 dark:text-white font-medium">20 000 ₽</span>
+</div>
+<div class="flex justify-between items-center py-2 pt-4">
+<span class="text-slate-900 dark:text-white font-bold">Итого</span>
+<span class="text-primary font-black text-xl">150 000 ₽</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-80 bg-white dark:bg-[#282839] rounded-xl p-6 border border-slate-200 dark:border-[#3b3b54]">
+<h4 class="text-slate-900 dark:text-white text-sm font-bold mb-4 uppercase tracking-widest">История оплаты</h4>
+<div class="space-y-6 relative before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[2px] before:bg-slate-200 dark:before:bg-[#3b3b54]">
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 size-6 rounded-full bg-primary flex items-center justify-center text-white ring-4 ring-white dark:ring-[#282839]">
+<span class="material-symbols-outlined text-[14px]">send</span>
+</div>
+<p class="text-slate-900 dark:text-white text-xs font-bold">Счет выставлен</p>
+<p class="text-slate-500 dark:text-[#9c9cba] text-[10px]">15 Октября, 14:20</p>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 size-6 rounded-full bg-slate-300 dark:bg-[#3b3b54] flex items-center justify-center text-white ring-4 ring-white dark:ring-[#282839]">
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+</div>
+<p class="text-slate-500 dark:text-[#9c9cba] text-xs font-bold">Просмотрено клиентом</p>
+<p class="text-slate-500 dark:text-[#9c9cba] text-[10px]">16 Октября, 09:45</p>
+</div>
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 size-6 rounded-full bg-slate-300 dark:bg-[#3b3b54] flex items-center justify-center text-white ring-4 ring-white dark:ring-[#282839]">
+<span class="material-symbols-outlined text-[14px]">hourglass_empty</span>
+</div>
+<p class="text-slate-500 dark:text-[#9c9cba] text-xs font-bold italic">Ожидание оплаты...</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="mt-20 border-t border-slate-200 dark:border-[#282839] px-4 md:px-40 py-10 bg-slate-50 dark:bg-[#0c0c1a]">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="text-slate-500 dark:text-[#9c9cba] text-sm">
+                © 2023 ITL OrderFlow. Все права защищены.
+            </div>
+<div class="flex gap-8">
+<a class="text-slate-500 dark:text-[#9c9cba] hover:text-primary text-sm transition-colors" href="#">Конфиденциальность</a>
+<a class="text-slate-500 dark:text-[#9c9cba] hover:text-primary text-sm transition-colors" href="#">Условия использования</a>
+<a class="text-slate-500 dark:text-[#9c9cba] hover:text-primary text-sm transition-colors" href="#">API для разработчиков</a>
+</div>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow Global Command Palette</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .matching-text {
+            color: #3c3cf6;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen">
+<!-- Mock UI Background (Blurred Dashboard) -->
+<div class="fixed inset-0 z-0 overflow-hidden opacity-30 blur-sm pointer-events-none">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between border-b border-solid border-[#282839] px-40 py-3">
+<div class="flex items-center gap-4 text-white">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white">package_2</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight">ITL OrderFlow</h2>
+</div>
+</header>
+<main class="px-40 py-10 flex gap-8">
+<div class="w-64 flex flex-col gap-4">
+<div class="h-10 w-full bg-[#282839] rounded-lg"></div>
+<div class="h-10 w-full bg-[#282839] rounded-lg opacity-50"></div>
+<div class="h-10 w-full bg-[#282839] rounded-lg opacity-50"></div>
+</div>
+<div class="flex-1 grid grid-cols-2 gap-6">
+<div class="h-40 bg-[#1a1d2d] border border-[#282839] rounded-xl"></div>
+<div class="h-40 bg-[#1a1d2d] border border-[#282839] rounded-xl"></div>
+<div class="h-40 bg-[#1a1d2d] border border-[#282839] rounded-xl"></div>
+<div class="h-40 bg-[#1a1d2d] border border-[#282839] rounded-xl"></div>
+</div>
+</main>
+</div>
+</div>
+<!-- Modal Backdrop -->
+<div class="fixed inset-0 z-50 flex items-start justify-center pt-[15vh] bg-black/60 backdrop-blur-sm">
+<!-- Command Palette Container -->
+<div class="w-full max-w-[600px] bg-background-light dark:bg-[#1a1d2d] rounded-xl shadow-2xl border border-gray-200 dark:border-[#282839] overflow-hidden flex flex-col">
+<!-- Search Input Area -->
+<div class="relative flex items-center border-b border-gray-200 dark:border-[#282839] px-4 py-4">
+<span class="material-symbols-outlined text-gray-400 dark:text-[#9c9cba] mr-3">search</span>
+<input autofocus="" class="w-full bg-transparent border-none focus:ring-0 text-gray-900 dark:text-white text-lg placeholder-gray-400 dark:placeholder-[#9c9cba] p-0" placeholder="Поиск заказов, клиентов и задач..." type="text" value="#ORD"/>
+<div class="flex items-center gap-1 bg-gray-100 dark:bg-[#282839] px-2 py-1 rounded-lg border border-gray-200 dark:border-[#38384d] shrink-0 ml-2">
+<span class="text-xs font-bold text-gray-500 dark:text-[#9c9cba]">⌘K</span>
+</div>
+</div>
+<!-- Results Scroll Area -->
+<div class="max-h-[420px] overflow-y-auto py-2 custom-scrollbar">
+<!-- Section: Заказы -->
+<div class="px-4 py-2">
+<h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-[#5c5c7a] mb-2 px-2">Заказы</h3>
+<!-- Selected Item -->
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg bg-primary/10 dark:bg-primary/20 border-l-4 border-primary cursor-pointer group">
+<div class="size-9 rounded-lg bg-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-white text-[20px]">package</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-semibold truncate">
+<span class="matching-text">#ORD</span>-2024-047
+                            </p>
+<p class="text-gray-500 dark:text-[#9c9cba] text-xs">В обработке • Обновлено 2ч назад</p>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px] opacity-0 group-hover:opacity-100 transition-opacity">keyboard_return</span>
+</div>
+<!-- Regular Item -->
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-[#282839] cursor-pointer group mt-1">
+<div class="size-9 rounded-lg bg-gray-100 dark:bg-[#282839] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-gray-500 dark:text-[#9c9cba] text-[20px]">package</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-semibold truncate">
+<span class="matching-text">#ORD</span>-2024-039
+                            </p>
+<p class="text-gray-500 dark:text-[#9c9cba] text-xs">Доставлено • Клиент: ООО "Вектор"</p>
+</div>
+</div>
+</div>
+<!-- Section: Клиенты -->
+<div class="px-4 py-2 border-t border-gray-100 dark:border-[#282839] mt-2">
+<h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-[#5c5c7a] mb-2 px-2 pt-2">Клиенты</h3>
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-[#282839] cursor-pointer group">
+<div class="size-9 rounded-lg bg-gray-100 dark:bg-[#282839] flex items-center justify-center shrink-0 overflow-hidden">
+<div class="w-full h-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-xs font-bold text-white">Т</div>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-semibold truncate">ООО ТехноСофт</p>
+<p class="text-gray-500 dark:text-[#9c9cba] text-xs">Москва, РФ • 12 активных заказов</p>
+</div>
+</div>
+</div>
+<!-- Section: Задачи -->
+<div class="px-4 py-2 border-t border-gray-100 dark:border-[#282839] mt-2">
+<h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-[#5c5c7a] mb-2 px-2 pt-2">Задачи</h3>
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-[#282839] cursor-pointer group">
+<div class="size-9 rounded-lg bg-gray-100 dark:bg-[#282839] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-gray-500 dark:text-[#9c9cba] text-[20px]">check_circle</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-semibold truncate">Создать макеты для заказа <span class="matching-text">#ORD</span>-2024</p>
+<p class="text-gray-500 dark:text-[#9c9cba] text-xs">Дедлайн: Сегодня • Ответственный: Артем И.</p>
+</div>
+</div>
+</div>
+<!-- Section: Документы -->
+<div class="px-4 py-2 border-t border-gray-100 dark:border-[#282839] mt-2">
+<h3 class="text-xs font-bold uppercase tracking-wider text-gray-400 dark:text-[#5c5c7a] mb-2 px-2 pt-2">Документы</h3>
+<div class="flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-[#282839] cursor-pointer group">
+<div class="size-9 rounded-lg bg-gray-100 dark:bg-[#282839] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-gray-500 dark:text-[#9c9cba] text-[20px]">description</span>
+</div>
+<div class="flex-1 min-w-0">
+<p class="text-gray-900 dark:text-white text-sm font-semibold truncate">Счет-фактура <span class="matching-text">#ORD</span>_inv_47.pdf</p>
+<p class="text-gray-500 dark:text-[#9c9cba] text-xs">PDF • 2.4 MB • 15 мая 2024</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Toolbar -->
+<div class="bg-gray-50 dark:bg-[#111118] border-t border-gray-200 dark:border-[#282839] px-4 py-3 flex items-center justify-between">
+<div class="flex items-center gap-4 text-[11px] font-medium text-gray-500 dark:text-[#5c5c7a]">
+<div class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 rounded bg-gray-200 dark:bg-[#282839] text-gray-700 dark:text-[#9c9cba] font-bold border border-gray-300 dark:border-[#38384d]">↑↓</kbd>
+<span>навигация</span>
+</div>
+<div class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 rounded bg-gray-200 dark:bg-[#282839] text-gray-700 dark:text-[#9c9cba] font-bold border border-gray-300 dark:border-[#38384d]">Enter</kbd>
+<span>выбрать</span>
+</div>
+<div class="flex items-center gap-1.5">
+<kbd class="px-1.5 py-0.5 rounded bg-gray-200 dark:bg-[#282839] text-gray-700 dark:text-[#9c9cba] font-bold border border-gray-300 dark:border-[#38384d]">Esc</kbd>
+<span>закрыть</span>
+</div>
+</div>
+<div class="text-[10px] text-gray-400 dark:text-[#5c5c7a] font-semibold italic">
+                    ITL OrderFlow v2.4
+                </div>
+</div>
+</div>
+</div>
+</body></html>

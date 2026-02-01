@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Детали заказа</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white antialiased">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 flex items-center justify-between border-b border-solid border-[#f0f2f5] dark:border-slate-800 bg-white dark:bg-background-dark px-10 py-3">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4 text-[#111418] dark:text-white">
+<div class="size-6 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-[-0.015em]">ITL OrderFlow</h2>
+</div>
+<nav class="flex items-center gap-6">
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Проекты</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Задачи</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Команда</a>
+<a class="text-sm font-medium leading-normal hover:text-primary transition-colors" href="#">Отчеты</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-[#f0f2f5] dark:bg-slate-800 rounded-lg px-3 py-1.5 border-none">
+<span class="material-symbols-outlined text-[#60708a] text-xl">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48" placeholder="Поиск заказов..." type="text"/>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary/20" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAPVN20uylhmoilJnhQLQRlDgrpkqk3JrkKHPZY-hRFtAZfq4MNNyoU_Vjcv_06asXDKpRGzFdQlWsmUOwo2tsdqm_BMNYBu2gOPDWEecVkAbxIFENt_9BxlHZAdDWuLkMVWvko2jy4CPULwFn6DvGXymWEZunX3fw1mNIdQxBJZyucdh7490PQozdfCVm7XTlKd8IMGt1w30mdDCQqLpfOC8aHKAc6qfcCpOBAQTFGfH1fnjVoA2Q1thDSV3_hTfCMhrtIGA5hswF8");'></div>
+</div>
+</header>
+<main class="mx-auto flex w-full max-w-[1280px] flex-col px-4 md:px-10 py-6">
+<!-- Toolbar & Breadcrumbs -->
+<div class="flex flex-col gap-1 mb-4">
+<div class="flex items-center gap-2">
+<button class="p-1 hover:bg-[#f0f2f5] dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<div class="flex items-center gap-2 text-sm font-medium text-[#60708a]">
+<a class="hover:text-primary transition-colors" href="#">Заказы</a>
+<span>/</span>
+<span class="text-[#111418] dark:text-white">#ORD-2024-047</span>
+</div>
+</div>
+</div>
+<!-- Header Section -->
+<div class="flex flex-wrap justify-between items-start gap-4 mb-6">
+<h1 class="text-[#111418] dark:text-white text-4xl font-black leading-tight tracking-[-0.033em] max-w-2xl">
+                    Редизайн корпоративного портала
+                </h1>
+<div class="flex items-center gap-3">
+<button class="flex items-center justify-center rounded-lg h-10 bg-primary text-white gap-2 text-sm font-bold px-5 hover:bg-blue-600 transition-colors">
+<span class="material-symbols-outlined text-lg">sync</span>
+<span>В работе</span>
+<span class="material-symbols-outlined text-lg">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Meta Pills Grid -->
+<div class="flex flex-wrap gap-3 mb-8">
+<div class="flex h-9 items-center gap-x-2 rounded-lg bg-white dark:bg-slate-800 border border-[#f0f2f5] dark:border-slate-700 pl-2 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-primary text-xl">corporate_fare</span>
+<p class="text-sm font-medium">Клиент: ООО ТехноСофт</p>
+</div>
+<div class="flex h-9 items-center gap-x-2 rounded-lg bg-white dark:bg-slate-800 border border-[#f0f2f5] dark:border-slate-700 pl-2 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-primary text-xl">account_circle</span>
+<p class="text-sm font-medium">Менеджер: Алексей С.</p>
+</div>
+<div class="flex h-9 items-center gap-x-2 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30 pl-2 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-red-600 text-xl">priority_high</span>
+<p class="text-sm font-semibold text-red-700 dark:text-red-400">Приоритет: Высокий</p>
+</div>
+<div class="flex h-9 items-center gap-x-2 rounded-lg bg-white dark:bg-slate-800 border border-[#f0f2f5] dark:border-slate-700 pl-2 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-primary text-xl">event</span>
+<p class="text-sm font-medium">Дедлайн: 15.11.2024</p>
+</div>
+<div class="flex h-9 items-center gap-x-2 rounded-lg bg-white dark:bg-slate-800 border border-[#f0f2f5] dark:border-slate-700 pl-2 pr-4 shadow-sm">
+<span class="material-symbols-outlined text-green-600 text-xl">payments</span>
+<p class="text-sm font-medium">Бюджет: 450,000 ₽</p>
+</div>
+</div>
+<!-- Main Content Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column (2/3) -->
+<div class="lg:col-span-2 flex flex-col gap-8">
+<!-- Project Description -->
+<section class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-[#f0f2f5] dark:border-slate-700">
+<h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">description</span>
+                            Описание проекта
+                        </h3>
+<div class="prose dark:prose-invert max-w-none text-[#60708a] dark:text-slate-300 leading-relaxed">
+<p>Цель проекта — полное обновление пользовательского интерфейса внутреннего портала компании ТехноСофт. Основной упор делается на улучшение UX для мобильных сотрудников и интеграцию новых модулей отчетности.</p>
+<ul class="list-disc pl-5 mt-4 space-y-2">
+<li>Разработка адаптивной дизайн-системы.</li>
+<li>Миграция данных со старой платформы (PHP 5.6) на современный стек.</li>
+<li>Внедрение сквозной авторизации через корпоративный AD.</li>
+</ul>
+</div>
+</section>
+<!-- Progress Section -->
+<section class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-[#f0f2f5] dark:border-slate-700">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                                Прогресс проекта
+                            </h3>
+<span class="text-primary font-black text-xl">65%</span>
+</div>
+<div class="w-full bg-[#f0f2f5] dark:bg-slate-700 h-4 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 65%;"></div>
+</div>
+<div class="flex justify-between mt-3 text-xs text-[#60708a] dark:text-slate-400 font-medium uppercase tracking-wider">
+<span>Начало</span>
+<span>Завершение</span>
+</div>
+</section>
+<!-- Horizontal Stepper -->
+<section class="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-sm border border-[#f0f2f5] dark:border-slate-700">
+<h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">format_list_bulleted</span>
+                            Этапы реализации
+                        </h3>
+<div class="relative flex items-center justify-between">
+<!-- Background line -->
+<div class="absolute left-0 top-5 h-0.5 w-full bg-[#f0f2f5] dark:bg-slate-700 -z-0"></div>
+<!-- Step 1 (Done) -->
+<div class="relative z-10 flex flex-col items-center gap-2 text-center group">
+<div class="size-10 rounded-full bg-green-500 text-white flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-xl">check</span>
+</div>
+<span class="text-xs font-bold text-green-600">Сбор данных</span>
+</div>
+<!-- Step 2 (Done) -->
+<div class="relative z-10 flex flex-col items-center gap-2 text-center group">
+<div class="size-10 rounded-full bg-green-500 text-white flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-xl">check</span>
+</div>
+<span class="text-xs font-bold text-green-600">Дизайн (UI/UX)</span>
+</div>
+<!-- Step 3 (Active) -->
+<div class="relative z-10 flex flex-col items-center gap-2 text-center group">
+<div class="size-10 rounded-full bg-primary text-white flex items-center justify-center shadow-lg ring-4 ring-primary/20">
+<span class="material-symbols-outlined text-xl animate-spin">refresh</span>
+</div>
+<span class="text-xs font-bold text-primary">Разработка</span>
+</div>
+<!-- Step 4 (Waiting) -->
+<div class="relative z-10 flex flex-col items-center gap-2 text-center group">
+<div class="size-10 rounded-full bg-white dark:bg-slate-800 border-2 border-[#f0f2f5] dark:border-slate-700 flex items-center justify-center">
+<span class="text-sm font-bold text-[#60708a]">4</span>
+</div>
+<span class="text-xs font-bold text-[#60708a]">Тестирование</span>
+</div>
+<!-- Step 5 (Waiting) -->
+<div class="relative z-10 flex flex-col items-center gap-2 text-center group">
+<div class="size-10 rounded-full bg-white dark:bg-slate-800 border-2 border-[#f0f2f5] dark:border-slate-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-xl text-[#60708a]">rocket_launch</span>
+</div>
+<span class="text-xs font-bold text-[#60708a]">Релиз</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Column (1/3) -->
+<div class="flex flex-col gap-6">
+<!-- Team Card -->
+<section class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-[#f0f2f5] dark:border-slate-700">
+<h3 class="text-base font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">groups</span>
+                            Команда проекта
+                        </h3>
+<div class="flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-cover bg-center" data-alt="Manager avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB6tYYFXg0uA_0SaLuy12FTule6D492NQr7KnC-s0HsZnDaBb02DNkz_khmXya5vdmsGiX-t4uKOhYhMVAtiQVen-cqNgAt_IHVeBmrIZeSrYdJGGP95l6B4y2o1rbzq7WSjTCehCNlIliwegJSgyiT8Bu21zSqdLyRG15bvcCjXhSA8l_oVaA5ynXWo2qRkDbJVpy6d0PxKunaRIqLRXHra38uJGWQOQ6TdBQd-K8pFG3ZsqO4XZ74ajaR6Hj-1_dSgdgqwsrkXXdS');"></div>
+<div>
+<p class="text-sm font-bold">Алексей Соколов</p>
+<p class="text-xs text-[#60708a]">Project Manager</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-cover bg-center" data-alt="Designer avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA9gKu3bjhvo6Y7js-KoeaiwYp_CnoE4IeGgTFwhPB4cJdcOmc05xrmsGBnduDfE9ofJ5UARLlrMMjVmVoPMOmwEVhgQu4X7YUcGJuv_71PCs38D27DKZK0QxXOh0-DJW4QhO11DngV9fFx9UBBVh__tiQ4_U1BANuwsmCglspZ0GXqwi4U5qPt7YYA47SbiQfpoy2LlcPTEf7za2O_mzSPwgN2jfpTh3-R8yqESOThdb7W82ldMN3sWmBA36Xw0lKT6i0zEpWsJnnA');"></div>
+<div>
+<p class="text-sm font-bold">Марина Волкова</p>
+<p class="text-xs text-[#60708a]">Lead Designer</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-cover bg-center" data-alt="Developer avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAuUfNQszIe1dueELee8eQA5SWyafZbwZ1d8D1yosHTRxMoyJ86rOTe-3w_DNOe5z5iYZ7UtHKaZyCh3GkKVdHmDjrzs1hE-DzPT2yosNYeMSkkKC6itMbdhlKFWaz-EoZlM_We7Gmn8TQ-v_5araxT5p-PbQ-BCLeFccvbWT5scf_is4KTy79L8SbUllhYk8weSVquECcOn0n_QEn5b69zJxgaoOVPEDkGiQaGewcgq7llPEBu0gpZOwDyP9UAfUiIF_YKYEeqxB54');"></div>
+<div>
+<p class="text-sm font-bold">Дмитрий Петров</p>
+<p class="text-xs text-[#60708a]">Fullstack Developer</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 text-sm font-semibold text-primary py-2 bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors">
+                            Управление командой
+                        </button>
+</section>
+<!-- Client Card -->
+<section class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-[#f0f2f5] dark:border-slate-700">
+<h3 class="text-base font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">contact_mail</span>
+                            Клиент
+                        </h3>
+<div class="flex flex-col gap-3">
+<div class="p-3 bg-background-light dark:bg-slate-900 rounded-lg">
+<p class="text-sm font-bold">ООО ТехноСофт</p>
+<p class="text-xs text-[#60708a]">ИНН: 7712345678</p>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-lg text-[#60708a]">person</span>
+<span>Иван Игоревич (Директор)</span>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-lg text-[#60708a]">alternate_email</span>
+<a class="text-primary hover:underline" href="mailto:ceo@technosoft.ru">ceo@technosoft.ru</a>
+</div>
+<div class="flex items-center gap-2 text-sm">
+<span class="material-symbols-outlined text-lg text-[#60708a]">call</span>
+<span>+7 (999) 123-45-67</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-[#f0f2f5] dark:border-slate-700">
+<h3 class="text-base font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">bolt</span>
+                            Быстрые действия
+                        </h3>
+<div class="flex flex-col gap-2">
+<button class="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-[#f0f2f5] dark:border-slate-700 hover:bg-[#f0f2f5] dark:hover:bg-slate-700 transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-primary">add_task</span>
+                                Создать задачу
+                            </button>
+<button class="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-[#f0f2f5] dark:border-slate-700 hover:bg-[#f0f2f5] dark:hover:bg-slate-700 transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-primary">summarize</span>
+                                Сформировать отчет
+                            </button>
+<button class="flex items-center gap-3 px-4 py-2.5 rounded-lg border border-[#f0f2f5] dark:border-slate-700 hover:bg-[#f0f2f5] dark:hover:bg-slate-700 transition-colors text-sm font-medium">
+<span class="material-symbols-outlined text-primary">step</span>
+                                Завершить этап
+                            </button>
+</div>
+</section>
+<!-- Links Section -->
+<section class="bg-white dark:bg-slate-800 p-5 rounded-xl shadow-sm border border-[#f0f2f5] dark:border-slate-700">
+<h3 class="text-base font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">link</span>
+                            Ссылки
+                        </h3>
+<div class="space-y-3">
+<a class="flex items-center justify-between p-2 rounded-lg hover:bg-[#f0f2f5] dark:hover:bg-slate-700 transition-colors" href="#">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-orange-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-orange-600">draw</span>
+</div>
+<span class="text-sm font-medium">Figma Prototypes</span>
+</div>
+<span class="material-symbols-outlined text-lg text-[#60708a]">open_in_new</span>
+</a>
+<a class="flex items-center justify-between p-2 rounded-lg hover:bg-[#f0f2f5] dark:hover:bg-slate-700 transition-colors" href="#">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-slate-100 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-800">code</span>
+</div>
+<span class="text-sm font-medium">GitHub Repo</span>
+</div>
+<span class="material-symbols-outlined text-lg text-[#60708a]">open_in_new</span>
+</a>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+</body></html>

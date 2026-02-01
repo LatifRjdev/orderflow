@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#13ec13",
+                "background-light": "#f6f8f6",
+                "background-dark": "#102210",
+              },
+              fontFamily: {
+                "display": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .signature-pad {
+            background-image: radial-gradient(circle, #283928 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="border-b border-solid border-[#283928] bg-background-light dark:bg-background-dark px-4 lg:px-10 py-3 sticky top-0 z-50">
+<div class="max-w-[1200px] mx-auto flex items-center justify-between whitespace-nowrap">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">ITL OrderFlow</h2>
+</div>
+<div class="hidden md:flex flex-1 justify-end gap-8 items-center">
+<nav class="flex items-center gap-6">
+<a class="hover:text-primary transition-colors text-sm font-medium" href="#">Проекты</a>
+<a class="hover:text-primary transition-colors text-sm font-medium" href="#">Документы</a>
+<a class="hover:text-primary transition-colors text-sm font-medium" href="#">Финансы</a>
+<a class="hover:text-primary transition-colors text-sm font-medium" href="#">Отчеты</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#283928] text-white hover:bg-opacity-80 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-[#283928] text-white hover:bg-opacity-80 transition-all">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 border-2 border-primary" data-alt="User avatar placeholder" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCC9NoQ493nJD694HGGX6hn1QVP6WLM-ttBP1qYCNYYDtC1RWsbu8gylOvZg2AVB6bVOnBsBgJwTZta-FhW5-wdAqD7eQEHS-2DvL7jYy4Qn8ADXJBzPhehNOIhcJwGPN3QAfmgQtCfnRGGaL4fhLHE4BEq4f2hnr8bXErrJHt0Dh2fA9M2F4cLGtm7-v9M6kbf4cduD6ybCNnf38Qcxaj7cZUoZ1U2LvuYYpcHu3vC9Ur-HrKCi1RnuZ6C1iTVpj72g3iA3skVSawm");'></div>
+</div>
+</div>
+</header>
+<main class="max-w-[1200px] mx-auto px-4 py-8">
+<!-- Breadcrumbs -->
+<div class="flex flex-wrap gap-2 mb-6">
+<a class="text-[#9db99d] hover:text-white transition-colors text-sm font-medium" href="#">Проекты</a>
+<span class="text-[#9db99d] text-sm font-medium">/</span>
+<a class="text-[#9db99d] hover:text-white transition-colors text-sm font-medium" href="#">Мобильное приложение "EcoTrack"</a>
+<span class="text-[#9db99d] text-sm font-medium">/</span>
+<span class="text-white text-sm font-medium">Согласование этапа</span>
+</div>
+<!-- Page Heading -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+<div class="max-w-2xl">
+<span class="inline-block px-3 py-1 rounded-full bg-amber-500/20 text-amber-500 text-xs font-bold uppercase tracking-wider mb-3">Ожидает решения</span>
+<h1 class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Согласование этапа: Дизайн макетов</h1>
+<p class="text-[#9db99d] text-lg font-normal leading-normal mt-2">Пожалуйста, ознакомьтесь с результатами и примите решение по завершенному этапу проектирования.</p>
+</div>
+<button class="flex items-center justify-center gap-2 rounded-lg h-12 px-6 bg-[#283928] text-white hover:bg-opacity-80 transition-all font-bold">
+<span class="material-symbols-outlined">download</span>
+<span>Скачать весь архив</span>
+</button>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- Left Column: Content -->
+<div class="lg:col-span-2 space-y-8">
+<!-- Deliverables Checklist -->
+<div class="bg-white/5 border border-[#283928] rounded-xl overflow-hidden">
+<div class="bg-[#283928]/50 px-6 py-4 border-b border-[#283928]">
+<h2 class="text-white text-xl font-bold">Результаты работ</h2>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex items-start gap-4 p-4 rounded-lg bg-[#283928]/20 group">
+<div class="mt-1 text-primary">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="text-white font-bold">UX-исследование и прототипирование</p>
+<p class="text-[#9db99d] text-sm">Проработаны пользовательские сценарии для 12 ключевых экранов.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-lg bg-[#283928]/20 group">
+<div class="mt-1 text-primary">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="text-white font-bold">UI-дизайн главной страницы</p>
+<p class="text-[#9db99d] text-sm">Финальный визуал в темной и светлой темах.</p>
+</div>
+</div>
+<div class="flex items-start gap-4 p-4 rounded-lg bg-[#283928]/20 group">
+<div class="mt-1 text-primary">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="text-white font-bold">Мобильная адаптация</p>
+<p class="text-[#9db99d] text-sm">Адаптивные макеты для iOS и Android устройств.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- File Preview Gallery -->
+<div>
+<h2 class="text-white text-xl font-bold mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">image</span>
+                        Файлы для просмотра
+                    </h2>
+<div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+<div class="group relative rounded-lg overflow-hidden border border-[#283928] cursor-pointer">
+<img class="w-full aspect-square object-cover transition-transform group-hover:scale-105" data-alt="UI Design mobile dashboard preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7GqPkN4gZ8zujAvFepTwPFREXXzlKG6U90TE8UzlHeGgwxxUvwU8l0TccxkL-dCVUQxzYZFrSzYtt0CtZqVRmoTRgh0oJ7xGBtK9D2PdIgxVHvE29AJr5IETpYslwD0P08XwfElxCTAuiePZzQwNef2gcsMI5RjOeeKaeEgfA7U6AYVHGYDh7cLxsFVQBszmRMs78ORu8XHdoD8JBKEs2VHVrVCqv9-Ne3BIU8sgrzobzwjLdX3uG4Isxex2p4dpu9Gq2YHLPsO8d"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-2 bg-black/80 text-[10px] text-white truncate">Main_Screen_V2.png</div>
+</div>
+<div class="group relative rounded-lg overflow-hidden border border-[#283928] cursor-pointer">
+<img class="w-full aspect-square object-cover transition-transform group-hover:scale-105" data-alt="UI Design color palette preview" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnK2DIesVwsBkvGrJnfPuuPInAJm1ScA3Oci3QFxgyO6JLS0-OLZmfeaZFo6P1Rcf9GL5LRBN0WO1-m36iRB2BMZ84sRPRpCfnGw8I46ivLADQG9uhNaVmFNc60yDWu4sOacpRSUkSV-WWtNrN4c6V268u9nkLo_TU0zN9VBPfteLfSRXM91xgVzdnX_ycbGkQJz3v-pUDqbly97egu-FpLaBQMjnuS62rDtjixN-b4BSp85vr4q8L9YJXVCf2BAifGQN2Y7tXgpkP"/>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-2 bg-black/80 text-[10px] text-white truncate">Style_Guide.png</div>
+</div>
+<div class="group relative rounded-lg overflow-hidden border border-[#283928] cursor-pointer">
+<div class="w-full aspect-square bg-[#283928] flex flex-col items-center justify-center gap-2">
+<span class="material-symbols-outlined text-primary text-4xl">description</span>
+<span class="text-xs text-[#9db99d]">Specification.pdf</span>
+</div>
+<div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl">visibility</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Signature Section -->
+<div class="bg-white/5 border border-[#283928] rounded-xl p-6">
+<div class="flex justify-between items-center mb-4">
+<h2 class="text-white text-lg font-bold">Цифровая подпись</h2>
+<button class="text-primary text-xs font-bold hover:underline">ОЧИСТИТЬ</button>
+</div>
+<div class="signature-pad w-full h-40 border-2 border-dashed border-[#283928] rounded-lg flex items-center justify-center relative overflow-hidden">
+<span class="text-[#9db99d]/30 text-sm select-none">Распишитесь здесь, используя мышь или сенсорный экран</span>
+<div class="absolute bottom-4 right-4 text-white/10">
+<span class="material-symbols-outlined text-6xl">edit_square</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Details Grid -->
+<div class="space-y-6">
+<div class="bg-white/5 border border-[#283928] rounded-xl p-6 sticky top-24">
+<h3 class="text-white font-bold mb-4 uppercase text-xs tracking-widest text-primary">Детали этапа</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-start py-3 border-b border-[#283928]">
+<div>
+<p class="text-[#9db99d] text-xs font-medium uppercase">Срок выполнения</p>
+<p class="text-white font-semibold mt-1">01.10.2023 — 15.10.2023</p>
+</div>
+<span class="material-symbols-outlined text-[#9db99d] text-sm">calendar_today</span>
+</div>
+<div class="flex justify-between items-start py-3 border-b border-[#283928]">
+<div>
+<p class="text-[#9db99d] text-xs font-medium uppercase">Итоговая стоимость</p>
+<p class="text-primary text-xl font-black mt-1">150 000 ₽</p>
+</div>
+<span class="material-symbols-outlined text-[#9db99d] text-sm">payments</span>
+</div>
+<div class="flex justify-between items-start py-3 border-b border-[#283928]">
+<div>
+<p class="text-[#9db99d] text-xs font-medium uppercase">Ответственный</p>
+<div class="flex items-center gap-2 mt-1">
+<div class="size-6 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary">АВ</div>
+<p class="text-white font-semibold">Александр Воронов</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-[#9db99d] text-sm">support_agent</span>
+</div>
+<div class="flex justify-between items-start py-3">
+<div>
+<p class="text-[#9db99d] text-xs font-medium uppercase">Приоритет</p>
+<p class="text-white font-semibold mt-1">Высокий</p>
+</div>
+<div class="size-2 rounded-full bg-red-500 mt-2"></div>
+</div>
+</div>
+<!-- Side Actions -->
+<div class="mt-8 space-y-3">
+<button class="w-full flex items-center justify-center gap-2 rounded-lg h-12 bg-primary text-black font-black hover:shadow-[0_0_20px_rgba(19,236,19,0.4)] transition-all">
+<span class="material-symbols-outlined">check_circle</span>
+                            ОДОБРИТЬ ЭТАП
+                        </button>
+<button class="w-full flex items-center justify-center gap-2 rounded-lg h-12 border-2 border-amber-500/50 text-amber-500 font-bold hover:bg-amber-500/10 transition-all">
+<span class="material-symbols-outlined">edit_note</span>
+                            ЗАПРОСИТЬ ДОРАБОТКИ
+                        </button>
+<p class="text-[10px] text-center text-[#9db99d] mt-4 px-4">
+                            Нажимая «Одобрить», вы подтверждаете выполнение всех работ по данному этапу в полном объеме.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer for mobile view or extra info -->
+<footer class="max-w-[1200px] mx-auto px-4 py-12 border-t border-[#283928] mt-12 mb-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex items-center gap-2 opacity-50">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span class="text-xs">Безопасный документооборот ITL OrderFlow</span>
+</div>
+<div class="flex gap-6">
+<a class="text-[#9db99d] text-xs hover:text-white transition-colors" href="#">Политика конфиденциальности</a>
+<a class="text-[#9db99d] text-xs hover:text-white transition-colors" href="#">Условия использования</a>
+<a class="text-[#9db99d] text-xs hover:text-white transition-colors" href="#">Поддержка</a>
+</div>
+</div>
+</footer>
+</body></html>

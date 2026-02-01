@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Отчет по воронке продаж</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c3cf6",
+                        "background-light": "#f5f5f8",
+                        "background-dark": "#101022",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .funnel-stage:hover .tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-solid border-slate-200 dark:border-[#282839] px-6 py-3 bg-background-light dark:bg-background-dark sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<div class="size-8 text-primary">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M42.1739 20.1739L27.8261 5.82609C29.1366 7.13663 28.3989 10.1876 26.2002 13.7654C24.8538 15.9564 22.9595 18.3449 20.6522 20.6522C18.3449 22.9595 15.9564 24.8538 13.7654 26.2002C10.1876 28.3989 7.13663 29.1366 5.82609 27.8261L20.1739 42.1739C21.4845 43.4845 24.5355 42.7467 28.1133 40.548C30.3042 39.2016 32.6927 37.3073 35 35C37.3073 32.6927 39.2016 30.3042 40.548 28.1133C42.7467 24.5355 43.4845 21.4845 42.1739 20.1739Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-lg font-bold leading-tight tracking-tight">ITL OrderFlow</h2>
+</div>
+<div class="flex flex-1 justify-end gap-6 items-center">
+<nav class="flex items-center gap-6 hidden md:flex">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Отчеты</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Заказы</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Клиенты</a>
+</nav>
+<div class="flex gap-2">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-[#282839] hover:bg-slate-300 dark:hover:bg-[#34344d] transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+</button>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-slate-200 dark:bg-[#282839] hover:bg-slate-300 dark:hover:bg-[#34344d] transition-colors">
+<span class="material-symbols-outlined text-[20px]">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-[1200px] mx-auto p-6 space-y-8">
+<!-- Page Heading & Filters -->
+<div class="flex flex-wrap items-center justify-between gap-6">
+<div class="flex flex-col gap-1">
+<div class="flex items-center gap-2 mb-2">
+<button class="flex items-center gap-1 text-slate-500 hover:text-primary transition-colors text-sm font-bold">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+                        Назад
+                    </button>
+</div>
+<h1 class="text-4xl font-black leading-tight tracking-[-0.033em]">Отчет по воронке продаж</h1>
+<p class="text-slate-500 dark:text-[#9c9cba] text-base">Аналитика и показатели эффективности маркетинга</p>
+</div>
+<div class="flex flex-wrap items-center gap-4">
+<!-- Date Picker Placeholder -->
+<div class="flex items-center gap-2 bg-white dark:bg-[#1a1a2e] border border-slate-200 dark:border-[#3b3b54] p-2 px-4 rounded-lg cursor-pointer hover:border-primary transition-all">
+<span class="material-symbols-outlined text-primary">calendar_today</span>
+<span class="text-sm font-medium">1 Окт 2023 - 31 Окт 2023</span>
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+<button class="flex items-center gap-2 rounded-lg h-10 px-6 bg-primary text-white text-sm font-bold hover:bg-opacity-90 transition-all">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                    Экспорт
+                </button>
+</div>
+</div>
+<!-- KPI Metrics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a1a2e] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium">Общая конверсия</p>
+<span class="material-symbols-outlined text-primary">insights</span>
+</div>
+<p class="text-3xl font-black">36%</p>
+<p class="text-[#0bda68] text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                    +2.5% к прошл. месяцу
+                </p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a1a2e] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium">Цикл сделки</p>
+<span class="material-symbols-outlined text-primary">schedule</span>
+</div>
+<p class="text-3xl font-black">14 дней</p>
+<p class="text-[#fa6938] text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">trending_down</span>
+                    -1 день (улучшение)
+                </p>
+</div>
+<div class="flex flex-col gap-2 rounded-xl p-6 bg-white dark:bg-[#1a1a2e] border border-slate-200 dark:border-[#3b3b54] shadow-sm">
+<div class="flex items-center justify-between">
+<p class="text-slate-500 dark:text-[#9c9cba] text-sm font-medium">Средний чек</p>
+<span class="material-symbols-outlined text-primary">payments</span>
+</div>
+<p class="text-3xl font-black">150к ₽</p>
+<p class="text-[#0bda68] text-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+                    +12% (рост чека)
+                </p>
+</div>
+</div>
+<!-- Sales Funnel Visualization -->
+<div class="bg-white dark:bg-[#1a1a2e] border border-slate-200 dark:border-[#3b3b54] rounded-xl p-8 shadow-sm">
+<h2 class="text-2xl font-bold mb-10 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">filter_alt</span>
+                Воронка продаж
+            </h2>
+<div class="flex flex-col items-center gap-1 max-w-2xl mx-auto relative">
+<!-- Funnel Stage 1 -->
+<div class="group funnel-stage relative w-full h-16 bg-primary flex items-center justify-between px-8 rounded-lg mb-2 shadow-lg shadow-primary/10 transition-all hover:scale-[1.02]">
+<span class="text-white font-bold">КП отправлено</span>
+<div class="flex items-center gap-4">
+<span class="text-white/70 text-sm">1,420 сделок</span>
+<span class="text-white font-black text-xl">100%</span>
+</div>
+</div>
+<div class="h-6 flex flex-col items-center justify-center text-slate-400 dark:text-[#9c9cba]">
+<span class="text-[10px] font-bold">76% переход</span>
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+</div>
+<!-- Funnel Stage 2 -->
+<div class="group funnel-stage relative w-[85%] h-16 bg-primary/80 flex items-center justify-between px-8 rounded-lg mb-2 shadow-lg shadow-primary/5 transition-all hover:scale-[1.02]">
+<span class="text-white font-bold">КП просмотрено</span>
+<div class="flex items-center gap-4">
+<span class="text-white/70 text-sm">1,079 сделок</span>
+<span class="text-white font-black text-xl">76%</span>
+</div>
+</div>
+<div class="h-6 flex flex-col items-center justify-center text-slate-400 dark:text-[#9c9cba]">
+<span class="text-[10px] font-bold">65% переход</span>
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+</div>
+<!-- Funnel Stage 3 -->
+<div class="group funnel-stage relative w-[70%] h-16 bg-primary/60 flex items-center justify-between px-8 rounded-lg mb-2 shadow-lg shadow-primary/5 transition-all hover:scale-[1.02]">
+<span class="text-white font-bold">КП принято</span>
+<div class="flex items-center gap-4">
+<span class="text-white/70 text-sm">710 сделок</span>
+<span class="text-white font-black text-xl">50%</span>
+</div>
+</div>
+<div class="h-6 flex flex-col items-center justify-center text-slate-400 dark:text-[#9c9cba]">
+<span class="text-[10px] font-bold">88% переход</span>
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+</div>
+<!-- Funnel Stage 4 -->
+<div class="group funnel-stage relative w-[55%] h-16 bg-primary/40 flex items-center justify-between px-8 rounded-lg mb-2 shadow-lg shadow-primary/5 transition-all hover:scale-[1.02]">
+<span class="text-white dark:text-white font-bold">Заказ создан</span>
+<div class="flex items-center gap-4">
+<span class="text-white/70 text-sm">624 сделки</span>
+<span class="text-white font-black text-xl">44%</span>
+</div>
+</div>
+<div class="h-6 flex flex-col items-center justify-center text-slate-400 dark:text-[#9c9cba]">
+<span class="text-[10px] font-bold">81% переход</span>
+<span class="material-symbols-outlined text-[14px]">arrow_downward</span>
+</div>
+<!-- Funnel Stage 5 -->
+<div class="group funnel-stage relative w-[40%] h-16 bg-primary/20 flex items-center justify-between px-6 rounded-lg mb-2 shadow-lg shadow-primary/5 transition-all hover:scale-[1.02]">
+<span class="text-primary dark:text-white font-bold">Заказ завершён</span>
+<div class="flex items-center gap-4">
+<span class="text-primary/70 dark:text-white/70 text-sm">511 сделок</span>
+<span class="text-primary dark:text-white font-black text-xl">36%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Data Tables Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Period Breakdown -->
+<div class="bg-white dark:bg-[#1a1a2e] border border-slate-200 dark:border-[#3b3b54] rounded-xl shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-[#3b3b54] flex justify-between items-center">
+<h3 class="font-bold text-lg">Разбивка по периодам</h3>
+<button class="text-primary text-sm font-bold">См. все</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-slate-50 dark:bg-[#282839] text-slate-500 dark:text-[#9c9cba] text-xs uppercase tracking-wider">
+<th class="px-6 py-3 font-bold">Дата</th>
+<th class="px-6 py-3 font-bold">Лиды</th>
+<th class="px-6 py-3 font-bold">Конв.</th>
+<th class="px-6 py-3 font-bold">Выручка</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-[#3b3b54]">
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1e1e35] transition-colors">
+<td class="px-6 py-4 text-sm">24 окт - 31 окт</td>
+<td class="px-6 py-4 text-sm font-medium">342</td>
+<td class="px-6 py-4 text-sm text-[#0bda68] font-bold">38%</td>
+<td class="px-6 py-4 text-sm font-bold">1.2M ₽</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1e1e35] transition-colors">
+<td class="px-6 py-4 text-sm">17 окт - 23 окт</td>
+<td class="px-6 py-4 text-sm font-medium">415</td>
+<td class="px-6 py-4 text-sm text-[#0bda68] font-bold">35%</td>
+<td class="px-6 py-4 text-sm font-bold">1.4M ₽</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1e1e35] transition-colors">
+<td class="px-6 py-4 text-sm">10 окт - 16 окт</td>
+<td class="px-6 py-4 text-sm font-medium">389</td>
+<td class="px-6 py-4 text-sm text-[#fa6938] font-bold">32%</td>
+<td class="px-6 py-4 text-sm font-bold">1.1M ₽</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Source Breakdown -->
+<div class="bg-white dark:bg-[#1a1a2e] border border-slate-200 dark:border-[#3b3b54] rounded-xl shadow-sm overflow-hidden">
+<div class="p-6 border-b border-slate-200 dark:border-[#3b3b54] flex justify-between items-center">
+<h3 class="font-bold text-lg">Разбивка по источникам</h3>
+<button class="text-primary text-sm font-bold">Детали</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-slate-50 dark:bg-[#282839] text-slate-500 dark:text-[#9c9cba] text-xs uppercase tracking-wider">
+<th class="px-6 py-3 font-bold">Источник</th>
+<th class="px-6 py-3 font-bold">Объем</th>
+<th class="px-6 py-3 font-bold">Эффект.</th>
+<th class="px-6 py-3 font-bold">ROI</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-[#3b3b54]">
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1e1e35] transition-colors">
+<td class="px-6 py-4 text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-500 text-[18px]">ads_click</span>
+                                    Контекстная реклама
+                                </td>
+<td class="px-6 py-4 text-sm">620</td>
+<td class="px-6 py-4 text-sm font-bold">42%</td>
+<td class="px-6 py-4 text-sm text-[#0bda68] font-bold">240%</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1e1e35] transition-colors">
+<td class="px-6 py-4 text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-green-500 text-[18px]">search</span>
+                                    Органический поиск
+                                </td>
+<td class="px-6 py-4 text-sm">480</td>
+<td class="px-6 py-4 text-sm font-bold">28%</td>
+<td class="px-6 py-4 text-sm text-[#0bda68] font-bold">580%</td>
+</tr>
+<tr class="hover:bg-slate-50 dark:hover:bg-[#1e1e35] transition-colors">
+<td class="px-6 py-4 text-sm flex items-center gap-2">
+<span class="material-symbols-outlined text-purple-500 text-[18px]">share</span>
+                                    Прямые заходы
+                                </td>
+<td class="px-6 py-4 text-sm">320</td>
+<td class="px-6 py-4 text-sm font-bold">51%</td>
+<td class="px-6 py-4 text-sm text-slate-400 font-bold">—</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Conversion Trend Chart Placeholder -->
+<div class="bg-white dark:bg-[#1a1a2e] border border-slate-200 dark:border-[#3b3b54] rounded-xl p-6 shadow-sm">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h3 class="font-bold text-lg">Динамика конверсии</h3>
+<p class="text-sm text-slate-500 dark:text-[#9c9cba]">Изменение показателей за октябрь 2023</p>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-primary"></span>
+<span class="text-xs font-medium">Текущий период</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="size-3 rounded-full bg-slate-300 dark:bg-[#3b3b54]"></span>
+<span class="text-xs font-medium text-slate-500">Прошлый период</span>
+</div>
+</div>
+</div>
+<div class="relative h-64 w-full flex items-end justify-between gap-1 px-2 border-b border-l border-slate-200 dark:border-[#3b3b54]">
+<!-- Chart Visual Elements (Static SVG representation for high-fidelity look) -->
+<svg class="absolute inset-0 w-full h-full p-2 overflow-visible" preserveaspectratio="none">
+<!-- Line Chart Path -->
+<path class="drop-shadow-lg shadow-primary/50" d="M0 180 Q 100 150, 200 170 T 400 100 T 600 130 T 800 80 T 1100 110" fill="none" stroke="#3c3cf6" stroke-width="3"></path>
+<path d="M0 200 Q 100 190, 200 210 T 400 160 T 600 190 T 800 170 T 1100 180" fill="none" stroke="#3b3b54" stroke-dasharray="4" stroke-width="2"></path>
+</svg>
+<!-- Labels -->
+<div class="absolute -bottom-6 left-0 right-0 flex justify-between text-[10px] text-slate-400 font-bold uppercase tracking-widest px-4">
+<span>1 окт</span>
+<span>7 окт</span>
+<span>14 окт</span>
+<span>21 окт</span>
+<span>31 окт</span>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-20 border-t border-slate-200 dark:border-[#282839] p-8 text-center text-slate-500 text-xs">
+        © 2023 ITL OrderFlow SaaS Analytics. Все права защищены.
+    </footer>
+</body></html>

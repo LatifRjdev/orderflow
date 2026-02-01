@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="ru"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ITL OrderFlow - Список клиентов</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#3c83f6",
+                        "background-light": "#f5f7f8",
+                        "background-dark": "#101722",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#111418] dark:text-white">
+<div class="flex h-screen overflow-hidden">
+<!-- Sidebar -->
+<aside class="w-64 bg-[#111418] text-white flex flex-col shrink-0">
+<div class="p-6 flex items-center gap-3">
+<div class="size-10 rounded-lg bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white">rocket_launch</span>
+</div>
+<div>
+<h1 class="text-sm font-bold leading-none">ITL OrderFlow</h1>
+<p class="text-[10px] text-gray-400 mt-1 uppercase tracking-wider">SaaS Management</p>
+</div>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-medium">Дашборд</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-primary text-white rounded-lg" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-sm font-medium">Клиенты</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">work</span>
+<span class="text-sm font-medium">Проекты</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">task_alt</span>
+<span class="text-sm font-medium">Задачи</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="text-sm font-medium">Отчеты</span>
+</a>
+</nav>
+<div class="p-4 border-t border-white/10">
+<div class="flex items-center gap-3 px-3 py-2">
+<div class="size-8 rounded-full bg-cover bg-center" data-alt="User avatar profile picture" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCGr70iETnu2o2PYBcGf119Zhj5wwg4fXEHUkhWJvHMLNte9tx3odJuxdEXwlMdqUjnE-9hDqXGZkeiAhmEa9eN2uPTY5aOXNg4ZfqZHg7x5CeWWpIINhN1uXzUYzGPDk5qBqvUQC1HBTUnrR7VBWfUf24ZQ5bbS8XyE-HzhYHBak1N8yVeGuGbQ3Jpb5N9VE24kjc1MeJAM5XmRi-b1TRhyVPYQBw_vIVCGRGXgdg_DebERNtNeP0U834JQ87SmL_aE8R9BD3OMDXq')"></div>
+<div class="flex-1 min-w-0">
+<p class="text-xs font-semibold truncate">Александр В.</p>
+<p class="text-[10px] text-gray-500 truncate">Администратор</p>
+</div>
+<span class="material-symbols-outlined text-gray-500 text-sm">settings</span>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="h-16 bg-white dark:bg-background-dark border-b border-gray-200 dark:border-gray-800 flex items-center justify-between px-8 shrink-0">
+<div class="flex items-center gap-2 text-sm">
+<a class="text-gray-500 hover:text-primary transition-colors" href="#">Главная</a>
+<span class="text-gray-300">/</span>
+<span class="text-gray-900 dark:text-gray-100 font-medium">Клиенты</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-lg">search</span>
+<input class="w-full bg-gray-100 dark:bg-gray-800 border-none rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/50 transition-all" placeholder="Поиск клиентов..." type="text"/>
+</div>
+<div class="flex items-center gap-3 border-l border-gray-200 dark:border-gray-800 pl-6">
+<button class="relative p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-background-dark"></span>
+</button>
+<button class="p-2 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Page Scrollable Content -->
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<!-- Page Heading Section -->
+<div class="flex flex-wrap items-center justify-between gap-4">
+<h2 class="text-3xl font-black tracking-tight">Клиенты <span class="text-gray-400 font-normal">(47)</span></h2>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm font-semibold hover:bg-gray-50 transition-colors">
+<span class="material-symbols-outlined text-lg">filter_list</span>
+                            Фильтры
+                        </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg text-sm font-semibold hover:bg-blue-600 shadow-lg shadow-primary/20 transition-all">
+<span class="material-symbols-outlined text-lg">add</span>
+                            Добавить клиента
+                        </button>
+</div>
+</div>
+<!-- Filters & Toolbar -->
+<div class="bg-white dark:bg-gray-800 p-4 rounded-xl border border-gray-200 dark:border-gray-700 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center bg-gray-100 dark:bg-gray-900 p-1 rounded-lg">
+<button class="px-4 py-1.5 text-sm font-medium bg-white dark:bg-gray-800 rounded-md shadow-sm">Все</button>
+<button class="px-4 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">Активные</button>
+<button class="px-4 py-1.5 text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors">Архив</button>
+</div>
+<div class="flex items-center gap-3">
+<select class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm px-3 py-1.5 focus:ring-primary focus:border-primary">
+<option>Отрасль: Все</option>
+<option>Финтех</option>
+<option>E-commerce</option>
+<option>Медицина</option>
+</select>
+<select class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm px-3 py-1.5 focus:ring-primary focus:border-primary">
+<option>Сортировка: Новые</option>
+<option>По названию</option>
+<option>По проектам</option>
+</select>
+</div>
+</div>
+<!-- Table Container -->
+<div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
+<th class="p-4 w-10">
+<input class="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/>
+</th>
+<th class="p-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Компания</th>
+<th class="p-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Контакт</th>
+<th class="p-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Email</th>
+<th class="p-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Телефон</th>
+<th class="p-4 text-xs font-bold uppercase text-gray-500 tracking-wider text-center">Проекты</th>
+<th class="p-4 text-xs font-bold uppercase text-gray-500 tracking-wider">Дата добавления</th>
+<th class="p-4 w-10"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-gray-100 dark:divide-gray-700">
+<!-- Row 1 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors group">
+<td class="p-4">
+<input class="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-gray-100 dark:bg-gray-900 flex items-center justify-center font-bold text-primary border border-gray-200 dark:border-gray-700">
+                                            SR
+                                        </div>
+<div>
+<div class="font-semibold text-sm">Solar Ray Systems</div>
+<div class="flex gap-1 mt-1">
+<span class="px-1.5 py-0.5 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-[10px] font-bold uppercase">VIP</span>
+</div>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="text-sm font-medium">Дмитрий Соколов</div>
+<div class="text-xs text-gray-500">CTO</div>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-400">d.sokolov@solarray.ru</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-400">+7 (900) 123-44-55</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center justify-center size-7 rounded-full bg-primary/10 text-primary text-xs font-bold">12</span>
+</td>
+<td class="p-4 text-sm text-gray-500">12 Окт 2023</td>
+<td class="p-4 text-right">
+<button class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined text-gray-400">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors group">
+<td class="p-4">
+<input class="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-gray-100 dark:bg-gray-900 flex items-center justify-center font-bold text-blue-500 border border-gray-200 dark:border-gray-700">
+                                            NB
+                                        </div>
+<div>
+<div class="font-semibold text-sm">NeoBank Digital</div>
+<div class="flex gap-1 mt-1">
+<span class="px-1.5 py-0.5 rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-[10px] font-bold uppercase">Постоянный</span>
+</div>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="text-sm font-medium">Анна Мельникова</div>
+<div class="text-xs text-gray-500">Product Lead</div>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-400">a.melnikova@neobank.io</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-400">+7 (495) 777-22-11</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center justify-center size-7 rounded-full bg-primary/10 text-primary text-xs font-bold">4</span>
+</td>
+<td class="p-4 text-sm text-gray-500">25 Ноя 2023</td>
+<td class="p-4 text-right">
+<button class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined text-gray-400">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors group">
+<td class="p-4">
+<input class="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-gray-100 dark:bg-gray-900 flex items-center justify-center font-bold text-emerald-500 border border-gray-200 dark:border-gray-700">
+                                            GT
+                                        </div>
+<div>
+<div class="font-semibold text-sm">GreenTech Global</div>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="text-sm font-medium">Игорь Степанов</div>
+<div class="text-xs text-gray-500">CEO</div>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-400">stepanov@greentech.ru</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-400">+7 (921) 555-00-99</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center justify-center size-7 rounded-full bg-primary/10 text-primary text-xs font-bold">1</span>
+</td>
+<td class="p-4 text-sm text-gray-500">05 Янв 2024</td>
+<td class="p-4 text-right">
+<button class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined text-gray-400">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-gray-50 dark:hover:bg-gray-700/30 transition-colors group">
+<td class="p-4">
+<input class="rounded border-gray-300 text-primary focus:ring-primary" type="checkbox"/>
+</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="size-10 rounded-lg bg-gray-100 dark:bg-gray-900 flex items-center justify-center font-bold text-orange-500 border border-gray-200 dark:border-gray-700">
+                                            EM
+                                        </div>
+<div>
+<div class="font-semibold text-sm">E-Mart Market</div>
+<div class="flex gap-1 mt-1">
+<span class="px-1.5 py-0.5 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 text-[10px] font-bold uppercase">VIP</span>
+</div>
+</div>
+</div>
+</td>
+<td class="p-4">
+<div class="text-sm font-medium">Марина Жукова</div>
+<div class="text-xs text-gray-500">Marketing Manager</div>
+</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-400">m.zhukova@emart.ru</td>
+<td class="p-4 text-sm text-gray-600 dark:text-gray-400">+7 (988) 333-11-22</td>
+<td class="p-4 text-center">
+<span class="inline-flex items-center justify-center size-7 rounded-full bg-primary/10 text-primary text-xs font-bold">8</span>
+</td>
+<td class="p-4 text-sm text-gray-500">14 Фев 2024</td>
+<td class="p-4 text-right">
+<button class="p-1 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-md transition-colors opacity-0 group-hover:opacity-100">
+<span class="material-symbols-outlined text-gray-400">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="flex items-center justify-between pt-4">
+<p class="text-sm text-gray-500">Показано 1-20 из 47</p>
+<div class="flex items-center gap-1">
+<button class="p-2 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-lg">chevron_left</span>
+</button>
+<button class="size-9 bg-primary text-white rounded-lg text-sm font-bold">1</button>
+<button class="size-9 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-sm font-medium">2</button>
+<button class="size-9 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg text-sm font-medium">3</button>
+<span class="px-2 text-gray-400">...</span>
+<button class="p-2 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800">
+<span class="material-symbols-outlined text-lg">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
