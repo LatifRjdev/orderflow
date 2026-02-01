@@ -25,6 +25,16 @@ function daysFromNow(days: number): Date {
 async function main() {
   console.log("🌱 Начинаю сидинг базы данных...");
 
+  // Admin credentials from environment variables
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@itl.tj";
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    throw new Error(
+      "ADMIN_PASSWORD environment variable is required for seeding.\n" +
+      "Set it before running seed: ADMIN_PASSWORD=YourSecurePassword123 npx prisma db seed"
+    );
+  }
+
   // ==================== SETTINGS ====================
   const settings = await prisma.settings.upsert({
     where: { id: "default" },
@@ -70,15 +80,16 @@ async function main() {
   console.log("✅ Статусы заказов созданы");
 
   // ==================== USERS ====================
-  const passwordHash = await hash("admin123", 12);
+  const adminPasswordHash = await hash(adminPassword, 12);
+  const defaultPasswordHash = await hash("changeme2026", 12);
 
   const admin = await prisma.user.upsert({
-    where: { email: "admin@itl.tj" },
+    where: { email: adminEmail },
     update: {},
     create: {
-      email: "admin@itl.tj",
+      email: adminEmail,
       name: "Латиф Рахимов",
-      password: passwordHash,
+      password: adminPasswordHash,
       role: Role.ADMIN,
     },
   });
@@ -89,7 +100,7 @@ async function main() {
     create: {
       email: "firuz@itl.tj",
       name: "Фируз Каримов",
-      password: passwordHash,
+      password: defaultPasswordHash,
       role: Role.MANAGER,
     },
   });
@@ -100,7 +111,7 @@ async function main() {
     create: {
       email: "madina@itl.tj",
       name: "Мадина Сафарова",
-      password: passwordHash,
+      password: defaultPasswordHash,
       role: Role.MANAGER,
     },
   });
@@ -111,7 +122,7 @@ async function main() {
     create: {
       email: "rustam@itl.tj",
       name: "Рустам Назаров",
-      password: passwordHash,
+      password: defaultPasswordHash,
       role: Role.DEVELOPER,
     },
   });
@@ -122,7 +133,7 @@ async function main() {
     create: {
       email: "dilshod@itl.tj",
       name: "Дильшод Ахмедов",
-      password: passwordHash,
+      password: defaultPasswordHash,
       role: Role.DEVELOPER,
     },
   });
@@ -133,7 +144,7 @@ async function main() {
     create: {
       email: "zarina@itl.tj",
       name: "Зарина Мирзоева",
-      password: passwordHash,
+      password: defaultPasswordHash,
       role: Role.DEVELOPER,
     },
   });
@@ -144,7 +155,7 @@ async function main() {
     create: {
       email: "viewer@itl.tj",
       name: "Саид Исломов",
-      password: passwordHash,
+      password: defaultPasswordHash,
       role: Role.VIEWER,
     },
   });
@@ -1127,7 +1138,7 @@ async function main() {
 
   console.log("\n🎉 Сидинг завершён успешно!");
   console.log("📊 Создано:");
-  console.log("   • 7 пользователей (admin123 для всех)");
+  console.log("   • 7 пользователей");
   console.log("   • 5 клиентов с контактами");
   console.log("   • 7 заказов в разных статусах");
   console.log("   • 10 этапов");
@@ -1135,7 +1146,7 @@ async function main() {
   console.log(`   • ${timeEntryDefs.length} записей времени`);
   console.log("   • 9 счетов с платежами");
   console.log(`   • ${commentDefs.length} комментариев`);
-  console.log("\n🔑 Логин: admin@itl.tj / admin123");
+  console.log(`\n🔑 Админ: ${adminEmail}`);
 }
 
 main()

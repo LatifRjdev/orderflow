@@ -124,7 +124,7 @@ export default function LoginPage() {
                   id="email"
                   name="email"
                   type="email"
-                  placeholder="admin@itl.tj"
+                  placeholder="email@example.com"
                   className="pl-10 h-12"
                   required
                 />
@@ -175,11 +175,6 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          {/* Demo credentials */}
-          <div className="p-4 bg-gray-50 rounded-lg">
-            <p className="text-xs text-muted-foreground mb-2">Тестовые данные:</p>
-            <p className="text-xs font-mono">admin@itl.tj / admin123</p>
-          </div>
         </div>
       </div>
     </>
