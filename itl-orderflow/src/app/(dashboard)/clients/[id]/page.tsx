@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { getClient } from "@/actions/clients";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -29,7 +30,11 @@ interface ClientPageProps {
 }
 
 export default async function ClientPage({ params }: ClientPageProps) {
-  const client = await getClient(params.id);
+  const [client, session] = await Promise.all([
+    getClient(params.id),
+    auth(),
+  ]);
+  const userRole = session?.user?.role || "";
 
   if (!client) {
     notFound();
@@ -73,7 +78,7 @@ export default async function ClientPage({ params }: ClientPageProps) {
             )}
           </div>
         </div>
-        <ClientActions clientId={client.id} isArchived={client.isArchived} />
+        <ClientActions clientId={client.id} isArchived={client.isArchived} userRole={userRole} />
       </div>
 
       {/* Stats Cards */}

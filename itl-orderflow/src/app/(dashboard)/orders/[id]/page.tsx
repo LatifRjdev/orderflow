@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { getOrder, getOrderStatuses } from "@/actions/orders";
 import { prisma } from "@/lib/prisma";
 import { FileUploadDialog } from "@/components/files/file-upload-dialog";
 import { FileItemActions } from "@/components/files/file-item-actions";
 import { GanttChart } from "@/components/orders/gantt-chart";
+import { OrderDeleteButton } from "@/components/orders/order-delete-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,7 +56,7 @@ const taskStatusIcons: Record<string, React.ReactNode> = {
 };
 
 export default async function OrderPage({ params }: OrderPageProps) {
-  const [order, statuses, users] = await Promise.all([
+  const [order, statuses, users, session] = await Promise.all([
     getOrder(params.id),
     getOrderStatuses(),
     prisma.user.findMany({
@@ -62,7 +64,9 @@ export default async function OrderPage({ params }: OrderPageProps) {
       select: { id: true, name: true },
       orderBy: { name: "asc" },
     }).then((users) => users.map((u) => ({ id: u.id, name: u.name || "Без имени" }))),
+    auth(),
   ]);
+  const userRole = session?.user?.role || "";
 
   if (!order) {
     notFound();
@@ -134,6 +138,9 @@ export default async function OrderPage({ params }: OrderPageProps) {
               Редактировать
             </Button>
           </Link>
+          {userRole === "ADMIN" && (
+            <OrderDeleteButton orderId={params.id} orderNumber={order.number} />
+          )}
         </div>
       </div>
 

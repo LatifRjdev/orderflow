@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireAuth } from "@/lib/auth-guard";
+import { requireAuth, requireRole } from "@/lib/auth-guard";
 import { Priority, TaskStatus } from "@prisma/client";
 import { logger } from "@/lib/logger";
 
@@ -302,7 +302,7 @@ export async function updateTask(id: string, formData: FormData) {
 
 // Delete task
 export async function deleteTask(id: string) {
-  await requireAuth();
+  await requireRole(["ADMIN"]);
   try {
     const task = await prisma.task.delete({ where: { id } });
     revalidatePath("/tasks");

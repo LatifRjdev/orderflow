@@ -60,6 +60,7 @@ import {
   updateOrderStatus,
   deleteOrderStatus,
 } from "@/actions/order-statuses";
+import { TemplatesSettings } from "@/components/settings/templates-settings";
 
 type Tab = "organization" | "users" | "statuses" | "notifications" | "templates" | "integrations";
 
@@ -158,7 +159,7 @@ export function SettingsClient({ settings, users, statuses }: SettingsClientProp
           {activeTab === "users" && <UsersSettings users={users} />}
           {activeTab === "statuses" && <StatusesSettings statuses={statuses} />}
           {activeTab === "notifications" && <NotificationsSettings />}
-          {activeTab === "templates" && <PlaceholderSection title="Шаблоны документов" />}
+          {activeTab === "templates" && <TemplatesSettings />}
           {activeTab === "integrations" && <PlaceholderSection title="Интеграции" />}
         </div>
       </div>

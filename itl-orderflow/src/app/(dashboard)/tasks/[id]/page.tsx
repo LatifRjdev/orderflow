@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
 import { getTask } from "@/actions/tasks";
+import { TaskDeleteButton } from "@/components/tasks/task-delete-button";
 import { prisma } from "@/lib/prisma";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -48,6 +50,9 @@ export default async function TaskPage({ params }: TaskPageProps) {
   if (!task) {
     notFound();
   }
+
+  const session = await auth();
+  const userRole = session?.user?.role || "";
 
   // Fetch users and milestones for edit dialog
   const [users, milestones] = await Promise.all([
@@ -110,6 +115,9 @@ export default async function TaskPage({ params }: TaskPageProps) {
         </div>
         <div className="flex items-center gap-2">
           <TaskEditDialog task={{...task, estimatedHours: task.estimatedHours ? Number(task.estimatedHours) : null}} users={users.map(u => ({ ...u, name: u.name || "" }))} milestones={milestones} />
+          {userRole === "ADMIN" && (
+            <TaskDeleteButton taskId={task.id} taskTitle={task.title} />
+          )}
         </div>
       </div>
 

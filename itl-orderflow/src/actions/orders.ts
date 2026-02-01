@@ -365,7 +365,7 @@ export async function addOrderComment(
 // Delete order
 export async function deleteOrder(id: string) {
   try {
-    await requireRole(["ADMIN", "MANAGER"]);
+    await requireRole(["ADMIN"]);
     await prisma.order.delete({ where: { id } });
     revalidatePath("/orders");
     return { success: true };

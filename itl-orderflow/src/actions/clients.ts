@@ -185,7 +185,7 @@ export async function toggleClientArchive(id: string) {
 
 // Delete client
 export async function deleteClient(id: string) {
-  await requireRole(["ADMIN", "MANAGER"]);
+  await requireRole(["ADMIN"]);
   try {
     await prisma.client.delete({ where: { id } });
     revalidatePath("/clients");
