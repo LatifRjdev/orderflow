@@ -183,11 +183,20 @@ export async function toggleClientArchive(id: string) {
   }
 }
 
-// Delete client
+// Delete client (cascade: orders, invoices, proposals, contacts)
 export async function deleteClient(id: string) {
   await requireRole(["ADMIN"]);
   try {
-    await prisma.client.delete({ where: { id } });
+    await prisma.$transaction(async (tx) => {
+      // Delete proposals (items/sections/payments cascade via schema)
+      await tx.proposal.deleteMany({ where: { clientId: id } });
+      // Delete invoices (items/payments cascade via schema)
+      await tx.invoice.deleteMany({ where: { clientId: id } });
+      // Delete orders (tasks/milestones/files/comments cascade via schema)
+      await tx.order.deleteMany({ where: { clientId: id } });
+      // Delete client (contacts cascade via schema)
+      await tx.client.delete({ where: { id } });
+    });
     revalidatePath("/clients");
     return { success: true };
   } catch (error) {

@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
 import { getProposal } from "@/actions/proposals";
 import { getSettings } from "@/actions/settings";
 import { Badge } from "@/components/ui/badge";
@@ -35,10 +36,12 @@ const statusMap: Record<
 };
 
 export default async function ProposalPage({ params }: ProposalPageProps) {
-  const [proposal, settings] = await Promise.all([
+  const [proposal, settings, session] = await Promise.all([
     getProposal(params.id),
     getSettings(),
+    auth(),
   ]);
+  const userRole = session?.user?.role || "";
 
   if (!proposal) {
     notFound();
@@ -291,7 +294,7 @@ export default async function ProposalPage({ params }: ProposalPageProps) {
               <CardTitle className="text-base">Действия</CardTitle>
             </CardHeader>
             <CardContent>
-              <ProposalActions proposalId={proposal.id} status={proposal.status} />
+              <ProposalActions proposalId={proposal.id} status={proposal.status} userRole={userRole} />
             </CardContent>
           </Card>
         </div>

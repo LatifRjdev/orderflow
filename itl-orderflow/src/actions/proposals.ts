@@ -306,8 +306,8 @@ export async function updateProposalStatus(id: string, status: string) {
 
 // Delete proposal
 export async function deleteProposal(id: string) {
+  await requireRole(["ADMIN"]);
   try {
-    await requireRole(["ADMIN", "MANAGER"]);
     await prisma.proposal.delete({ where: { id } });
     revalidatePath("/proposals");
     return { success: true };

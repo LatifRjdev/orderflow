@@ -26,9 +26,10 @@ import { toast } from "@/lib/use-toast";
 interface ProposalActionsProps {
   proposalId: string;
   status: string;
+  userRole?: string;
 }
 
-export function ProposalActions({ proposalId, status }: ProposalActionsProps) {
+export function ProposalActions({ proposalId, status, userRole }: ProposalActionsProps) {
   const router = useRouter();
   const [loading, setLoading] = useState<string | null>(null);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -137,7 +138,7 @@ export function ProposalActions({ proposalId, status }: ProposalActionsProps) {
         <FileText className="w-4 h-4 mr-2" />
         Скачать PDF
       </Button>
-      {status === "DRAFT" && (
+      {userRole === "ADMIN" && (
         <>
           <Button
             variant="outline"
@@ -155,7 +156,7 @@ export function ProposalActions({ proposalId, status }: ProposalActionsProps) {
               <DialogHeader>
                 <DialogTitle>Удалить коммерческое предложение?</DialogTitle>
                 <DialogDescription>
-                  Это действие нельзя отменить. КП будет удалено навсегда.
+                  Это действие нельзя отменить. КП и все его разделы будут удалены навсегда.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
