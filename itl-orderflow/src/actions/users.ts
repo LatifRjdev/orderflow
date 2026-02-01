@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { requireRole } from "@/lib/auth-guard";
+import { requireAuth, requireRole } from "@/lib/auth-guard";
 import bcrypt from "bcryptjs";
 
 const createUserSchema = z.object({
@@ -165,5 +165,91 @@ export async function resetUserPassword(id: string, newPassword: string) {
   } catch (error) {
     console.error("Error resetting password:", error);
     return { error: "Ошибка при сбросе пароля" };
+  }
+}
+
+// Get current user profile
+export async function getCurrentUser() {
+  const session = await requireAuth();
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.user.id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      image: true,
+      role: true,
+      createdAt: true,
+    },
+  });
+
+  if (!user) throw new Error("Пользователь не найден");
+  return user;
+}
+
+// Update own profile (name, image)
+export async function updateProfile(data: { name: string; image?: string | null }) {
+  const session = await requireAuth();
+
+  const name = data.name?.trim();
+  if (!name || name.length === 0) {
+    return { error: "Имя обязательно" };
+  }
+  if (name.length > 255) {
+    return { error: "Имя слишком длинное" };
+  }
+
+  try {
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: { name, image: data.image },
+    });
+
+    revalidatePath("/profile");
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    return { error: "Ошибка при обновлении профиля" };
+  }
+}
+
+// Change own password
+export async function changePassword(currentPassword: string, newPassword: string) {
+  const session = await requireAuth();
+
+  if (!currentPassword || !newPassword) {
+    return { error: "Заполните все поля" };
+  }
+  if (newPassword.length < 6) {
+    return { error: "Новый пароль должен быть не менее 6 символов" };
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { password: true },
+    });
+
+    if (!user?.password) {
+      return { error: "Ошибка аутентификации" };
+    }
+
+    const isValid = await bcrypt.compare(currentPassword, user.password);
+    if (!isValid) {
+      return { error: "Неверный текущий пароль" };
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 12);
+    await prisma.user.update({
+      where: { id: session.user.id },
+      data: { password: hashedPassword },
+    });
+
+    return { success: true };
+  } catch (error) {
+    console.error("Error changing password:", error);
+    return { error: "Ошибка при смене пароля" };
   }
 }

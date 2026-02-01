@@ -13,8 +13,9 @@ import {
   Briefcase,
   Loader2,
   MessageCircle,
+  User,
 } from "lucide-react";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { logoutAction } from "@/actions/auth";
@@ -27,6 +28,7 @@ interface HeaderProps {
     name?: string | null;
     email?: string | null;
     role?: string;
+    image?: string | null;
   };
 }
 
@@ -74,6 +76,7 @@ export function Header({ user }: HeaderProps) {
   const userName = user?.name || "Пользователь";
   const userEmail = user?.email || "";
   const userRole = user?.role || "EMPLOYEE";
+  const userImage = user?.image || "";
   const initials = getInitials(userName);
 
   // ⌘K shortcut
@@ -202,6 +205,7 @@ export function Header({ user }: HeaderProps) {
           <div className="relative" ref={profileRef}>
             <button onClick={() => { setProfileOpen(!profileOpen); }} className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
               <Avatar className="w-8 h-8">
+                {userImage && <AvatarImage src={userImage} alt={userName} />}
                 <AvatarFallback className="bg-primary text-white text-xs">{initials}</AvatarFallback>
               </Avatar>
               <span className="text-sm font-medium hidden md:block">{userName}</span>
@@ -215,6 +219,10 @@ export function Header({ user }: HeaderProps) {
                   <Badge variant="secondary" className="mt-1 text-xs">{roleLabels[userRole] || userRole}</Badge>
                 </div>
                 <div className="py-1">
+                  <button onClick={() => { setProfileOpen(false); router.push("/profile"); }} className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 transition-colors">
+                    <User className="w-4 h-4 text-muted-foreground" />
+                    Профиль
+                  </button>
                   <button onClick={() => { setProfileOpen(false); router.push("/settings"); }} className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-100 transition-colors">
                     <Settings className="w-4 h-4 text-muted-foreground" />
                     Настройки
