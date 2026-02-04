@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { put } from "@vercel/blob";
 import crypto from "crypto";
+import path from "path";
 
 export const dynamic = "force-dynamic";
-
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads");
 
 const ALLOWED_TYPES = new Set([
   "application/pdf",
@@ -30,7 +28,6 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const MAX_FILES_PER_REQUEST = 10;
 
 function sanitizeFilename(name: string): string {
-  // Remove path traversal, null bytes, and special characters
   return name
     .replace(/[/\\:\0]/g, "")
     .replace(/\.\./g, "")
@@ -80,28 +77,23 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Ensure upload directory exists
-    const dateDir = new Date().toISOString().slice(0, 7); // YYYY-MM
-    const uploadPath = path.join(UPLOAD_DIR, dateDir);
-    await mkdir(uploadPath, { recursive: true });
-
     const uploadedFiles = [];
 
     for (const file of files) {
-      const bytes = await file.arrayBuffer();
-      const buffer = Buffer.from(bytes);
-
-      // Generate unique filename, preserve extension
+      // Generate unique path: uploads/2026-02/abc123.pdf
       const ext = path.extname(file.name).toLowerCase();
-      const key = crypto.randomBytes(16).toString("hex") + ext;
-      const filePath = path.join(uploadPath, key);
+      const dateDir = new Date().toISOString().slice(0, 7);
+      const key = `uploads/${dateDir}/${crypto.randomBytes(16).toString("hex")}${ext}`;
 
-      await writeFile(filePath, buffer);
+      const blob = await put(key, file, {
+        access: "public",
+        contentType: file.type,
+      });
 
       uploadedFiles.push({
         name: sanitizeFilename(file.name),
-        url: `/uploads/${dateDir}/${key}`,
-        key: `${dateDir}/${key}`,
+        url: blob.url,
+        key: key,
         size: file.size,
         type: file.type,
       });

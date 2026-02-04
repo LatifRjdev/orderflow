@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { requireAuth } from "@/lib/auth-guard";
+import { del } from "@vercel/blob";
 
 interface UploadedFile {
   name: string;
@@ -60,6 +61,16 @@ export async function deleteFile(id: string) {
   try {
     await requireAuth();
     const file = await prisma.file.delete({ where: { id } });
+
+    // Delete from Vercel Blob storage
+    if (file.url) {
+      try {
+        await del(file.url);
+      } catch (e) {
+        // Log but don't fail — DB record is already deleted
+        console.error("Error deleting blob:", e);
+      }
+    }
 
     if (file.orderId) {
       revalidatePath(`/orders/${file.orderId}`);
