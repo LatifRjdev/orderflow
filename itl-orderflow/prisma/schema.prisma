@@ -31,6 +31,10 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
+  // Tickets
+  assignedTickets   Ticket[]        @relation("TicketAssignee")
+  ticketMessages    TicketMessage[]  @relation("TicketMessageAuthor")
+
   // NextAuth
   accounts      Account[]
   sessions      Session[]
@@ -106,6 +110,7 @@ model Client {
   orders        Order[]
   invoices      Invoice[]
   proposals     Proposal[]
+  tickets       Ticket[]
 
   // Timestamps
   createdAt     DateTime  @default(now())
@@ -214,6 +219,7 @@ model Order {
   invoices      Invoice[]
   proposals     Proposal[]
   statusHistory OrderStatusHistory[]
+  tickets       Ticket[]
 
   // Timestamps
   createdAt     DateTime  @default(now())
@@ -684,6 +690,14 @@ enum NotificationType {
   DEADLINE
   STATUS
   ASSIGNMENT
+  TICKET
+}
+
+enum TicketStatus {
+  OPEN
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
 }
 
 // ==================== SETTINGS ====================
@@ -708,11 +722,67 @@ model Settings {
   invoicePrefix String    @default("INV")
   orderPrefix   String    @default("ORD")
   proposalPrefix String   @default("КП")
+  ticketPrefix   String   @default("TK")
   nextInvoiceNumber Int   @default(1)
   nextOrderNumber   Int   @default(1)
   nextProposalNumber Int  @default(1)
+  nextTicketNumber  Int   @default(1)
 
   updatedAt     DateTime  @updatedAt
+}
+
+// ==================== TICKETS ====================
+
+model Ticket {
+  id            String        @id @default(cuid())
+
+  number        String        @unique
+  subject       String
+  description   String        @db.Text
+
+  status        TicketStatus  @default(OPEN)
+  priority      Priority      @default(MEDIUM)
+
+  clientId      String
+  client        Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  orderId       String?
+  order         Order?        @relation(fields: [orderId], references: [id], onDelete: SetNull)
+
+  assigneeId    String?
+  assignee      User?         @relation("TicketAssignee", fields: [assigneeId], references: [id])
+
+  messages      TicketMessage[]
+
+  resolvedAt    DateTime?
+  closedAt      DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([clientId])
+  @@index([orderId])
+  @@index([assigneeId])
+  @@index([status])
+}
+
+model TicketMessage {
+  id            String    @id @default(cuid())
+
+  ticketId      String
+  ticket        Ticket    @relation(fields: [ticketId], references: [id], onDelete: Cascade)
+
+  content       String    @db.Text
+
+  userId        String?
+  user          User?     @relation("TicketMessageAuthor", fields: [userId], references: [id])
+
+  clientName    String?
+  isFromClient  Boolean   @default(false)
+  isInternal    Boolean   @default(false)
+
+  createdAt     DateTime  @default(now())
+
+  @@index([ticketId])
 }
 
 model PasswordResetToken {

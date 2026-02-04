@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Building2, FolderKanban, FileText, ScrollText } from "lucide-react";
+import { Building2, FolderKanban, FileText, ScrollText, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getPortalClient } from "@/actions/portal";
 import { PortalLogoutButton } from "@/components/portal-logout-button";
@@ -55,6 +55,12 @@ export default async function PortalLayout({
                   <Button variant="ghost" size="sm" className="gap-2">
                     <FileText className="w-4 h-4" />
                     Счета
+                  </Button>
+                </Link>
+                <Link href="/portal/tickets">
+                  <Button variant="ghost" size="sm" className="gap-2">
+                    <MessageCircle className="w-4 h-4" />
+                    Обращения
                   </Button>
                 </Link>
               </nav>

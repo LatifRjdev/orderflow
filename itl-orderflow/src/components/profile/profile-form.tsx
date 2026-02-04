@@ -11,7 +11,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Camera, Loader2, Save } from "lucide-react";
 import { updateProfile } from "@/actions/users";
 import { getInitials } from "@/lib/utils";
-import { useUploadThing } from "@/lib/uploadthing-helpers";
 
 const roleLabels: Record<string, string> = {
   ADMIN: "Администратор",
@@ -41,26 +40,47 @@ export function ProfileForm({ user }: ProfileFormProps) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { startUpload } = useUploadThing("avatarUpload", {
-    onClientUploadComplete: (res) => {
-      if (res?.[0]) {
-        setImageUrl(res[0].url);
-      }
-      setIsUploading(false);
-    },
-    onUploadError: (err) => {
-      setError(err.message || "Ошибка загрузки файла");
-      setIsUploading(false);
-    },
-  });
-
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (!file.type.startsWith("image/")) {
+      setError("Допустимы только изображения");
+      return;
+    }
+
+    if (file.size > 4 * 1024 * 1024) {
+      setError("Максимальный размер файла — 4 МБ");
+      return;
+    }
+
     setIsUploading(true);
     setError("");
-    await startUpload([file]);
+
+    try {
+      const formData = new FormData();
+      formData.append("files", file);
+
+      const res = await fetch("/api/files/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Ошибка загрузки файла");
+        return;
+      }
+
+      if (data.files?.[0]) {
+        setImageUrl(data.files[0].url);
+      }
+    } catch {
+      setError("Ошибка загрузки файла");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
