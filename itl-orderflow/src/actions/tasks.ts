@@ -235,22 +235,37 @@ export async function updateTaskStatus(taskId: string, status: string) {
       }
     }
 
-    // Update order progress from milestones
+    // Update order progress
     if (task.orderId) {
       const milestones = await prisma.milestone.findMany({
         where: { orderId: task.orderId },
         select: { status: true },
       });
+
+      let orderPercent = 0;
+
       if (milestones.length > 0) {
+        // Calculate progress from milestones
         const completedCount = milestones.filter(
           (m) => m.status === "COMPLETED" || m.status === "APPROVED"
         ).length;
-        const orderPercent = Math.round((completedCount / milestones.length) * 100);
-        await prisma.order.update({
-          where: { id: task.orderId },
-          data: { progressPercent: orderPercent },
+        orderPercent = Math.round((completedCount / milestones.length) * 100);
+      } else {
+        // No milestones — calculate progress from tasks directly
+        const orderTasks = await prisma.task.findMany({
+          where: { orderId: task.orderId },
+          select: { status: true },
         });
+        if (orderTasks.length > 0) {
+          const doneCount = orderTasks.filter((t) => t.status === "DONE").length;
+          orderPercent = Math.round((doneCount / orderTasks.length) * 100);
+        }
       }
+
+      await prisma.order.update({
+        where: { id: task.orderId },
+        data: { progressPercent: orderPercent },
+      });
     }
 
     revalidatePath("/tasks");
