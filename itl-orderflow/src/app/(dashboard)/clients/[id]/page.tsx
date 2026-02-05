@@ -24,6 +24,7 @@ import Link from "next/link";
 import { formatCurrency, formatDate, formatRelativeTime } from "@/lib/utils";
 import { ClientActions } from "@/components/clients/client-actions";
 import { PortalAccess } from "@/components/clients/portal-access";
+import { AddContactDialog } from "@/components/clients/add-contact-dialog";
 
 interface ClientPageProps {
   params: { id: string };
@@ -222,9 +223,7 @@ export default async function ClientPage({ params }: ClientPageProps) {
                 <Users className="w-4 h-4" />
                 Контактные лица
               </CardTitle>
-              <Button variant="outline" size="sm">
-                Добавить
-              </Button>
+              <AddContactDialog clientId={client.id} />
             </CardHeader>
             <CardContent>
               {client.contacts && client.contacts.length > 0 ? (
