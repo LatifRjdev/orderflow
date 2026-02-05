@@ -88,6 +88,15 @@ export async function getPortalOrder(clientId: string, orderId: string) {
     where: { id: orderId, clientId },
     include: {
       status: true,
+      tasks: {
+        select: {
+          id: true,
+          title: true,
+          status: true,
+          priority: true,
+        },
+        orderBy: { position: "asc" },
+      },
       milestones: {
         include: {
           tasks: {

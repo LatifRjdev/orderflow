@@ -55,8 +55,11 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
   const order = await getPortalOrder(client.id, params.id);
   if (!order) notFound();
 
-  // Calculate stats
-  const allTasks = order.milestones?.flatMap((m: any) => m.tasks || []) || [];
+  // Calculate stats - include both direct tasks and milestone tasks
+  const allTasks = [
+    ...(order.tasks || []),
+    ...(order.milestones?.flatMap((m: any) => m.tasks || []) || []),
+  ];
   const doneTasks = allTasks.filter((t: any) => t.status === "DONE").length;
   const totalTasks = allTasks.length;
   const progressPercent = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
@@ -271,6 +274,38 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
                 </Card>
               );
             })
+          ) : order.tasks && order.tasks.length > 0 ? (
+            /* Show direct tasks when no milestones */
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-base">Задачи проекта</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-1.5">
+                  {order.tasks.map((task: any) => {
+                    const st = taskStatusIcons[task.status] || taskStatusIcons.TODO;
+                    const Icon = st.icon;
+                    return (
+                      <div
+                        key={task.id}
+                        className="flex items-center gap-2 p-2 rounded hover:bg-muted/50"
+                      >
+                        <Icon className={`w-4 h-4 ${st.color}`} />
+                        <span
+                          className={
+                            task.status === "DONE"
+                              ? "text-sm line-through text-muted-foreground"
+                              : "text-sm"
+                          }
+                        >
+                          {task.title}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
           ) : (
             <Card>
               <CardContent className="p-12 text-center text-muted-foreground">
