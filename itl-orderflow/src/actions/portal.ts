@@ -30,6 +30,12 @@ export async function getPortalDashboard(clientId: string) {
       where: { clientId },
       include: {
         status: true,
+        tasks: { select: { status: true } },
+        milestones: {
+          select: {
+            tasks: { select: { status: true } },
+          },
+        },
         _count: { select: { tasks: true, milestones: true } },
       },
       orderBy: { createdAt: "desc" },

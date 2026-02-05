@@ -105,7 +105,14 @@ export default async function PortalDashboard() {
         <h2 className="text-lg font-bold mb-4">Ваши проекты</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {orders.map((order: any) => {
-            const totalTasks = order._count?.tasks || 0;
+            // Calculate progress from all tasks
+            const allTasks = [
+              ...(order.tasks || []),
+              ...(order.milestones?.flatMap((m: any) => m.tasks || []) || []),
+            ];
+            const doneTasks = allTasks.filter((t: any) => t.status === "DONE").length;
+            const totalTasks = allTasks.length;
+            const progressPercent = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
             const isCompleted = order.status?.code === "completed";
 
             return (
@@ -133,11 +140,17 @@ export default async function PortalDashboard() {
                       )}
                     </div>
 
-                    <div className="flex items-center gap-4 mt-4 text-sm text-muted-foreground">
+                    {/* Progress bar */}
+                    <div className="flex items-center gap-2 mt-3">
+                      <Progress value={progressPercent} className="flex-1 h-2" />
+                      <span className="text-sm font-medium w-10 text-right">{progressPercent}%</span>
+                    </div>
+
+                    <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
                       {order.deadline && (
                         <span>Дедлайн: {formatDate(order.deadline)}</span>
                       )}
-                      <span>{totalTasks} задач</span>
+                      <span>{doneTasks}/{totalTasks} задач</span>
                       <span>{order._count?.milestones || 0} этапов</span>
                     </div>
 
