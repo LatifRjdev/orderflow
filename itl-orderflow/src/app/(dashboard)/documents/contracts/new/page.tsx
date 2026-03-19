@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ContractForm } from "@/components/documents/contract-form";
+import { ContractEditor } from "@/components/documents/contract-editor";
 
 export default async function NewContractPage() {
   const [clients, orders] = await Promise.all([
@@ -14,5 +14,5 @@ export default async function NewContractPage() {
     }),
   ]);
 
-  return <ContractForm clients={clients} orders={orders} />;
+  return <ContractEditor mode="create" clients={clients} orders={orders} />;
 }

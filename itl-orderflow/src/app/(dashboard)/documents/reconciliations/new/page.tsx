@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { ReconciliationForm } from "@/components/documents/reconciliation-form";
+import { ReconciliationEditor } from "@/components/documents/reconciliation-editor";
 
 export default async function NewReconciliationPage() {
   const clients = await prisma.client.findMany({
@@ -8,5 +8,5 @@ export default async function NewReconciliationPage() {
     orderBy: { name: "asc" },
   });
 
-  return <ReconciliationForm clients={clients} />;
+  return <ReconciliationEditor clients={clients} />;
 }

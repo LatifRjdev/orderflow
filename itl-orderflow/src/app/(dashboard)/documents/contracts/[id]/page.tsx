@@ -3,10 +3,11 @@ import Link from "next/link";
 import { getContract } from "@/actions/contracts";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Building2, Briefcase, FileText } from "lucide-react";
+import { ArrowLeft, Building2, Briefcase, FileText, Pencil } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { DownloadPdfButton } from "@/components/documents/download-pdf-button";
 import { ContractActions } from "@/components/documents/contract-actions";
+import { ContractSectionRenderer } from "@/components/documents/sections/contract-section-renderer";
 
 const statusMap: Record<string, { label: string; dot: string }> = {
   DRAFT: { label: "Черновик", dot: "#9ca3af" },
@@ -92,14 +93,16 @@ export default async function ContractDetailPage({ params }: { params: { id: str
               )}
 
               {/* Sections */}
-              {contract.sections?.map((section: any, idx: number) => (
+              {contract.sections?.map((section: any) => (
                 <div key={section.id} className="mb-6">
-                  <h3 className="font-semibold mb-2">
-                    {idx + 1}. {section.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                    {typeof section.content === "string" ? section.content : JSON.stringify(section.content)}
-                  </p>
+                  <ContractSectionRenderer
+                    section={{
+                      type: section.type,
+                      title: section.title,
+                      content: section.content,
+                      isVisible: true,
+                    }}
+                  />
                 </div>
               ))}
 
@@ -174,6 +177,14 @@ export default async function ContractDetailPage({ params }: { params: { id: str
               <h3 className="text-base font-semibold">Действия</h3>
             </div>
             <div className="px-6 pb-6 space-y-2">
+              {contract.status === "DRAFT" && (
+                <Link href={`/documents/contracts/${contract.id}/edit`}>
+                  <Button variant="outline" className="w-full justify-start">
+                    <Pencil className="w-4 h-4 mr-2" />
+                    Редактировать
+                  </Button>
+                </Link>
+              )}
               <ContractActions contractId={contract.id} status={contract.status} />
               <DownloadPdfButton type="contract" id={contract.id} className="w-full justify-start" />
             </div>

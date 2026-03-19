@@ -3,10 +3,11 @@ import Link from "next/link";
 import { getTechSpec } from "@/actions/tech-specs";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Building2, Briefcase } from "lucide-react";
+import { ArrowLeft, Building2, Briefcase, Pencil } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { DownloadPdfButton } from "@/components/documents/download-pdf-button";
 import { TechSpecActions } from "@/components/documents/tech-spec-actions";
+import { SpecSectionRenderer } from "@/components/documents/sections/spec-section-renderer";
 
 const statusMap: Record<string, { label: string; dot: string }> = {
   DRAFT: { label: "Черновик", dot: "#9ca3af" },
@@ -72,14 +73,16 @@ export default async function TechSpecDetailPage({ params }: { params: { id: str
                 </p>
               </div>
 
-              {spec.sections?.map((section: any, idx: number) => (
+              {spec.sections?.map((section: any) => (
                 <div key={section.id} className="mb-6">
-                  <h3 className="font-semibold mb-2">
-                    {idx + 1}. {section.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                    {typeof section.content === "string" ? section.content : JSON.stringify(section.content)}
-                  </p>
+                  <SpecSectionRenderer
+                    section={{
+                      type: section.type,
+                      title: section.title,
+                      content: section.content,
+                      isVisible: true,
+                    }}
+                  />
                 </div>
               ))}
 
@@ -117,6 +120,14 @@ export default async function TechSpecDetailPage({ params }: { params: { id: str
               <h3 className="text-base font-semibold">Действия</h3>
             </div>
             <div className="px-6 pb-6 space-y-2">
+              {(spec.status === "DRAFT" || spec.status === "REVIEW") && (
+                <Link href={`/documents/specs/${spec.id}/edit`}>
+                  <Button variant="outline" className="w-full justify-start">
+                    <Pencil className="w-4 h-4 mr-2" />
+                    Редактировать
+                  </Button>
+                </Link>
+              )}
               <TechSpecActions specId={spec.id} status={spec.status} />
               <DownloadPdfButton type="tech-spec" id={spec.id} className="w-full justify-start" />
             </div>

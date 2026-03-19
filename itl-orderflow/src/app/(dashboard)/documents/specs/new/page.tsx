@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { TechSpecForm } from "@/components/documents/tech-spec-form";
+import { TechSpecEditor } from "@/components/documents/tech-spec-editor";
 
 export default async function NewTechSpecPage() {
   const [clients, orders] = await Promise.all([
@@ -14,5 +14,5 @@ export default async function NewTechSpecPage() {
     }),
   ]);
 
-  return <TechSpecForm clients={clients} orders={orders} />;
+  return <TechSpecEditor mode="create" clients={clients} orders={orders} />;
 }

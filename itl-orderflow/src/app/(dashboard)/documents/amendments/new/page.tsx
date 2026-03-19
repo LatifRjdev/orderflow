@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { AmendmentForm } from "@/components/documents/amendment-form";
+import { AmendmentEditor } from "@/components/documents/amendment-editor";
 
 export default async function NewAmendmentPage() {
   const contracts = await prisma.contract.findMany({
@@ -12,5 +12,5 @@ export default async function NewAmendmentPage() {
     orderBy: { createdAt: "desc" },
   });
 
-  return <AmendmentForm contracts={contracts} />;
+  return <AmendmentEditor mode="create" contracts={contracts} />;
 }

@@ -3,10 +3,11 @@ import Link from "next/link";
 import { getAmendment } from "@/actions/amendments";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Building2, FileText } from "lucide-react";
+import { ArrowLeft, Building2, FileText, Pencil } from "lucide-react";
 import { formatDate } from "@/lib/utils";
 import { DownloadPdfButton } from "@/components/documents/download-pdf-button";
 import { AmendmentActions } from "@/components/documents/amendment-actions";
+import { AMENDMENT_FIELD_OPTIONS } from "@/types/amendment-changes";
 
 const statusMap: Record<string, { label: string; dot: string }> = {
   DRAFT: { label: "Черновик", dot: "#9ca3af" },
@@ -85,13 +86,38 @@ export default async function AmendmentDetailPage({ params }: { params: { id: st
               {amendment.changes && (
                 <div className="mb-6">
                   <h3 className="font-semibold mb-2">Детали изменений</h3>
-                  <div className="p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
-                    <pre className="text-sm whitespace-pre-wrap">
-                      {typeof amendment.changes === "string"
-                        ? amendment.changes
-                        : JSON.stringify(amendment.changes, null, 2)}
-                    </pre>
-                  </div>
+                  {Array.isArray(amendment.changes) ? (
+                    <div className="border rounded-lg overflow-hidden">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="bg-muted/50">
+                            <th className="text-left p-3 font-medium">Поле</th>
+                            <th className="text-left p-3 font-medium">Было</th>
+                            <th className="text-left p-3 font-medium">Стало</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {(amendment.changes as any[]).map((change: any, i: number) => (
+                            <tr key={i} className="border-t">
+                              <td className="p-3 font-medium">
+                                {AMENDMENT_FIELD_OPTIONS.find((o) => o.value === change.field)?.label || change.field}
+                              </td>
+                              <td className="p-3 text-muted-foreground line-through">{change.oldValue}</td>
+                              <td className="p-3 text-green-700 font-medium">{change.newValue}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : (
+                    <div className="p-4 bg-amber-50 border-l-4 border-amber-400 rounded-r-lg">
+                      <pre className="text-sm whitespace-pre-wrap">
+                        {typeof amendment.changes === "string"
+                          ? amendment.changes
+                          : JSON.stringify(amendment.changes, null, 2)}
+                      </pre>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -116,6 +142,14 @@ export default async function AmendmentDetailPage({ params }: { params: { id: st
               <h3 className="text-base font-semibold">Действия</h3>
             </div>
             <div className="px-6 pb-6 space-y-2">
+              {amendment.status === "DRAFT" && (
+                <Link href={`/documents/amendments/${amendment.id}/edit`}>
+                  <Button variant="outline" className="w-full justify-start">
+                    <Pencil className="w-4 h-4 mr-2" />
+                    Редактировать
+                  </Button>
+                </Link>
+              )}
               <AmendmentActions amendmentId={amendment.id} status={amendment.status} />
               <DownloadPdfButton type="amendment" id={amendment.id} className="w-full justify-start" />
             </div>
