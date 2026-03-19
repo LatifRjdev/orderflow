@@ -1,6 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { generateInvoicePdf, generateProposalPdf } from "@/actions/pdf";
+import {
+  generateInvoicePdf,
+  generateProposalPdf,
+  generateContractPdf,
+  generateTechSpecPdf,
+  generateAmendmentPdf,
+  generateReconciliationPdf,
+} from "@/actions/pdf";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +30,18 @@ export async function GET(
       break;
     case "proposal":
       result = await generateProposalPdf(id);
+      break;
+    case "contract":
+      result = await generateContractPdf(id);
+      break;
+    case "tech-spec":
+      result = await generateTechSpecPdf(id);
+      break;
+    case "amendment":
+      result = await generateAmendmentPdf(id);
+      break;
+    case "reconciliation":
+      result = await generateReconciliationPdf(id);
       break;
     default:
       return NextResponse.json({ error: "Invalid type" }, { status: 400 });

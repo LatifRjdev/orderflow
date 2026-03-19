@@ -539,6 +539,51 @@ export default async function OrderPage({ params }: OrderPageProps) {
             </div>
           )}
 
+          {/* Documents */}
+          {((order as any).contracts?.length > 0 || (order as any).techSpecs?.length > 0) && (
+            <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-base font-semibold flex items-center gap-2">
+                    <FileText className="w-4 h-4" />
+                    Документы
+                  </h3>
+                  <Link href={`/documents/contracts/new`}>
+                    <Button variant="ghost" size="sm" className="text-xs">Создать</Button>
+                  </Link>
+                </div>
+              </div>
+              <div className="px-6 pb-6 space-y-2">
+                {(order as any).contracts?.map((c: any) => (
+                  <Link
+                    key={c.id}
+                    href={`/documents/contracts/${c.id}`}
+                    className="flex items-center justify-between p-2 rounded-lg border border-[#dbdfe6] hover:bg-background-light/50"
+                  >
+                    <div>
+                      <p className="text-xs text-muted-foreground">Договор</p>
+                      <p className="text-sm font-mono">{c.number}</p>
+                    </div>
+                    <span className="text-xs text-muted-foreground">{c.title}</span>
+                  </Link>
+                ))}
+                {(order as any).techSpecs?.map((s: any) => (
+                  <Link
+                    key={s.id}
+                    href={`/documents/specs/${s.id}`}
+                    className="flex items-center justify-between p-2 rounded-lg border border-[#dbdfe6] hover:bg-background-light/50"
+                  >
+                    <div>
+                      <p className="text-xs text-muted-foreground">ТЗ v{s.version}</p>
+                      <p className="text-sm font-mono">{s.number}</p>
+                    </div>
+                    <span className="text-xs text-muted-foreground">{s.title}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Invoices */}
           {order.invoices && order.invoices.length > 0 && (
             <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">

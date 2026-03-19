@@ -447,6 +447,59 @@ export default async function ClientPage({ params }: ClientPageProps) {
             </div>
           </div>
 
+          {/* Documents */}
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold flex items-center gap-2">
+                  <FileText className="w-4 h-4" />
+                  Документы
+                </h3>
+                <div className="flex gap-2">
+                  <Link href={`/documents/contracts/new`}>
+                    <Button variant="ghost" size="sm" className="text-xs">Договор</Button>
+                  </Link>
+                  <Link href={`/documents/reconciliations/new`}>
+                    <Button variant="ghost" size="sm" className="text-xs">Акт сверки</Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+            <div className="px-6 pb-6 space-y-2">
+              {(client as any).contracts?.map((c: any) => (
+                <Link
+                  key={c.id}
+                  href={`/documents/contracts/${c.id}`}
+                  className="flex items-center justify-between p-2 rounded-lg border border-[#dbdfe6] hover:bg-background-light/50"
+                >
+                  <div>
+                    <p className="text-xs text-muted-foreground">Договор</p>
+                    <p className="text-sm font-mono">{c.number}</p>
+                  </div>
+                  <span className="text-xs text-muted-foreground">{c.title}</span>
+                </Link>
+              ))}
+              {(client as any).reconciliations?.map((r: any) => (
+                <Link
+                  key={r.id}
+                  href={`/documents/reconciliations/${r.id}`}
+                  className="flex items-center justify-between p-2 rounded-lg border border-[#dbdfe6] hover:bg-background-light/50"
+                >
+                  <div>
+                    <p className="text-xs text-muted-foreground">Акт сверки</p>
+                    <p className="text-sm font-mono">{r.number}</p>
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    {formatDate(r.periodFrom)} — {formatDate(r.periodTo)}
+                  </span>
+                </Link>
+              ))}
+              {!(client as any).contracts?.length && !(client as any).reconciliations?.length && (
+                <p className="text-sm text-muted-foreground text-center py-4">Документов пока нет</p>
+              )}
+            </div>
+          </div>
+
           {/* Client Notes */}
           <ClientNotes
             clientId={client.id}

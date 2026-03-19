@@ -133,6 +133,14 @@ export async function getOrder(id: string) {
       invoices: {
         orderBy: { createdAt: "desc" },
       },
+      contracts: {
+        select: { id: true, number: true, title: true, status: true, contractDate: true },
+        orderBy: { createdAt: "desc" },
+      },
+      techSpecs: {
+        select: { id: true, number: true, title: true, status: true, version: true },
+        orderBy: { createdAt: "desc" },
+      },
       statusHistory: {
         orderBy: { createdAt: "desc" },
         take: 10,

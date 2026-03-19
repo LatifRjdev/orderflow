@@ -80,9 +80,17 @@ type SettingsData = {
   invoicePrefix: string;
   orderPrefix: string;
   proposalPrefix: string;
+  contractPrefix: string;
+  specPrefix: string;
+  amendmentPrefix: string;
+  reconciliationPrefix: string;
   nextInvoiceNumber: number;
   nextOrderNumber: number;
   nextProposalNumber: number;
+  nextContractNumber: number;
+  nextSpecNumber: number;
+  nextAmendmentNumber: number;
+  nextReconciliationNumber: number;
 };
 
 type UserData = {
@@ -241,6 +249,44 @@ function OrganizationSettings({ settings }: { settings: SettingsData }) {
               <div className="space-y-2">
                 <Label>Расчётный счёт</Label>
                 <Input name="bankAccount" defaultValue={settings.bankAccount || ""} />
+              </div>
+            </div>
+
+            <Separator />
+
+            <h3 className="font-medium">Нумерация документов</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Префикс договоров</Label>
+                <Input name="contractPrefix" defaultValue={settings.contractPrefix || "ДОГ"} />
+              </div>
+              <div className="space-y-2">
+                <Label>След. номер договора</Label>
+                <Input name="nextContractNumber" type="number" defaultValue={settings.nextContractNumber || 1} />
+              </div>
+              <div className="space-y-2">
+                <Label>Префикс ТЗ</Label>
+                <Input name="specPrefix" defaultValue={settings.specPrefix || "ТЗ"} />
+              </div>
+              <div className="space-y-2">
+                <Label>След. номер ТЗ</Label>
+                <Input name="nextSpecNumber" type="number" defaultValue={settings.nextSpecNumber || 1} />
+              </div>
+              <div className="space-y-2">
+                <Label>Префикс доп. соглашений</Label>
+                <Input name="amendmentPrefix" defaultValue={settings.amendmentPrefix || "ДС"} />
+              </div>
+              <div className="space-y-2">
+                <Label>След. номер доп. соглашения</Label>
+                <Input name="nextAmendmentNumber" type="number" defaultValue={settings.nextAmendmentNumber || 1} />
+              </div>
+              <div className="space-y-2">
+                <Label>Префикс актов сверки</Label>
+                <Input name="reconciliationPrefix" defaultValue={settings.reconciliationPrefix || "АС"} />
+              </div>
+              <div className="space-y-2">
+                <Label>След. номер акта сверки</Label>
+                <Input name="nextReconciliationNumber" type="number" defaultValue={settings.nextReconciliationNumber || 1} />
               </div>
             </div>
 

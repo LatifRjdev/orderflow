@@ -36,12 +36,31 @@ export async function updateOrganizationSettings(formData: FormData) {
       "companyAddress",
       "bankName",
       "bankAccount",
+      "contractPrefix",
+      "specPrefix",
+      "amendmentPrefix",
+      "reconciliationPrefix",
     ];
 
     for (const field of fields) {
       const value = formData.get(field);
       if (value !== null) {
         data[field] = (value as string) || undefined;
+      }
+    }
+
+    // Handle numeric counter fields
+    const numericFields = [
+      "nextContractNumber",
+      "nextSpecNumber",
+      "nextAmendmentNumber",
+      "nextReconciliationNumber",
+    ];
+    const numericData: Record<string, number> = {};
+    for (const field of numericFields) {
+      const value = formData.get(field);
+      if (value !== null && value !== "") {
+        numericData[field] = parseInt(value as string, 10);
       }
     }
 
@@ -52,8 +71,8 @@ export async function updateOrganizationSettings(formData: FormData) {
 
     const settings = await prisma.settings.upsert({
       where: { id: "default" },
-      update: data,
-      create: { id: "default", ...data },
+      update: { ...data, ...numericData },
+      create: { id: "default", ...data, ...numericData },
     });
 
     revalidatePath("/settings");

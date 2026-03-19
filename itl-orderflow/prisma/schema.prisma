@@ -117,6 +117,9 @@ model Client {
   proposals     Proposal[]
   tickets       Ticket[]
   clientNotes   ClientNote[]
+  contracts     Contract[]
+  techSpecs     TechSpec[]
+  reconciliations Reconciliation[]
 
   // Timestamps
   createdAt     DateTime  @default(now())
@@ -252,6 +255,8 @@ model Order {
   proposals     Proposal[]
   statusHistory OrderStatusHistory[]
   tickets       Ticket[]
+  contracts     Contract[]
+  techSpecs     TechSpec[]
 
   // Timestamps
   createdAt     DateTime  @default(now())
@@ -793,6 +798,15 @@ model Settings {
   nextProposalNumber Int  @default(1)
   nextTicketNumber  Int   @default(1)
 
+  contractPrefix       String @default("ДОГ")
+  specPrefix           String @default("ТЗ")
+  amendmentPrefix      String @default("ДС")
+  reconciliationPrefix String @default("АС")
+  nextContractNumber       Int @default(1)
+  nextSpecNumber           Int @default(1)
+  nextAmendmentNumber      Int @default(1)
+  nextReconciliationNumber Int @default(1)
+
   updatedAt     DateTime  @updatedAt
 }
 
@@ -859,4 +873,228 @@ model PasswordResetToken {
 
   @@index([email])
   @@index([token])
+}
+
+// ==================== DOCUMENTS ====================
+
+enum ContractStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+  TERMINATED
+  EXPIRED
+}
+
+enum ContractSectionType {
+  SUBJECT
+  OBLIGATIONS_EXECUTOR
+  OBLIGATIONS_CLIENT
+  PAYMENT_TERMS
+  LIABILITY
+  DISPUTE_RESOLUTION
+  FORCE_MAJEURE
+  SIGNATURES
+  CUSTOM
+}
+
+model Contract {
+  id            String          @id @default(cuid())
+
+  number        String          @unique
+  title         String
+
+  clientId      String
+  client        Client          @relation(fields: [clientId], references: [id])
+
+  orderId       String?
+  order         Order?          @relation(fields: [orderId], references: [id])
+
+  contractDate  DateTime        @db.Date
+  startDate     DateTime?       @db.Date
+  endDate       DateTime?       @db.Date
+
+  totalAmount   Decimal         @default(0) @db.Decimal(15, 2)
+  currency      String          @default("TJS")
+
+  status        ContractStatus  @default(DRAFT)
+
+  sections      ContractSection[]
+  amendments    Amendment[]
+
+  generatedPdfUrl  String?
+  generatedPdfKey  String?
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([clientId])
+  @@index([orderId])
+  @@index([status])
+}
+
+model ContractSection {
+  id          String              @id @default(cuid())
+
+  contractId  String
+  contract    Contract            @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  type        ContractSectionType
+  title       String
+  content     Json
+  position    Int                 @default(0)
+
+  createdAt   DateTime            @default(now())
+
+  @@index([contractId])
+}
+
+enum TechSpecStatus {
+  DRAFT
+  REVIEW
+  APPROVED
+  ARCHIVED
+}
+
+enum TechSpecSectionType {
+  INTRODUCTION
+  GOALS
+  FUNCTIONAL_REQUIREMENTS
+  NON_FUNCTIONAL_REQUIREMENTS
+  TECH_STACK
+  TIMELINE
+  ACCEPTANCE_CRITERIA
+  CUSTOM
+}
+
+model TechSpec {
+  id            String          @id @default(cuid())
+
+  number        String          @unique
+  title         String
+
+  clientId      String
+  client        Client          @relation(fields: [clientId], references: [id])
+
+  orderId       String?
+  order         Order?          @relation(fields: [orderId], references: [id])
+
+  version       String          @default("1.0")
+  approvedDate  DateTime?       @db.Date
+
+  status        TechSpecStatus  @default(DRAFT)
+
+  sections      TechSpecSection[]
+
+  generatedPdfUrl  String?
+  generatedPdfKey  String?
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([clientId])
+  @@index([orderId])
+  @@index([status])
+}
+
+model TechSpecSection {
+  id          String              @id @default(cuid())
+
+  techSpecId  String
+  techSpec    TechSpec            @relation(fields: [techSpecId], references: [id], onDelete: Cascade)
+
+  type        TechSpecSectionType
+  title       String
+  content     Json
+  position    Int                 @default(0)
+
+  createdAt   DateTime            @default(now())
+
+  @@index([techSpecId])
+}
+
+enum AmendmentStatus {
+  DRAFT
+  ACTIVE
+  COMPLETED
+}
+
+model Amendment {
+  id            String          @id @default(cuid())
+
+  number        String          @unique
+  title         String
+
+  contractId    String
+  contract      Contract        @relation(fields: [contractId], references: [id], onDelete: Cascade)
+
+  effectiveDate DateTime        @db.Date
+  description   String          @db.Text
+  changes       Json
+
+  status        AmendmentStatus @default(DRAFT)
+
+  generatedPdfUrl  String?
+  generatedPdfKey  String?
+
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+
+  @@index([contractId])
+  @@index([status])
+}
+
+enum ReconciliationStatus {
+  DRAFT
+  SENT
+  CONFIRMED
+}
+
+model Reconciliation {
+  id            String                @id @default(cuid())
+
+  number        String                @unique
+
+  clientId      String
+  client        Client                @relation(fields: [clientId], references: [id])
+
+  periodFrom    DateTime              @db.Date
+  periodTo      DateTime              @db.Date
+  generatedDate DateTime              @db.Date
+
+  openingBalance Decimal              @default(0) @db.Decimal(15, 2)
+  closingBalance Decimal              @default(0) @db.Decimal(15, 2)
+  currency       String               @default("TJS")
+
+  status        ReconciliationStatus  @default(DRAFT)
+
+  entries       ReconciliationEntry[]
+
+  generatedPdfUrl  String?
+  generatedPdfKey  String?
+
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+
+  @@index([clientId])
+  @@index([status])
+}
+
+model ReconciliationEntry {
+  id                String          @id @default(cuid())
+
+  reconciliationId  String
+  reconciliation    Reconciliation  @relation(fields: [reconciliationId], references: [id], onDelete: Cascade)
+
+  date              DateTime        @db.Date
+  description       String
+  debit             Decimal         @default(0) @db.Decimal(15, 2)
+  credit            Decimal         @default(0) @db.Decimal(15, 2)
+  balance           Decimal         @default(0) @db.Decimal(15, 2)
+
+  invoiceId         String?
+  position          Int             @default(0)
+
+  createdAt         DateTime        @default(now())
+
+  @@index([reconciliationId])
 }

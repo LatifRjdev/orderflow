@@ -83,6 +83,16 @@ export async function getClient(id: string) {
         orderBy: { createdAt: "desc" },
         take: 10,
       },
+      contracts: {
+        select: { id: true, number: true, title: true, status: true, contractDate: true },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      },
+      reconciliations: {
+        select: { id: true, number: true, status: true, periodFrom: true, periodTo: true, closingBalance: true, currency: true },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      },
       clientNotes: {
         include: {
           author: { select: { id: true, name: true } },
@@ -91,7 +101,7 @@ export async function getClient(id: string) {
         take: 20,
       },
       _count: {
-        select: { orders: true, invoices: true },
+        select: { orders: true, invoices: true, contracts: true, reconciliations: true },
       },
     },
   });

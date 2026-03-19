@@ -11,6 +11,7 @@ import {
   Clock,
   DollarSign,
   FileText,
+  Files,
   MessageCircle,
   BarChart3,
   Settings,
@@ -30,6 +31,7 @@ const navigation = [
   { name: "Время", href: "/time", icon: Clock },
   { name: "Финансы", href: "/finance", icon: DollarSign },
   { name: "Предложения", href: "/proposals", icon: FileText },
+  { name: "Документы", href: "/documents", icon: Files },
   { name: "Обращения", href: "/tickets", icon: MessageCircle },
   { name: "Отчёты", href: "/reports", icon: BarChart3 },
 ];
