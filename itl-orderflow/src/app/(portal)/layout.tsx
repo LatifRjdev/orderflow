@@ -25,9 +25,9 @@ export default async function PortalLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background-light">
       {/* Header */}
-      <header className="bg-white border-b sticky top-0 z-40">
+      <header className="bg-white border-b border-[#dbdfe6] sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center gap-6">

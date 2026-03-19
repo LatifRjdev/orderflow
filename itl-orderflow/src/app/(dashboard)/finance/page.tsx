@@ -15,20 +15,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
 import { getInvoices, getPaymentForecast, getOverdueInvoices } from "@/actions/invoices";
 import { getRevenueByMonth, getFinanceSummary, getTopClients } from "@/actions/reports";
 import { RevenueByMonthChart } from "@/components/finance/finance-charts";
 
-const invoiceStatusMap: Record<string, { label: string; color: string }> = {
-  DRAFT: { label: "Черновик", color: "bg-gray-100 text-gray-700" },
-  SENT: { label: "Отправлен", color: "bg-blue-100 text-blue-700" },
-  VIEWED: { label: "Просмотрен", color: "bg-purple-100 text-purple-700" },
-  PAID: { label: "Оплачен", color: "bg-green-100 text-green-700" },
-  PARTIALLY_PAID: { label: "Частично", color: "bg-amber-100 text-amber-700" },
-  OVERDUE: { label: "Просрочен", color: "bg-red-100 text-red-700" },
-  CANCELLED: { label: "Отменён", color: "bg-gray-100 text-gray-500" },
+const invoiceStatusMap: Record<string, { label: string; color: string; dot: string }> = {
+  DRAFT: { label: "Черновик", color: "bg-gray-100 text-gray-700", dot: "#9ca3af" },
+  SENT: { label: "Отправлен", color: "bg-blue-100 text-blue-700", dot: "#3b82f6" },
+  VIEWED: { label: "Просмотрен", color: "bg-purple-100 text-purple-700", dot: "#8b5cf6" },
+  PAID: { label: "Оплачен", color: "bg-green-100 text-green-700", dot: "#22c55e" },
+  PARTIALLY_PAID: { label: "Частично", color: "bg-amber-100 text-amber-700", dot: "#f59e0b" },
+  OVERDUE: { label: "Просрочен", color: "bg-red-100 text-red-700", dot: "#ef4444" },
+  CANCELLED: { label: "Отменён", color: "bg-gray-100 text-gray-500", dot: "#9ca3af" },
 };
 
 const statusTabs = [
@@ -65,89 +64,83 @@ async function FinanceDashboardContent() {
     <div className="space-y-6">
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Выручка</p>
-                <p className="text-2xl font-bold mt-1">
-                  {formatCurrency(revenue)}
-                </p>
-                <p className="text-xs text-green-600 mt-1 font-medium">
-                  Оплаченные счета
-                </p>
-              </div>
-              <div className="bg-green-100 p-3 rounded-lg">
-                <TrendingUp className="w-6 h-6 text-green-600" />
-              </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Выручка</p>
+              <p className="text-3xl font-bold mt-1">
+                {formatCurrency(revenue)}
+              </p>
+              <span className="inline-flex items-center gap-1 mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-green-50 text-green-600">
+                <TrendingUp className="w-3 h-3" />
+                Оплаченные счета
+              </span>
             </div>
-          </CardContent>
-        </Card>
+            <div className="bg-green-100 p-3 rounded-xl">
+              <TrendingUp className="w-6 h-6 text-green-600" />
+            </div>
+          </div>
+        </div>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Расходы</p>
-                <p className="text-2xl font-bold mt-1">
-                  {formatCurrency(expenses)}
-                </p>
-                <p className="text-xs text-red-600 mt-1 font-medium">
-                  Не отслеживаются
-                </p>
-              </div>
-              <div className="bg-red-100 p-3 rounded-lg">
-                <TrendingDown className="w-6 h-6 text-red-600" />
-              </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Расходы</p>
+              <p className="text-3xl font-bold mt-1">
+                {formatCurrency(expenses)}
+              </p>
+              <span className="inline-flex items-center gap-1 mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-red-50 text-red-600">
+                Не отслеживаются
+              </span>
             </div>
-          </CardContent>
-        </Card>
+            <div className="bg-red-100 p-3 rounded-xl">
+              <TrendingDown className="w-6 h-6 text-red-600" />
+            </div>
+          </div>
+        </div>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Просрочено</p>
-                <p className="text-2xl font-bold mt-1">
-                  {formatCurrency(overdue > 0 ? overdue : 0)}
-                </p>
-                <p className="text-xs text-amber-600 mt-1 font-medium">
-                  Требует внимания
-                </p>
-              </div>
-              <div className="bg-amber-100 p-3 rounded-lg">
-                <AlertCircle className="w-6 h-6 text-amber-600" />
-              </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Просрочено</p>
+              <p className="text-3xl font-bold mt-1">
+                {formatCurrency(overdue > 0 ? overdue : 0)}
+              </p>
+              <span className="inline-flex items-center gap-1 mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-600">
+                <AlertCircle className="w-3 h-3" />
+                Требует внимания
+              </span>
             </div>
-          </CardContent>
-        </Card>
+            <div className="bg-amber-100 p-3 rounded-xl">
+              <AlertCircle className="w-6 h-6 text-amber-600" />
+            </div>
+          </div>
+        </div>
 
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Чистая прибыль</p>
-                <p className="text-2xl font-bold mt-1">
-                  {formatCurrency(netProfit)}
-                </p>
-                <p className="text-xs text-blue-600 mt-1 font-medium">
-                  Выручка - расходы
-                </p>
-              </div>
-              <div className="bg-blue-100 p-3 rounded-lg">
-                <DollarSign className="w-6 h-6 text-blue-600" />
-              </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Чистая прибыль</p>
+              <p className="text-3xl font-bold mt-1">
+                {formatCurrency(netProfit)}
+              </p>
+              <span className="inline-flex items-center gap-1 mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
+                Выручка - расходы
+              </span>
             </div>
-          </CardContent>
-        </Card>
+            <div className="bg-blue-100 p-3 rounded-xl">
+              <DollarSign className="w-6 h-6 text-blue-600" />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Revenue Chart */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Выручка по месяцам</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-6 pb-0">
+          <h3 className="text-lg font-semibold">Выручка по месяцам</h3>
+        </div>
+        <div className="p-6">
           {revenueData.length > 0 ? (
             <RevenueByMonthChart data={revenueData} />
           ) : (
@@ -155,16 +148,16 @@ async function FinanceDashboardContent() {
               Нет данных за указанный период
             </div>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Top Clients */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Топ клиенты по выручке</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold">Топ клиенты по выручке</h3>
+          </div>
+          <div className="px-6 pb-6">
             {topClients.length > 0 ? (
               <div className="space-y-4">
                 {topClients.map((client, index) => {
@@ -183,7 +176,7 @@ async function FinanceDashboardContent() {
                       </div>
                       <div className="w-full bg-gray-100 rounded-full h-2">
                         <div
-                          className="bg-blue-500 h-2 rounded-full transition-all"
+                          className="bg-primary h-2 rounded-full transition-all"
                           style={{ width: `${percentage}%` }}
                         />
                       </div>
@@ -199,23 +192,23 @@ async function FinanceDashboardContent() {
                 Нет данных о клиентах
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Payment Forecast */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <Clock className="w-4 h-4" />
               Прогноз поступлений
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
+            </h3>
+          </div>
+          <div>
             {forecast.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b bg-gray-50/50">
+                    <tr className="border-b border-[#dbdfe6]">
                       <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">Счёт</th>
                       <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">Клиент</th>
                       <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">Срок</th>
@@ -224,7 +217,7 @@ async function FinanceDashboardContent() {
                   </thead>
                   <tbody>
                     {forecast.map((inv) => (
-                      <tr key={inv.id} className="border-b last:border-0 hover:bg-gray-50/50">
+                      <tr key={inv.id} className="border-b border-[#dbdfe6] last:border-0 hover:bg-background-light/50">
                         <td className="py-3 px-6 text-sm">
                           <Link href={`/finance/${inv.id}`} className="font-mono hover:text-primary">
                             {inv.number}
@@ -247,20 +240,20 @@ async function FinanceDashboardContent() {
                 Нет ожидаемых платежей
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Recent Transactions */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Последние операции</CardTitle>
-          </CardHeader>
-          <CardContent className="p-0">
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold">Последние операции</h3>
+          </div>
+          <div>
             {recentPaid.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b bg-gray-50/50">
+                    <tr className="border-b border-[#dbdfe6]">
                       <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">
                         Дата
                       </th>
@@ -276,7 +269,7 @@ async function FinanceDashboardContent() {
                     {recentPaid.map((inv) => (
                       <tr
                         key={inv.id}
-                        className="border-b last:border-0 hover:bg-gray-50/50"
+                        className="border-b border-[#dbdfe6] last:border-0 hover:bg-background-light/50"
                       >
                         <td className="py-3 px-6 text-sm text-muted-foreground">
                           {formatDate(inv.issueDate)}
@@ -299,8 +292,56 @@ async function FinanceDashboardContent() {
                 Нет последних операций
               </div>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+
+        {/* Overdue Invoices */}
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-red-500" />
+              Просроченные счета
+            </h3>
+          </div>
+          <div>
+            {overdueList.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-[#dbdfe6]">
+                      <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">Счёт</th>
+                      <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">Клиент</th>
+                      <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">Просрочен с</th>
+                      <th className="text-right py-3 px-6 text-xs font-medium text-muted-foreground">Остаток</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {overdueList.map((inv) => (
+                      <tr key={inv.id} className="border-b border-[#dbdfe6] last:border-0 hover:bg-background-light/50">
+                        <td className="py-3 px-6 text-sm">
+                          <Link href={`/finance/${inv.id}`} className="font-mono hover:text-primary">
+                            {inv.number}
+                          </Link>
+                        </td>
+                        <td className="py-3 px-6 text-sm">{inv.client?.name || "—"}</td>
+                        <td className="py-3 px-6 text-sm text-red-500 font-medium">
+                          {inv.dueDate ? formatDate(inv.dueDate) : "—"}
+                        </td>
+                        <td className="py-3 px-6 text-sm text-right font-medium text-red-600">
+                          {formatCurrency(inv.remaining, inv.currency)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="h-40 flex items-center justify-center text-muted-foreground">
+                Нет просроченных счетов
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -323,166 +364,160 @@ async function FinanceContent({ search, status }: { search?: string; status?: st
     <>
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Общая сумма</p>
-                <p className="text-2xl font-bold mt-1">
-                  {formatCurrency(totalAmount)}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {total} счетов
-                </p>
-              </div>
-              <div className="bg-success/10 p-3 rounded-lg">
-                <TrendingUp className="w-6 h-6 text-success" />
-              </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Общая сумма</p>
+              <p className="text-3xl font-bold mt-1">
+                {formatCurrency(totalAmount)}
+              </p>
+              <span className="inline-flex items-center mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
+                {total} счетов
+              </span>
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Ожидает оплаты</p>
-                <p className="text-2xl font-bold mt-1">
-                  {formatCurrency(pendingAmount)}
-                </p>
-              </div>
-              <div className="bg-warning/10 p-3 rounded-lg">
-                <Clock className="w-6 h-6 text-warning" />
-              </div>
+            <div className="bg-emerald-100 p-3 rounded-xl">
+              <TrendingUp className="w-6 h-6 text-emerald-600" />
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Просрочено</p>
-                <p className="text-2xl font-bold mt-1">
-                  {formatCurrency(overdueAmount)}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {overdueInvoices.length} счетов
-                </p>
-              </div>
-              <div className="bg-destructive/10 p-3 rounded-lg">
-                <AlertCircle className="w-6 h-6 text-destructive" />
-              </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Ожидает оплаты</p>
+              <p className="text-3xl font-bold mt-1">
+                {formatCurrency(pendingAmount)}
+              </p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="bg-amber-100 p-3 rounded-xl">
+              <Clock className="w-6 h-6 text-amber-600" />
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Просрочено</p>
+              <p className="text-3xl font-bold mt-1">
+                {formatCurrency(overdueAmount)}
+              </p>
+              <span className="inline-flex items-center mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-red-50 text-red-600">
+                {overdueInvoices.length} счетов
+              </span>
+            </div>
+            <div className="bg-red-100 p-3 rounded-xl">
+              <AlertCircle className="w-6 h-6 text-red-600" />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Invoices Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Счета</CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b bg-gray-50/50">
-                  <th className="text-left py-4 px-6 text-sm font-medium text-muted-foreground">
-                    № счёта
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-muted-foreground">
-                    Клиент / Проект
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-muted-foreground hidden md:table-cell">
-                    Дата
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-muted-foreground hidden lg:table-cell">
-                    Срок оплаты
-                  </th>
-                  <th className="text-right py-4 px-6 text-sm font-medium text-muted-foreground">
-                    Сумма
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-medium text-muted-foreground">
-                    Статус
-                  </th>
-                  <th className="w-12"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {invoices.map((invoice) => {
-                  const status = invoiceStatusMap[invoice.status] || invoiceStatusMap.DRAFT;
-                  return (
-                    <tr
-                      key={invoice.id}
-                      className="border-b last:border-0 hover:bg-gray-50/50"
-                    >
-                      <td className="py-4 px-6">
-                        <Link href={`/finance/${invoice.id}`}>
-                          <span className="font-medium font-mono hover:text-primary">
-                            {invoice.number}
-                          </span>
-                        </Link>
-                      </td>
-                      <td className="py-4 px-6">
-                        <div>
-                          <div className="font-medium text-sm">
-                            {invoice.client?.name}
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            {invoice.order?.number} — {invoice.order?.title}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="py-4 px-6 text-sm text-muted-foreground hidden md:table-cell">
-                        {formatDate(invoice.issueDate)}
-                      </td>
-                      <td className="py-4 px-6 text-sm hidden lg:table-cell">
-                        <span
-                          className={cn(
-                            invoice.status === "OVERDUE" && "text-destructive font-medium"
-                          )}
-                        >
-                          {invoice.dueDate ? formatDate(invoice.dueDate) : "—"}
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm overflow-hidden">
+        <div className="p-6 pb-0">
+          <h3 className="text-lg font-semibold">Счета</h3>
+        </div>
+        <div className="overflow-x-auto mt-4">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-[#dbdfe6]">
+                <th className="text-left py-4 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  № счёта
+                </th>
+                <th className="text-left py-4 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Клиент / Проект
+                </th>
+                <th className="text-left py-4 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider hidden md:table-cell">
+                  Дата
+                </th>
+                <th className="text-left py-4 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider hidden lg:table-cell">
+                  Срок оплаты
+                </th>
+                <th className="text-right py-4 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Сумма
+                </th>
+                <th className="text-left py-4 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Статус
+                </th>
+                <th className="w-12"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {invoices.map((invoice) => {
+                const status = invoiceStatusMap[invoice.status] || invoiceStatusMap.DRAFT;
+                return (
+                  <tr
+                    key={invoice.id}
+                    className="border-b border-[#dbdfe6] last:border-0 hover:bg-background-light/50 transition-colors"
+                  >
+                    <td className="py-4 px-6">
+                      <Link href={`/finance/${invoice.id}`}>
+                        <span className="font-medium font-mono hover:text-primary">
+                          {invoice.number}
                         </span>
-                      </td>
-                      <td className="py-4 px-6 text-right">
-                        <div>
-                          <div className="font-medium">
-                            {formatCurrency(invoice.totalAmount, invoice.currency)}
-                          </div>
-                          {invoice.paidAmount > 0 && invoice.paidAmount < invoice.totalAmount && (
-                            <div className="text-xs text-muted-foreground">
-                              Оплачено: {formatCurrency(invoice.paidAmount, invoice.currency)}
-                            </div>
-                          )}
+                      </Link>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div>
+                        <div className="font-medium text-sm">
+                          {invoice.client?.name}
                         </div>
-                      </td>
-                      <td className="py-4 px-6">
-                        <Badge className={cn("text-xs", status.color)}>
-                          {status.label}
-                        </Badge>
-                      </td>
-                      <td className="py-4 px-6">
-                        <Link href={`/finance/${invoice.id}`}>
-                          <Button variant="ghost" size="icon">
-                            <MoreHorizontal className="w-4 h-4" />
-                          </Button>
-                        </Link>
-                      </td>
-                    </tr>
-                  );
-                })}
-                {invoices.length === 0 && (
-                  <tr>
-                    <td colSpan={7} className="py-12 text-center text-muted-foreground">
-                      Счетов пока нет
+                        <div className="text-xs text-muted-foreground">
+                          {invoice.order?.number} — {invoice.order?.title}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6 text-sm text-muted-foreground hidden md:table-cell">
+                      {formatDate(invoice.issueDate)}
+                    </td>
+                    <td className="py-4 px-6 text-sm hidden lg:table-cell">
+                      <span
+                        className={cn(
+                          invoice.status === "OVERDUE" && "text-red-600 font-medium"
+                        )}
+                      >
+                        {invoice.dueDate ? formatDate(invoice.dueDate) : "—"}
+                      </span>
+                    </td>
+                    <td className="py-4 px-6 text-right">
+                      <div>
+                        <div className="font-medium">
+                          {formatCurrency(invoice.totalAmount, invoice.currency)}
+                        </div>
+                        {invoice.paidAmount > 0 && invoice.paidAmount < invoice.totalAmount && (
+                          <div className="text-xs text-muted-foreground">
+                            Оплачено: {formatCurrency(invoice.paidAmount, invoice.currency)}
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <div className="inline-flex items-center gap-1.5">
+                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: status.dot }} />
+                        <span className="text-sm">{status.label}</span>
+                      </div>
+                    </td>
+                    <td className="py-4 px-6">
+                      <Link href={`/finance/${invoice.id}`}>
+                        <Button variant="ghost" size="icon">
+                          <MoreHorizontal className="w-4 h-4" />
+                        </Button>
+                      </Link>
                     </td>
                   </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+                );
+              })}
+              {invoices.length === 0 && (
+                <tr>
+                  <td colSpan={7} className="py-12 text-center text-muted-foreground">
+                    <FileText className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                    <p className="text-sm">Счетов пока нет</p>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </>
   );
 }
@@ -494,10 +529,10 @@ function FinanceSkeleton() {
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-28 bg-muted animate-pulse rounded-lg" />
+          <div key={i} className="h-28 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
         ))}
       </div>
-      <div className="h-64 bg-muted animate-pulse rounded-lg" />
+      <div className="h-64 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
     </div>
   );
 }
@@ -507,13 +542,13 @@ function DashboardSkeleton() {
     <div className="space-y-6">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-28 bg-muted animate-pulse rounded-lg" />
+          <div key={i} className="h-28 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
         ))}
       </div>
-      <div className="h-80 bg-muted animate-pulse rounded-lg" />
+      <div className="h-80 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
       <div className="grid grid-cols-2 gap-6">
-        <div className="h-64 bg-muted animate-pulse rounded-lg" />
-        <div className="h-64 bg-muted animate-pulse rounded-lg" />
+        <div className="h-64 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
+        <div className="h-64 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
       </div>
     </div>
   );
@@ -561,8 +596,8 @@ export default function FinancePage({
           className={cn(
             "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
             activeView === "dashboard"
-              ? "bg-primary text-primary-foreground"
-              : "bg-gray-100 text-muted-foreground hover:bg-gray-200"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-white text-muted-foreground hover:bg-gray-50 border border-[#dbdfe6]"
           )}
         >
           <BarChart3 className="w-4 h-4" />
@@ -573,8 +608,8 @@ export default function FinancePage({
           className={cn(
             "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
             activeView === "invoices"
-              ? "bg-primary text-primary-foreground"
-              : "bg-gray-100 text-muted-foreground hover:bg-gray-200"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-white text-muted-foreground hover:bg-gray-50 border border-[#dbdfe6]"
           )}
         >
           <FileText className="w-4 h-4" />
@@ -591,45 +626,43 @@ export default function FinancePage({
         /* Invoices View */
         <>
           {/* Status Tabs + Search */}
-          <Card>
-            <CardContent className="p-4 space-y-4">
-              <div className="flex gap-2 overflow-x-auto">
-                {statusTabs.map((tab) => (
-                  <Link
-                    key={tab.key}
-                    href={`/finance?${new URLSearchParams({
-                      view: "invoices",
-                      ...(tab.key ? { status: tab.key } : {}),
-                      ...(searchParams.search ? { search: searchParams.search } : {}),
-                    }).toString()}`}
-                    className={cn(
-                      "px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors",
-                      (searchParams.status || "") === tab.key
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-gray-100 text-muted-foreground hover:bg-gray-200"
-                    )}
-                  >
-                    {tab.label}
-                  </Link>
-                ))}
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-4 space-y-4">
+            <div className="flex gap-2 overflow-x-auto">
+              {statusTabs.map((tab) => (
+                <Link
+                  key={tab.key}
+                  href={`/finance?${new URLSearchParams({
+                    view: "invoices",
+                    ...(tab.key ? { status: tab.key } : {}),
+                    ...(searchParams.search ? { search: searchParams.search } : {}),
+                  }).toString()}`}
+                  className={cn(
+                    "px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors",
+                    (searchParams.status || "") === tab.key
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-background-light text-muted-foreground hover:bg-gray-200"
+                  )}
+                >
+                  {tab.label}
+                </Link>
+              ))}
+            </div>
+            <form action="/finance" method="GET">
+              <input type="hidden" name="view" value="invoices" />
+              {searchParams.status && (
+                <input type="hidden" name="status" value={searchParams.status} />
+              )}
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <Input
+                  name="search"
+                  placeholder="Поиск по номеру или клиенту... (Enter)"
+                  className="pl-9"
+                  defaultValue={searchParams.search}
+                />
               </div>
-              <form action="/finance" method="GET">
-                <input type="hidden" name="view" value="invoices" />
-                {searchParams.status && (
-                  <input type="hidden" name="status" value={searchParams.status} />
-                )}
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    name="search"
-                    placeholder="Поиск по номеру или клиенту... (Enter)"
-                    className="pl-9"
-                    defaultValue={searchParams.search}
-                  />
-                </div>
-              </form>
-            </CardContent>
-          </Card>
+            </form>
+          </div>
 
           {/* Invoice List Content */}
           <Suspense fallback={<FinanceSkeleton />}>

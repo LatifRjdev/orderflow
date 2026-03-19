@@ -67,6 +67,7 @@ const config: Config = {
           muted: "#334155",
           accent: "#1e293b",
         },
+        "background-light": "#f5f7f8",
       },
       borderRadius: {
         lg: "var(--radius)",

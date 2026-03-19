@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { cn, formatCurrency } from "@/lib/utils";
 import {
@@ -50,61 +49,55 @@ async function ReportsContent() {
     <>
       {/* KPI Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Всего выставлено</p>
-                <p className="text-2xl font-bold mt-1">
-                  {formatCurrency(financeSummary.totalInvoiced)}
-                </p>
-              </div>
-              <div className="bg-blue-500/10 p-3 rounded-lg">
-                <DollarSign className="w-6 h-6 text-blue-500" />
-              </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Всего выставлено</p>
+              <p className="text-3xl font-bold mt-1">
+                {formatCurrency(financeSummary.totalInvoiced)}
+              </p>
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Оплачено</p>
-                <p className="text-2xl font-bold mt-1 text-green-600">
-                  {formatCurrency(financeSummary.totalPaid)}
-                </p>
-              </div>
-              <div className="bg-green-500/10 p-3 rounded-lg">
-                <TrendingUp className="w-6 h-6 text-green-500" />
-              </div>
+            <div className="bg-blue-100 p-3 rounded-xl">
+              <DollarSign className="w-6 h-6 text-blue-500" />
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Ожидает оплаты</p>
-                <p className="text-2xl font-bold mt-1 text-amber-600">
-                  {formatCurrency(financeSummary.totalPending)}
-                </p>
-              </div>
-              <div className="bg-amber-500/10 p-3 rounded-lg">
-                <BarChart3 className="w-6 h-6 text-amber-500" />
-              </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Оплачено</p>
+              <p className="text-3xl font-bold mt-1 text-green-600">
+                {formatCurrency(financeSummary.totalPaid)}
+              </p>
             </div>
-          </CardContent>
-        </Card>
+            <div className="bg-green-100 p-3 rounded-xl">
+              <TrendingUp className="w-6 h-6 text-green-500" />
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Ожидает оплаты</p>
+              <p className="text-3xl font-bold mt-1 text-amber-600">
+                {formatCurrency(financeSummary.totalPending)}
+              </p>
+            </div>
+            <div className="bg-amber-100 p-3 rounded-xl">
+              <BarChart3 className="w-6 h-6 text-amber-500" />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Charts Row 1 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Revenue Chart */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Выручка по месяцам</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold">Выручка по месяцам</h3>
+          </div>
+          <div className="px-6 pb-6">
             {revenue.some((r) => r.amount > 0) ? (
               <RevenueChart data={revenue} />
             ) : (
@@ -112,15 +105,15 @@ async function ReportsContent() {
                 Нет данных о платежах
               </p>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Sales Funnel */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Воронка проектов</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold">Воронка проектов</h3>
+          </div>
+          <div className="px-6 pb-6">
             {funnel.some((f) => f.count > 0) ? (
               <FunnelChart data={funnel} />
             ) : (
@@ -128,21 +121,21 @@ async function ReportsContent() {
                 Нет данных
               </p>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
       {/* Charts Row 2 */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Workload */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <Users className="w-5 h-5" />
               Загрузка команды (месяц)
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </h3>
+          </div>
+          <div className="px-6 pb-6">
             {workload.length > 0 ? (
               <div className="space-y-4">
                 <WorkloadChart data={workload} />
@@ -167,18 +160,18 @@ async function ReportsContent() {
                 Нет записей за этот месяц
               </p>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Project Types */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <Briefcase className="w-5 h-5" />
               Типы проектов
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </h3>
+          </div>
+          <div className="px-6 pb-6">
             {projectTypes.length > 0 ? (
               <ProjectTypesChart data={projectTypes} />
             ) : (
@@ -186,21 +179,21 @@ async function ReportsContent() {
                 Нет данных
               </p>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
 
       {/* Top Clients */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Топ клиенты по выручке</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-6 pb-4">
+          <h3 className="text-lg font-semibold">Топ клиенты по выручке</h3>
+        </div>
+        <div className="px-6 pb-6">
           {topClients.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b">
+                  <tr className="border-b border-[#dbdfe6]">
                     <th className="text-left py-3 font-medium text-muted-foreground">
                       #
                     </th>
@@ -217,7 +210,7 @@ async function ReportsContent() {
                 </thead>
                 <tbody>
                   {topClients.map((client, idx) => (
-                    <tr key={client.id} className="border-b last:border-0">
+                    <tr key={client.id} className="border-b border-[#dbdfe6] last:border-0">
                       <td className="py-3 text-muted-foreground">{idx + 1}</td>
                       <td className="py-3">
                         <Link
@@ -243,18 +236,18 @@ async function ReportsContent() {
               Нет данных об оплатах
             </p>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* CSV Export */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-6 pb-4">
+          <h3 className="text-lg font-semibold flex items-center gap-2">
             <FileSpreadsheet className="w-5 h-5" />
             Экспорт данных (CSV)
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          </h3>
+        </div>
+        <div className="px-6 pb-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               {
@@ -286,7 +279,7 @@ async function ReportsContent() {
                 url += `?startDate=${startDate}&endDate=${endDate}`;
               }
               return (
-                <div key={item.title} className="p-4 rounded-lg border">
+                <div key={item.title} className="p-4 rounded-lg border border-[#dbdfe6] bg-background-light/30">
                   <h4 className="font-medium text-sm">{item.title}</h4>
                   <p className="text-xs text-muted-foreground mt-1">
                     {item.description}
@@ -301,8 +294,8 @@ async function ReportsContent() {
               );
             })}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </>
   );
 }
@@ -319,71 +312,65 @@ async function SalesFunnelContent() {
     <>
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Конверсия</p>
-                <p className="text-2xl font-bold mt-1">
-                  {kpi.conversionRate}%
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {kpi.completedOrders} из {kpi.totalOrders} заказов
-                </p>
-              </div>
-              <div className="bg-green-500/10 p-3 rounded-lg">
-                <Target className="w-6 h-6 text-green-500" />
-              </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Конверсия</p>
+              <p className="text-3xl font-bold mt-1">
+                {kpi.conversionRate}%
+              </p>
+              <span className="inline-flex items-center mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-green-50 text-green-600">
+                {kpi.completedOrders} из {kpi.totalOrders} заказов
+              </span>
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Средний цикл сделки</p>
-                <p className="text-2xl font-bold mt-1">
-                  {kpi.avgCycleDays} {kpi.avgCycleDays === 1 ? "день" : kpi.avgCycleDays >= 2 && kpi.avgCycleDays <= 4 ? "дня" : "дней"}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  От создания до завершения
-                </p>
-              </div>
-              <div className="bg-blue-500/10 p-3 rounded-lg">
-                <CalendarDays className="w-6 h-6 text-blue-500" />
-              </div>
+            <div className="bg-green-100 p-3 rounded-xl">
+              <Target className="w-6 h-6 text-green-500" />
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground">Средний чек</p>
-                <p className="text-2xl font-bold mt-1">
-                  {formatCurrency(kpi.avgDealValue)}
-                </p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Средний бюджет заказа
-                </p>
-              </div>
-              <div className="bg-amber-500/10 p-3 rounded-lg">
-                <DollarSign className="w-6 h-6 text-amber-500" />
-              </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Средний цикл сделки</p>
+              <p className="text-3xl font-bold mt-1">
+                {kpi.avgCycleDays} {kpi.avgCycleDays === 1 ? "день" : kpi.avgCycleDays >= 2 && kpi.avgCycleDays <= 4 ? "дня" : "дней"}
+              </p>
+              <span className="inline-flex items-center mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-blue-50 text-blue-600">
+                От создания до завершения
+              </span>
             </div>
-          </CardContent>
-        </Card>
+            <div className="bg-blue-100 p-3 rounded-xl">
+              <CalendarDays className="w-6 h-6 text-blue-500" />
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-muted-foreground">Средний чек</p>
+              <p className="text-3xl font-bold mt-1">
+                {formatCurrency(kpi.avgDealValue)}
+              </p>
+              <span className="inline-flex items-center mt-2 text-xs font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-600">
+                Средний бюджет заказа
+              </span>
+            </div>
+            <div className="bg-amber-100 p-3 rounded-xl">
+              <DollarSign className="w-6 h-6 text-amber-500" />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Visual Funnel */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-6 pb-4">
+          <h3 className="text-lg font-semibold flex items-center gap-2">
             <Filter className="w-5 h-5" />
             Воронка продаж
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
+          </h3>
+        </div>
+        <div className="px-6 pb-6">
           {stages.some((s) => s.count > 0) ? (
             <div className="space-y-3">
               {stages.map((stage, idx) => {
@@ -422,20 +409,20 @@ async function SalesFunnelContent() {
               Нет данных
             </p>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Conversion Trend + Monthly Table */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Conversion Trend Chart */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold flex items-center gap-2">
               <TrendingUp className="w-5 h-5" />
               Тренд конверсии
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </h3>
+          </div>
+          <div className="px-6 pb-6">
             {monthlyConversion.some((m) => m.totalOrders > 0) ? (
               <ConversionTrendChart data={monthlyConversion} />
             ) : (
@@ -443,20 +430,20 @@ async function SalesFunnelContent() {
                 Нет данных
               </p>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Conversion by Period Table */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Конверсия по месяцам</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold">Конверсия по месяцам</h3>
+          </div>
+          <div className="px-6 pb-6">
             {monthlyConversion.length > 0 ? (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b">
+                    <tr className="border-b border-[#dbdfe6]">
                       <th className="text-left py-3 font-medium text-muted-foreground">
                         Период
                       </th>
@@ -473,7 +460,7 @@ async function SalesFunnelContent() {
                   </thead>
                   <tbody>
                     {monthlyConversion.map((m) => (
-                      <tr key={m.month} className="border-b last:border-0">
+                      <tr key={m.month} className="border-b border-[#dbdfe6] last:border-0">
                         <td className="py-3 font-medium">{m.month}</td>
                         <td className="py-3 text-right">{m.totalOrders}</td>
                         <td className="py-3 text-right">{m.completedOrders}</td>
@@ -501,8 +488,8 @@ async function SalesFunnelContent() {
                 Нет данных
               </p>
             )}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </>
   );
@@ -515,12 +502,12 @@ function ReportsSkeleton() {
     <div className="space-y-6">
       <div className="grid grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-28 bg-muted animate-pulse rounded-lg" />
+          <div key={i} className="h-28 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
         ))}
       </div>
       <div className="grid grid-cols-2 gap-6">
-        <div className="h-80 bg-muted animate-pulse rounded-lg" />
-        <div className="h-80 bg-muted animate-pulse rounded-lg" />
+        <div className="h-80 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
+        <div className="h-80 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
       </div>
     </div>
   );
@@ -531,13 +518,13 @@ function FunnelSkeleton() {
     <div className="space-y-6">
       <div className="grid grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-28 bg-muted animate-pulse rounded-lg" />
+          <div key={i} className="h-28 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
         ))}
       </div>
-      <div className="h-80 bg-muted animate-pulse rounded-lg" />
+      <div className="h-80 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
       <div className="grid grid-cols-2 gap-6">
-        <div className="h-80 bg-muted animate-pulse rounded-lg" />
-        <div className="h-80 bg-muted animate-pulse rounded-lg" />
+        <div className="h-80 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
+        <div className="h-80 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
       </div>
     </div>
   );
@@ -569,8 +556,8 @@ export default function ReportsPage({
           className={cn(
             "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
             activeView === "overview"
-              ? "bg-primary text-primary-foreground"
-              : "bg-gray-100 text-muted-foreground hover:bg-gray-200"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-white text-muted-foreground hover:bg-gray-50 border border-[#dbdfe6]"
           )}
         >
           <BarChart3 className="w-4 h-4" />
@@ -581,8 +568,8 @@ export default function ReportsPage({
           className={cn(
             "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
             activeView === "funnel"
-              ? "bg-primary text-primary-foreground"
-              : "bg-gray-100 text-muted-foreground hover:bg-gray-200"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-white text-muted-foreground hover:bg-gray-50 border border-[#dbdfe6]"
           )}
         >
           <Filter className="w-4 h-4" />
@@ -593,8 +580,8 @@ export default function ReportsPage({
           className={cn(
             "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors",
             activeView === "workload"
-              ? "bg-primary text-primary-foreground"
-              : "bg-gray-100 text-muted-foreground hover:bg-gray-200"
+              ? "bg-primary text-primary-foreground shadow-sm"
+              : "bg-white text-muted-foreground hover:bg-gray-50 border border-[#dbdfe6]"
           )}
         >
           <Users className="w-4 h-4" />

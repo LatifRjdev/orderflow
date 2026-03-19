@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { FileText, Receipt, Mail, ArrowRight } from "lucide-react";
@@ -23,15 +22,15 @@ export function TemplatesSettings() {
         </p>
         <div className="grid gap-4 md:grid-cols-2">
           {PROPOSAL_PRESETS.map((preset) => (
-            <Card key={preset.id}>
-              <CardHeader className="pb-3">
+            <div key={preset.id} className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-3">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-base">{preset.name}</CardTitle>
+                  <h4 className="text-base font-semibold">{preset.name}</h4>
                   <Badge variant="secondary">{preset.sections.length} разделов</Badge>
                 </div>
-                <CardDescription>{preset.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
+                <p className="text-sm text-muted-foreground mt-1">{preset.description}</p>
+              </div>
+              <div className="px-6 pb-6">
                 <div className="flex flex-wrap gap-1.5 mb-3">
                   {preset.sections.map((s, i) => (
                     <Badge key={i} variant="outline" className="text-xs font-normal">
@@ -45,8 +44,8 @@ export function TemplatesSettings() {
                     <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
                   </Link>
                 </Button>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -62,25 +61,25 @@ export function TemplatesSettings() {
         </p>
         <div className="grid gap-4 md:grid-cols-3">
           {INVOICE_STYLES.map((style) => (
-            <Card key={style.id}>
-              <CardHeader className="pb-3">
+            <div key={style.id} className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-3">
                 <div className="flex items-center gap-2">
                   <div
                     className="w-4 h-4 rounded-full shrink-0"
                     style={{ backgroundColor: style.accentColor }}
                   />
-                  <CardTitle className="text-base">{style.name}</CardTitle>
+                  <h4 className="text-base font-semibold">{style.name}</h4>
                 </div>
-                <CardDescription>{style.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
+                <p className="text-sm text-muted-foreground mt-1">{style.description}</p>
+              </div>
+              <div className="px-6 pb-6">
                 <ul className="text-sm text-muted-foreground space-y-1">
                   {style.features.map((f, i) => (
                     <li key={i}>• {f}</li>
                   ))}
                 </ul>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </section>
@@ -96,24 +95,22 @@ export function TemplatesSettings() {
         </p>
         <div className="space-y-3">
           {EMAIL_TEMPLATES.map((tmpl) => (
-            <Card key={tmpl.id}>
-              <CardContent className="py-4">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="font-medium text-sm">{tmpl.name}</span>
-                      <Badge variant="outline" className="text-xs font-normal">
-                        {tmpl.trigger}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-1.5">{tmpl.description}</p>
-                    <code className="text-xs bg-muted px-2 py-1 rounded block truncate">
-                      Тема: {tmpl.subject}
-                    </code>
+            <div key={tmpl.id} className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-medium text-sm">{tmpl.name}</span>
+                    <Badge variant="outline" className="text-xs font-normal">
+                      {tmpl.trigger}
+                    </Badge>
                   </div>
+                  <p className="text-sm text-muted-foreground mb-1.5">{tmpl.description}</p>
+                  <code className="text-xs bg-background-light px-2 py-1 rounded block truncate">
+                    Тема: {tmpl.subject}
+                  </code>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
       </section>

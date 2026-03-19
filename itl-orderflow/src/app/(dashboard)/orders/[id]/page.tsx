@@ -8,7 +8,6 @@ import { GanttChart } from "@/components/orders/gantt-chart";
 import { OrderDeleteButton } from "@/components/orders/order-delete-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -109,16 +108,10 @@ export default async function OrderPage({ params }: OrderPageProps) {
             </div>
             <div className="flex items-center gap-3 mt-2">
               {order.status && (
-                <Badge
-                  style={{
-                    backgroundColor: order.status.color + "20",
-                    color: order.status.color,
-                    borderColor: order.status.color,
-                  }}
-                  variant="outline"
-                >
-                  {order.status.name}
-                </Badge>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border" style={{ borderColor: order.status.color + "40", backgroundColor: order.status.color + "10" }}>
+                  <div className="w-2 h-2 rounded-full" style={{ backgroundColor: order.status.color }} />
+                  <span className="text-sm font-medium" style={{ color: order.status.color }}>{order.status.name}</span>
+                </div>
               )}
               <Badge variant={priority.variant}>{priority.label}</Badge>
               {order.client && (
@@ -154,70 +147,60 @@ export default async function OrderPage({ params }: OrderPageProps) {
 
       {/* Stats Row */}
       <div className="grid grid-cols-5 gap-4">
-        <Card>
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-              <ListTodo className="w-4 h-4" />
-              Прогресс
-            </div>
-            <div className="flex items-center gap-2">
-              <Progress value={progressPercent} className="flex-1" />
-              <span className="text-sm font-medium">{progressPercent}%</span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              {completedTasks}/{totalTasks} задач
+        <div className="bg-white p-4 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+            <ListTodo className="w-4 h-4" />
+            Прогресс
+          </div>
+          <div className="flex items-center gap-2">
+            <Progress value={progressPercent} className="flex-1" />
+            <span className="text-sm font-medium">{progressPercent}%</span>
+          </div>
+          <p className="text-xs text-muted-foreground mt-1">
+            {completedTasks}/{totalTasks} задач
+          </p>
+        </div>
+        <div className="bg-white p-4 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+            <Clock className="w-4 h-4" />
+            Время
+          </div>
+          <p className="text-lg font-bold">{totalHours}ч</p>
+          {order.estimatedHours && (
+            <p className="text-xs text-muted-foreground">
+              из {Number(order.estimatedHours)}ч оценки
             </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-              <Clock className="w-4 h-4" />
-              Время
-            </div>
-            <p className="text-lg font-bold">{totalHours}ч</p>
-            {order.estimatedHours && (
-              <p className="text-xs text-muted-foreground">
-                из {Number(order.estimatedHours)}ч оценки
-              </p>
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-              <DollarSign className="w-4 h-4" />
-              Бюджет
-            </div>
-            <p className="text-lg font-bold">
-              {order.estimatedBudget
-                ? formatCurrency(Number(order.estimatedBudget), order.currency)
-                : "—"}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-              <Calendar className="w-4 h-4" />
-              Дедлайн
-            </div>
-            <p className="text-lg font-bold">
-              {order.deadline ? formatDate(order.deadline) : "—"}
-            </p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4 pb-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
-              <User className="w-4 h-4" />
-              Менеджер
-            </div>
-            <p className="text-sm font-medium">
-              {order.manager?.name || "Не назначен"}
-            </p>
-          </CardContent>
-        </Card>
+          )}
+        </div>
+        <div className="bg-white p-4 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+            <DollarSign className="w-4 h-4" />
+            Бюджет
+          </div>
+          <p className="text-lg font-bold">
+            {order.estimatedBudget
+              ? formatCurrency(Number(order.estimatedBudget), order.currency)
+              : "—"}
+          </p>
+        </div>
+        <div className="bg-white p-4 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+            <Calendar className="w-4 h-4" />
+            Дедлайн
+          </div>
+          <p className="text-lg font-bold">
+            {order.deadline ? formatDate(order.deadline) : "—"}
+          </p>
+        </div>
+        <div className="bg-white p-4 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground mb-1">
+            <User className="w-4 h-4" />
+            Менеджер
+          </div>
+          <p className="text-sm font-medium">
+            {order.manager?.name || "Не назначен"}
+          </p>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-6">
@@ -225,29 +208,28 @@ export default async function OrderPage({ params }: OrderPageProps) {
         <div className="col-span-2 space-y-6">
           {/* Description */}
           {order.description && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Описание</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-4">
+                <h3 className="text-base font-semibold">Описание</h3>
+              </div>
+              <div className="px-6 pb-6">
                 <p className="text-sm whitespace-pre-wrap">{order.description}</p>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
 
           {/* Gantt Chart */}
           {allTasks.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
+            <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-4">
+                <h3 className="text-base font-semibold flex items-center gap-2">
                   <GanttChartSquare className="w-4 h-4" />
                   Диаграмма Ганта
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </h3>
+              </div>
+              <div className="px-6 pb-6">
                 <GanttChart
                   tasks={[
-                    // Milestones as items
                     ...(order.milestones?.map((m: any) => ({
                       id: `m-${m.id}`,
                       title: m.title,
@@ -256,7 +238,6 @@ export default async function OrderPage({ params }: OrderPageProps) {
                       dueDate: m.dueDate,
                       isMilestone: true,
                     })) || []),
-                    // Tasks from milestones
                     ...(order.milestones?.flatMap((m: any) =>
                       (m.tasks || []).map((t: any) => ({
                         id: t.id,
@@ -268,7 +249,6 @@ export default async function OrderPage({ params }: OrderPageProps) {
                         milestoneTitle: m.title,
                       }))
                     ) || []),
-                    // Standalone tasks
                     ...(order.tasks?.map((t: any) => ({
                       id: t.id,
                       title: t.title,
@@ -280,23 +260,23 @@ export default async function OrderPage({ params }: OrderPageProps) {
                   ]}
                   orderDeadline={order.deadline}
                 />
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
 
           {/* Milestones */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <Milestone className="w-4 h-4" />
                 Этапы
                 {order.milestones && order.milestones.length > 0 && (
                   <Badge variant="secondary">{order.milestones.length}</Badge>
                 )}
-              </CardTitle>
+              </h3>
               <CreateMilestoneDialog orderId={order.id} />
-            </CardHeader>
-            <CardContent className="space-y-4">
+            </div>
+            <div className="px-6 pb-6 space-y-4">
               {order.milestones && order.milestones.length > 0 ? (
                 order.milestones.map((milestone: any, idx: number) => (
                   <MilestoneCard
@@ -312,19 +292,19 @@ export default async function OrderPage({ params }: OrderPageProps) {
                   Этапов нет. Создайте первый этап для структурирования работы.
                 </p>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Tasks without milestone */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <ListTodo className="w-4 h-4" />
                 Задачи
                 {order.tasks && order.tasks.length > 0 && (
                   <Badge variant="secondary">{order.tasks.length}</Badge>
                 )}
-              </CardTitle>
+              </h3>
               <CreateTaskDialog
                 orders={[{ id: order.id, title: order.title, number: order.number }]}
                 users={users}
@@ -335,14 +315,14 @@ export default async function OrderPage({ params }: OrderPageProps) {
                   Добавить задачу
                 </Button>
               </CreateTaskDialog>
-            </CardHeader>
-            <CardContent>
+            </div>
+            <div className="px-6 pb-6">
               {order.tasks && order.tasks.length > 0 ? (
                 <div className="space-y-2">
                   {order.tasks.map((task: any) => (
                     <div
                       key={task.id}
-                      className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                      className="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6] hover:bg-background-light/50 transition-colors"
                     >
                       <div className="flex items-center gap-3">
                         {taskStatusIcons[task.status] || taskStatusIcons.TODO}
@@ -381,23 +361,23 @@ export default async function OrderPage({ params }: OrderPageProps) {
                   Задач без привязки к этапу нет.
                 </p>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Time Entries */}
           {order.timeEntries && order.timeEntries.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
+            <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-4">
+                <h3 className="text-base font-semibold flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   Учёт времени
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </h3>
+              </div>
+              <div className="px-6 pb-6">
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b">
+                      <tr className="border-b border-[#dbdfe6]">
                         <th className="text-left py-2 font-medium">Дата</th>
                         <th className="text-left py-2 font-medium">Сотрудник</th>
                         <th className="text-left py-2 font-medium">Описание</th>
@@ -406,7 +386,7 @@ export default async function OrderPage({ params }: OrderPageProps) {
                     </thead>
                     <tbody>
                       {order.timeEntries.map((entry: any) => (
-                        <tr key={entry.id} className="border-b last:border-0">
+                        <tr key={entry.id} className="border-b border-[#dbdfe6] last:border-0">
                           <td className="py-2">{formatDate(entry.date)}</td>
                           <td className="py-2">{entry.user?.name}</td>
                           <td className="py-2 text-muted-foreground">
@@ -420,44 +400,44 @@ export default async function OrderPage({ params }: OrderPageProps) {
                     </tbody>
                   </table>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </div>
 
         {/* Right Column */}
         <div className="space-y-6">
           {/* Status Change */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Изменить статус</CardTitle>
-            </CardHeader>
-            <CardContent>
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4">
+              <h3 className="text-base font-semibold">Изменить статус</h3>
+            </div>
+            <div className="px-6 pb-6">
               <OrderStatusSelect
                 orderId={order.id}
                 currentStatusId={order.statusId}
                 statuses={statuses}
               />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Files */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <Paperclip className="w-4 h-4" />
                 Файлы
                 <Badge variant="secondary">{order._count?.files || 0}</Badge>
-              </CardTitle>
+              </h3>
               <FileUploadDialog orderId={order.id} />
-            </CardHeader>
-            <CardContent>
+            </div>
+            <div className="px-6 pb-6">
               {order.files && order.files.length > 0 ? (
                 <div className="space-y-2">
                   {order.files.map((file: any) => (
                     <div
                       key={file.id}
-                      className="flex items-center gap-2 p-2 rounded hover:bg-muted/50 group"
+                      className="flex items-center gap-2 p-2 rounded-lg hover:bg-background-light/50 group transition-colors"
                     >
                       <a
                         href={file.url}
@@ -490,25 +470,25 @@ export default async function OrderPage({ params }: OrderPageProps) {
                   Файлы не загружены
                 </p>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Comments */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 Комментарии
-              </CardTitle>
+              </h3>
               <span className="text-sm text-muted-foreground">
                 {order._count?.comments || 0}
               </span>
-            </CardHeader>
-            <CardContent>
+            </div>
+            <div className="px-6 pb-6">
               {order.comments && order.comments.length > 0 ? (
                 <div className="space-y-3">
                   {order.comments.map((comment: any) => (
-                    <div key={comment.id} className="border rounded-lg p-3">
+                    <div key={comment.id} className="border border-[#dbdfe6] rounded-lg p-3">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm font-medium">
                           {comment.user?.name || comment.clientName || "Клиент"}
@@ -527,16 +507,16 @@ export default async function OrderPage({ params }: OrderPageProps) {
                 </p>
               )}
               <OrderCommentForm orderId={order.id} />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Status History */}
           {order.statusHistory && order.statusHistory.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">История статусов</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-4">
+                <h3 className="text-base font-semibold">История статусов</h3>
+              </div>
+              <div className="px-6 pb-6">
                 <div className="space-y-3">
                   {order.statusHistory.map((entry: any) => (
                     <div
@@ -555,25 +535,25 @@ export default async function OrderPage({ params }: OrderPageProps) {
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
 
           {/* Invoices */}
           {order.invoices && order.invoices.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
+            <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-4">
+                <h3 className="text-base font-semibold flex items-center gap-2">
                   <FileText className="w-4 h-4" />
                   Счета
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </h3>
+              </div>
+              <div className="px-6 pb-6">
                 <div className="space-y-2">
                   {order.invoices.map((invoice: any) => (
                     <div
                       key={invoice.id}
-                      className="flex items-center justify-between p-2 rounded border"
+                      className="flex items-center justify-between p-2 rounded-lg border border-[#dbdfe6]"
                     >
                       <div>
                         <p className="text-sm font-mono">{invoice.number}</p>
@@ -587,8 +567,8 @@ export default async function OrderPage({ params }: OrderPageProps) {
                     </div>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </div>
       </div>

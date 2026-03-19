@@ -1,16 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getInvoice } from "@/actions/invoices";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
   ArrowLeft,
   Send,
-  Download,
-  DollarSign,
-  Calendar,
   Building2,
   Briefcase,
   CreditCard,
@@ -25,14 +20,14 @@ interface InvoicePageProps {
   params: { id: string };
 }
 
-const statusMap: Record<string, { label: string; variant: "default" | "secondary" | "success" | "warning" | "destructive" }> = {
-  DRAFT: { label: "Черновик", variant: "secondary" },
-  SENT: { label: "Отправлен", variant: "default" },
-  VIEWED: { label: "Просмотрен", variant: "default" },
-  PAID: { label: "Оплачен", variant: "success" },
-  PARTIALLY_PAID: { label: "Частично оплачен", variant: "warning" },
-  OVERDUE: { label: "Просрочен", variant: "destructive" },
-  CANCELLED: { label: "Отменён", variant: "secondary" },
+const statusMap: Record<string, { label: string; dot: string }> = {
+  DRAFT: { label: "Черновик", dot: "#9ca3af" },
+  SENT: { label: "Отправлен", dot: "#3b82f6" },
+  VIEWED: { label: "Просмотрен", dot: "#8b5cf6" },
+  PAID: { label: "Оплачен", dot: "#22c55e" },
+  PARTIALLY_PAID: { label: "Частично оплачен", dot: "#f59e0b" },
+  OVERDUE: { label: "Просрочен", dot: "#ef4444" },
+  CANCELLED: { label: "Отменён", dot: "#9ca3af" },
 };
 
 export default async function InvoicePage({ params }: InvoicePageProps) {
@@ -58,7 +53,10 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
           <div>
             <div className="flex items-center gap-3">
               <h1 className="text-2xl font-bold font-mono">{invoice.number}</h1>
-              <Badge variant={statusInfo.variant}>{statusInfo.label}</Badge>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border" style={{ borderColor: statusInfo.dot + "40", backgroundColor: statusInfo.dot + "10" }}>
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: statusInfo.dot }} />
+                <span className="text-sm font-medium" style={{ color: statusInfo.dot }}>{statusInfo.label}</span>
+              </div>
             </div>
             <div className="flex items-center gap-4 mt-2 text-sm text-muted-foreground">
               {invoice.client && (
@@ -110,8 +108,8 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
         {/* Main Content */}
         <div className="col-span-2 space-y-6">
           {/* Invoice Preview */}
-          <Card>
-            <CardContent className="p-8">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-8">
               {/* Invoice Header */}
               <div className="flex justify-between mb-8">
                 <div>
@@ -164,10 +162,10 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
               </div>
 
               {/* Items Table */}
-              <div className="border rounded-lg overflow-hidden mb-6">
+              <div className="border border-[#dbdfe6] rounded-lg overflow-hidden mb-6">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="bg-muted/50">
+                    <tr className="bg-background-light">
                       <th className="text-left py-3 px-4 font-medium">#</th>
                       <th className="text-left py-3 px-4 font-medium">Описание</th>
                       <th className="text-right py-3 px-4 font-medium">Кол-во</th>
@@ -177,7 +175,7 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                   </thead>
                   <tbody>
                     {invoice.items?.map((item: any, idx: number) => (
-                      <tr key={item.id} className="border-t">
+                      <tr key={item.id} className="border-t border-[#dbdfe6]">
                         <td className="py-3 px-4 text-muted-foreground">{idx + 1}</td>
                         <td className="py-3 px-4">{item.description}</td>
                         <td className="py-3 px-4 text-right">{item.quantity}</td>
@@ -230,25 +228,25 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
 
               {/* Notes */}
               {invoice.notes && (
-                <div className="mt-8 pt-4 border-t">
+                <div className="mt-8 pt-4 border-t border-[#dbdfe6]">
                   <p className="text-xs font-medium text-muted-foreground uppercase mb-1">
                     Примечания
                   </p>
                   <p className="text-sm">{invoice.notes}</p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Summary */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Сводка</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4">
+              <h3 className="text-base font-semibold">Сводка</h3>
+            </div>
+            <div className="px-6 pb-6 space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Сумма</span>
                 <span className="font-bold text-lg">
@@ -267,6 +265,21 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                   <span className="font-medium text-amber-600">
                     {formatCurrency(remainingAmount, invoice.currency)}
                   </span>
+                </div>
+              )}
+
+              {/* Payment Progress */}
+              {invoice.totalAmount > 0 && (
+                <div>
+                  <div className="w-full bg-gray-100 rounded-full h-2">
+                    <div
+                      className="bg-green-500 h-2 rounded-full transition-all"
+                      style={{ width: `${Math.min(100, Math.round(((invoice.paidAmount || 0) / invoice.totalAmount) * 100))}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {Math.round(((invoice.paidAmount || 0) / invoice.totalAmount) * 100)}% оплачено
+                  </p>
                 </div>
               )}
 
@@ -289,24 +302,24 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                   </Button>
                 </>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Payments */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <CreditCard className="w-4 h-4" />
                 Платежи
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </h3>
+            </div>
+            <div className="px-6 pb-6">
               {invoice.payments && invoice.payments.length > 0 ? (
                 <div className="space-y-3">
                   {invoice.payments.map((payment: any) => (
                     <div
                       key={payment.id}
-                      className="flex items-center justify-between p-3 rounded-lg border"
+                      className="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6] bg-background-light/30"
                     >
                       <div>
                         <p className="text-sm font-medium">
@@ -329,18 +342,18 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                   Платежей нет
                 </p>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Event Timeline */}
           <InvoiceEventTimeline events={invoice.events || []} />
 
           {/* Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Действия</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4">
+              <h3 className="text-base font-semibold">Действия</h3>
+            </div>
+            <div className="px-6 pb-6 space-y-2">
               {invoice.status === "DRAFT" && (
                 <Button variant="outline" className="w-full justify-start" size="sm">
                   <Send className="w-4 h-4 mr-2" />
@@ -366,8 +379,8 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                   Отменить счёт
                 </Button>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </div>
     </div>

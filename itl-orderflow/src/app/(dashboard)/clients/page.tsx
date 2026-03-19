@@ -46,8 +46,8 @@ async function ClientsTable({ search, tab }: ClientsSearchParams) {
   }
 
   return (
-    <Card>
-      <CardContent className="p-0">
+    <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm overflow-hidden">
+      <div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -127,15 +127,15 @@ async function ClientsTable({ search, tab }: ClientsSearchParams) {
         <div className="flex items-center justify-between px-6 py-4 border-t">
           <p className="text-sm text-muted-foreground">Показано {clients.length} из {total}</p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
 function ClientsTableSkeleton() {
   return (
-    <Card>
-      <CardContent className="p-6">
+    <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+      <div className="p-6">
         <div className="animate-pulse space-y-4">
           {[...Array(5)].map((_, i) => (
             <div key={i} className="flex items-center gap-4">
@@ -147,8 +147,8 @@ function ClientsTableSkeleton() {
             </div>
           ))}
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -170,8 +170,8 @@ export default async function ClientsPage({
         <CreateClientDialog />
       </div>
 
-      <Card>
-        <CardContent className="p-4">
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-4">
           <form action="/clients" method="GET" className="flex flex-col sm:flex-row gap-4">
             <div className="flex border rounded-lg overflow-hidden text-sm flex-shrink-0">
               <Link
@@ -195,8 +195,8 @@ export default async function ClientsPage({
             </div>
             <Button type="submit" variant="secondary">Найти</Button>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       <Suspense fallback={<ClientsTableSkeleton />}>
         <ClientsTable search={search} tab={tab} />

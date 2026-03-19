@@ -17,12 +17,14 @@ import { getTasks } from "@/actions/tasks";
 import { prisma } from "@/lib/prisma";
 import { CreateTaskDialog } from "@/components/tasks/create-task-dialog";
 import { FilterSelect } from "@/components/filters/filter-select";
+import { TasksKanban } from "@/components/kanban/tasks-kanban";
+import { type KanbanColumnData } from "@/components/kanban/kanban-board";
 
 const taskStatuses = [
-  { id: "TODO", name: "К выполнению", color: "bg-gray-500" },
-  { id: "IN_PROGRESS", name: "В работе", color: "bg-blue-500" },
-  { id: "REVIEW", name: "На проверке", color: "bg-purple-500" },
-  { id: "DONE", name: "Готово", color: "bg-green-500" },
+  { id: "TODO", name: "К выполнению", color: "#6b7280", colorClass: "bg-gray-500" },
+  { id: "IN_PROGRESS", name: "В работе", color: "#3b82f6", colorClass: "bg-blue-500" },
+  { id: "REVIEW", name: "На проверке", color: "#8b5cf6", colorClass: "bg-purple-500" },
+  { id: "DONE", name: "Готово", color: "#22c55e", colorClass: "bg-green-500" },
 ];
 
 const priorityColors: Record<string, string> = {
@@ -68,83 +70,30 @@ async function TasksContent({
       ? taskStatuses.filter((s) => s.id === status)
       : taskStatuses;
 
+    const kanbanColumns: KanbanColumnData[] = filteredStatuses.map((st) => ({
+      id: st.id,
+      title: st.name,
+      color: st.color,
+      items: tasks
+        .filter((t) => t.status === st.id)
+        .map((task) => ({
+          id: task.id,
+          title: task.title,
+          subtitle: task.order?.number,
+          number: task.order?.number,
+          href: `/tasks/${task.id}`,
+          priority: task.priority,
+          deadline: task.dueDate ? formatDate(task.dueDate) : undefined,
+          assignee: task.assignee?.name || undefined,
+        })),
+    }));
+
     return (
       <>
         <p className="text-muted-foreground text-sm -mt-4 mb-4">
           Всего: {total} задач
         </p>
-        <div className="flex gap-4 overflow-x-auto pb-4">
-          {filteredStatuses.map((st) => {
-            const statusTasks = tasks.filter((t) => t.status === st.id);
-            return (
-              <div key={st.id} className="flex-shrink-0 w-80">
-                <div className="bg-gray-100 rounded-lg p-3">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${st.color}`} />
-                      <span className="font-medium text-sm">{st.name}</span>
-                      <Badge variant="secondary" className="text-xs">
-                        {statusTasks.length}
-                      </Badge>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    {statusTasks.map((task) => (
-                      <Link key={task.id} href={`/tasks/${task.id}`}>
-                        <Card
-                          className={cn(
-                            "cursor-pointer hover:shadow-md transition-shadow border-l-4 mb-2",
-                            priorityColors[task.priority] ||
-                              priorityColors.MEDIUM
-                          )}
-                        >
-                          <CardContent className="p-3">
-                            <div className="flex items-start justify-between mb-2">
-                              <div className="flex items-center gap-2">
-                                <CheckSquare className="w-4 h-4 text-muted-foreground" />
-                                <span className="text-xs text-muted-foreground">
-                                  {task.order?.number}
-                                </span>
-                              </div>
-                            </div>
-                            <h4 className="font-medium text-sm mb-3">
-                              {task.title}
-                            </h4>
-                            <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                                {task.estimatedHours && (
-                                  <span className="flex items-center gap-1">
-                                    <Clock className="w-3 h-3" />
-                                    {Number(task.estimatedHours)}ч
-                                  </span>
-                                )}
-                                {task.dueDate && (
-                                  <span>{formatDate(task.dueDate)}</span>
-                                )}
-                              </div>
-                              {task.assignee && (
-                                <Avatar className="w-6 h-6">
-                                  <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
-                                    {getInitials(task.assignee.name || "")}
-                                  </AvatarFallback>
-                                </Avatar>
-                              )}
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    ))}
-                    {statusTasks.length === 0 && (
-                      <p className="text-xs text-muted-foreground text-center py-4">
-                        Нет задач
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <TasksKanban columns={kanbanColumns} />
       </>
     );
   }
@@ -168,8 +117,8 @@ async function TasksContent({
       <p className="text-muted-foreground text-sm -mt-4 mb-4">
         Всего: {total} задач
       </p>
-      <Card>
-        <CardContent className="p-0">
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm overflow-hidden">
+        <div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
@@ -248,7 +197,8 @@ async function TasksContent({
                             {st && (
                               <div className="flex items-center gap-2">
                                 <div
-                                  className={`w-2 h-2 rounded-full ${st.color}`}
+                                  className="w-2 h-2 rounded-full"
+                                  style={{ backgroundColor: st.color }}
                                 />
                                 <span className="text-sm">{st.name}</span>
                               </div>
@@ -317,8 +267,8 @@ async function TasksContent({
               </tbody>
             </table>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </>
   );
 }
@@ -376,8 +326,8 @@ async function TasksFilters({
   const currentView = searchParams.view || "kanban";
 
   return (
-    <Card>
-      <CardContent className="p-4">
+    <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+      <div className="p-4">
         <form action="/tasks" method="GET" className="flex flex-col gap-3">
           <div className="flex gap-2">
             <div className="relative flex-1">
@@ -477,8 +427,8 @@ async function TasksFilters({
             )}
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 

@@ -2,7 +2,6 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getPortalClient, getPortalDashboard } from "@/actions/portal";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -42,62 +41,54 @@ export default async function PortalDashboard() {
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <FolderKanban className="w-5 h-5 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{stats.totalOrders}</p>
-                <p className="text-sm text-muted-foreground">Проектов</p>
-              </div>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <FolderKanban className="w-5 h-5 text-blue-600" />
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Clock className="w-5 h-5 text-green-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{stats.activeCount}</p>
-                <p className="text-sm text-muted-foreground">Активных</p>
-              </div>
+            <div>
+              <p className="text-2xl font-bold">{stats.totalOrders}</p>
+              <p className="text-sm text-muted-foreground">Проектов</p>
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-amber-100 rounded-lg">
-                <DollarSign className="w-5 h-5 text-amber-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">
-                  {formatCurrency(stats.totalInvoiced)}
-                </p>
-                <p className="text-sm text-muted-foreground">Выставлено</p>
-              </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-green-100 rounded-lg">
+              <Clock className="w-5 h-5 text-green-600" />
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-5">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-red-100 rounded-lg">
-                <FileText className="w-5 h-5 text-red-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">
-                  {formatCurrency(stats.outstanding)}
-                </p>
-                <p className="text-sm text-muted-foreground">К оплате</p>
-              </div>
+            <div>
+              <p className="text-2xl font-bold">{stats.activeCount}</p>
+              <p className="text-sm text-muted-foreground">Активных</p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-amber-100 rounded-lg">
+              <DollarSign className="w-5 h-5 text-amber-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">
+                {formatCurrency(stats.totalInvoiced)}
+              </p>
+              <p className="text-sm text-muted-foreground">Выставлено</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
+          <div className="flex items-center gap-3">
+            <div className="p-2 bg-red-100 rounded-lg">
+              <FileText className="w-5 h-5 text-red-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">
+                {formatCurrency(stats.outstanding)}
+              </p>
+              <p className="text-sm text-muted-foreground">К оплате</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Projects */}
@@ -117,66 +108,63 @@ export default async function PortalDashboard() {
 
             return (
               <Link key={order.id} href={`/portal/orders/${order.id}`}>
-                <Card className="hover:shadow-md transition-shadow cursor-pointer h-full">
-                  <CardContent className="p-5">
-                    <div className="flex items-start justify-between mb-3">
-                      <div>
-                        <span className="text-xs font-mono text-muted-foreground">
-                          {order.number}
-                        </span>
-                        <h3 className="font-medium mt-0.5">{order.title}</h3>
-                      </div>
-                      {order.status && (
-                        <Badge
-                          variant="outline"
-                          style={{
-                            backgroundColor: order.status.color + "20",
-                            color: order.status.color,
-                            borderColor: order.status.color,
-                          }}
-                        >
-                          {order.status.name}
-                        </Badge>
-                      )}
-                    </div>
-
-                    {/* Progress bar */}
-                    <div className="flex items-center gap-2 mt-3">
-                      <Progress value={progressPercent} className="flex-1 h-2" />
-                      <span className="text-sm font-medium w-10 text-right">{progressPercent}%</span>
-                    </div>
-
-                    <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
-                      {order.deadline && (
-                        <span>Дедлайн: {formatDate(order.deadline)}</span>
-                      )}
-                      <span>{doneTasks}/{totalTasks} задач</span>
-                      <span>{order._count?.milestones || 0} этапов</span>
-                    </div>
-
-                    <div className="flex items-center gap-2 mt-3">
-                      {isCompleted ? (
-                        <CheckCircle2 className="w-4 h-4 text-green-500" />
-                      ) : (
-                        <Circle className="w-4 h-4 text-blue-500" />
-                      )}
-                      <span className="text-sm">
-                        {isCompleted ? "Завершён" : "В работе"}
+                <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer h-full p-5">
+                  <div className="flex items-start justify-between mb-3">
+                    <div>
+                      <span className="text-xs font-mono text-muted-foreground">
+                        {order.number}
                       </span>
-                      <ArrowRight className="w-4 h-4 ml-auto text-muted-foreground" />
+                      <h3 className="font-medium mt-0.5">{order.title}</h3>
                     </div>
-                  </CardContent>
-                </Card>
+                    {order.status && (
+                      <div
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium"
+                        style={{
+                          backgroundColor: order.status.color + "10",
+                          color: order.status.color,
+                          borderColor: order.status.color + "40",
+                        }}
+                      >
+                        <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: order.status.color }} />
+                        {order.status.name}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="flex items-center gap-2 mt-3">
+                    <Progress value={progressPercent} className="flex-1 h-2" />
+                    <span className="text-sm font-medium w-10 text-right">{progressPercent}%</span>
+                  </div>
+
+                  <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
+                    {order.deadline && (
+                      <span>Дедлайн: {formatDate(order.deadline)}</span>
+                    )}
+                    <span>{doneTasks}/{totalTasks} задач</span>
+                    <span>{order._count?.milestones || 0} этапов</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 mt-3">
+                    {isCompleted ? (
+                      <CheckCircle2 className="w-4 h-4 text-green-500" />
+                    ) : (
+                      <Circle className="w-4 h-4 text-blue-500" />
+                    )}
+                    <span className="text-sm">
+                      {isCompleted ? "Завершён" : "В работе"}
+                    </span>
+                    <ArrowRight className="w-4 h-4 ml-auto text-muted-foreground" />
+                  </div>
+                </div>
               </Link>
             );
           })}
           {orders.length === 0 && (
-            <Card className="col-span-2">
-              <CardContent className="p-12 text-center text-muted-foreground">
-                <FolderKanban className="w-10 h-10 mx-auto mb-3 opacity-50" />
-                <p>Проектов пока нет</p>
-              </CardContent>
-            </Card>
+            <div className="col-span-2 bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-12 text-center text-muted-foreground">
+              <FolderKanban className="w-10 h-10 mx-auto mb-3 opacity-50" />
+              <p>Проектов пока нет</p>
+            </div>
           )}
         </div>
       </div>
@@ -200,53 +188,54 @@ export default async function PortalDashboard() {
               Все предложения
             </Link>
           </div>
-          <Card>
-            <CardContent className="p-0">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b bg-muted/30">
-                    <th className="text-left py-3 px-5 font-medium">Номер</th>
-                    <th className="text-left py-3 px-5 font-medium">
-                      Название
-                    </th>
-                    <th className="text-left py-3 px-5 font-medium">Статус</th>
-                    <th className="text-right py-3 px-5 font-medium">Сумма</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {proposals.map((p: any) => {
-                    const proposalStatusLabels: Record<string, { label: string; variant: "default" | "secondary" | "success" | "destructive" | "warning" }> = {
-                      SENT: { label: "Новое", variant: "default" },
-                      VIEWED: { label: "Просмотрено", variant: "secondary" },
-                      ACCEPTED: { label: "Принято", variant: "success" },
-                      REJECTED: { label: "Отклонено", variant: "destructive" },
-                      EXPIRED: { label: "Истекло", variant: "warning" },
-                    };
-                    const st = proposalStatusLabels[p.status] || proposalStatusLabels.SENT;
-                    return (
-                      <tr key={p.id} className="border-b last:border-0">
-                        <td className="py-3 px-5">
-                          <Link
-                            href={`/portal/proposals/${p.id}`}
-                            className="font-mono text-primary hover:underline"
-                          >
-                            {p.number}
-                          </Link>
-                        </td>
-                        <td className="py-3 px-5">{p.title}</td>
-                        <td className="py-3 px-5">
-                          <Badge variant={st.variant}>{st.label}</Badge>
-                        </td>
-                        <td className="py-3 px-5 text-right font-medium">
-                          {formatCurrency(p.totalAmount, p.currency)}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[#dbdfe6] bg-background-light">
+                  <th className="text-left py-3 px-5 text-xs font-medium text-muted-foreground uppercase tracking-wider">Номер</th>
+                  <th className="text-left py-3 px-5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                    Название
+                  </th>
+                  <th className="text-left py-3 px-5 text-xs font-medium text-muted-foreground uppercase tracking-wider">Статус</th>
+                  <th className="text-right py-3 px-5 text-xs font-medium text-muted-foreground uppercase tracking-wider">Сумма</th>
+                </tr>
+              </thead>
+              <tbody>
+                {proposals.map((p: any) => {
+                  const proposalStatusDots: Record<string, { label: string; dot: string }> = {
+                    SENT: { label: "Новое", dot: "#3b82f6" },
+                    VIEWED: { label: "Просмотрено", dot: "#8b5cf6" },
+                    ACCEPTED: { label: "Принято", dot: "#22c55e" },
+                    REJECTED: { label: "Отклонено", dot: "#ef4444" },
+                    EXPIRED: { label: "Истекло", dot: "#f59e0b" },
+                  };
+                  const st = proposalStatusDots[p.status] || proposalStatusDots.SENT;
+                  return (
+                    <tr key={p.id} className="border-b border-[#dbdfe6] last:border-0 hover:bg-background-light/50 transition-colors">
+                      <td className="py-3 px-5">
+                        <Link
+                          href={`/portal/proposals/${p.id}`}
+                          className="font-mono text-primary hover:underline"
+                        >
+                          {p.number}
+                        </Link>
+                      </td>
+                      <td className="py-3 px-5">{p.title}</td>
+                      <td className="py-3 px-5">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: st.dot }} />
+                          <span className="text-sm">{st.label}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-5 text-right font-medium">
+                        {formatCurrency(p.totalAmount, p.currency)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
 
@@ -254,53 +243,45 @@ export default async function PortalDashboard() {
       {invoices.length > 0 && (
         <div>
           <h2 className="text-lg font-bold mb-4">Последние счета</h2>
-          <Card>
-            <CardContent className="p-0">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b bg-muted/30">
-                    <th className="text-left py-3 px-5 font-medium">Номер</th>
-                    <th className="text-left py-3 px-5 font-medium">Дата</th>
-                    <th className="text-left py-3 px-5 font-medium">Статус</th>
-                    <th className="text-right py-3 px-5 font-medium">Сумма</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoices.map((inv: any) => {
-                    const statusLabels: Record<string, string> = {
-                      DRAFT: "Черновик",
-                      SENT: "Отправлен",
-                      PAID: "Оплачен",
-                      PARTIALLY_PAID: "Частично",
-                      OVERDUE: "Просрочен",
-                    };
-                    return (
-                      <tr key={inv.id} className="border-b last:border-0">
-                        <td className="py-3 px-5 font-mono">{inv.number}</td>
-                        <td className="py-3 px-5">{formatDate(inv.issueDate)}</td>
-                        <td className="py-3 px-5">
-                          <Badge
-                            variant={
-                              inv.status === "PAID"
-                                ? "success"
-                                : inv.status === "OVERDUE"
-                                ? "destructive"
-                                : "secondary"
-                            }
-                          >
-                            {statusLabels[inv.status] || inv.status}
-                          </Badge>
-                        </td>
-                        <td className="py-3 px-5 text-right font-medium">
-                          {formatCurrency(Number(inv.total), inv.currency)}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </CardContent>
-          </Card>
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm overflow-hidden">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-[#dbdfe6] bg-background-light">
+                  <th className="text-left py-3 px-5 text-xs font-medium text-muted-foreground uppercase tracking-wider">Номер</th>
+                  <th className="text-left py-3 px-5 text-xs font-medium text-muted-foreground uppercase tracking-wider">Дата</th>
+                  <th className="text-left py-3 px-5 text-xs font-medium text-muted-foreground uppercase tracking-wider">Статус</th>
+                  <th className="text-right py-3 px-5 text-xs font-medium text-muted-foreground uppercase tracking-wider">Сумма</th>
+                </tr>
+              </thead>
+              <tbody>
+                {invoices.map((inv: any) => {
+                  const invoiceStatusDots: Record<string, { label: string; dot: string }> = {
+                    DRAFT: { label: "Черновик", dot: "#9ca3af" },
+                    SENT: { label: "Отправлен", dot: "#3b82f6" },
+                    PAID: { label: "Оплачен", dot: "#22c55e" },
+                    PARTIALLY_PAID: { label: "Частично", dot: "#f59e0b" },
+                    OVERDUE: { label: "Просрочен", dot: "#ef4444" },
+                  };
+                  const st = invoiceStatusDots[inv.status] || invoiceStatusDots.DRAFT;
+                  return (
+                    <tr key={inv.id} className="border-b border-[#dbdfe6] last:border-0 hover:bg-background-light/50 transition-colors">
+                      <td className="py-3 px-5 font-mono">{inv.number}</td>
+                      <td className="py-3 px-5">{formatDate(inv.issueDate)}</td>
+                      <td className="py-3 px-5">
+                        <div className="flex items-center gap-2">
+                          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: st.dot }} />
+                          <span className="text-sm">{st.label}</span>
+                        </div>
+                      </td>
+                      <td className="py-3 px-5 text-right font-medium">
+                        {formatCurrency(Number(inv.total), inv.currency)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       )}
     </div>

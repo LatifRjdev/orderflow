@@ -3,7 +3,6 @@ import { auth } from "@/lib/auth";
 import { getClient } from "@/actions/clients";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import {
   Building2,
@@ -18,7 +17,6 @@ import {
   Clock,
   DollarSign,
   User,
-  MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
 import { formatCurrency, formatDate, formatRelativeTime } from "@/lib/utils";
@@ -107,74 +105,66 @@ export default async function ClientPage({ params }: ClientPageProps) {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-4 gap-4">
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-blue-100 rounded-lg">
-                <Briefcase className="w-5 h-5 text-blue-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{client._count?.orders || 0}</p>
-                <p className="text-sm text-muted-foreground">Заказов</p>
-              </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-blue-100 rounded-xl">
+              <Briefcase className="w-5 h-5 text-blue-600" />
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-green-100 rounded-lg">
-                <Clock className="w-5 h-5 text-green-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{activeOrders}</p>
-                <p className="text-sm text-muted-foreground">Активных</p>
-              </div>
+            <div>
+              <p className="text-2xl font-bold">{client._count?.orders || 0}</p>
+              <p className="text-sm text-muted-foreground">Заказов</p>
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-amber-100 rounded-lg">
-                <FileText className="w-5 h-5 text-amber-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">{client._count?.invoices || 0}</p>
-                <p className="text-sm text-muted-foreground">Счетов</p>
-              </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-green-100 rounded-xl">
+              <Clock className="w-5 h-5 text-green-600" />
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-emerald-100 rounded-lg">
-                <DollarSign className="w-5 h-5 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold">
-                  {formatCurrency(totalRevenue)}
-                </p>
-                <p className="text-sm text-muted-foreground">Выручка</p>
-              </div>
+            <div>
+              <p className="text-2xl font-bold">{activeOrders}</p>
+              <p className="text-sm text-muted-foreground">Активных</p>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-amber-100 rounded-xl">
+              <FileText className="w-5 h-5 text-amber-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">{client._count?.invoices || 0}</p>
+              <p className="text-sm text-muted-foreground">Счетов</p>
+            </div>
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-emerald-100 rounded-xl">
+              <DollarSign className="w-5 h-5 text-emerald-600" />
+            </div>
+            <div>
+              <p className="text-2xl font-bold">
+                {formatCurrency(totalRevenue)}
+              </p>
+              <p className="text-sm text-muted-foreground">Выручка</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-6">
         {/* Left Column - Info & Contacts */}
         <div className="space-y-6">
           {/* Contact Info */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <Building2 className="w-4 h-4" />
                 Информация
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
+              </h3>
+            </div>
+            <div className="px-6 pb-6 space-y-4">
               {client.inn && (
                 <div>
                   <p className="text-sm text-muted-foreground">ИНН</p>
@@ -236,25 +226,25 @@ export default async function ClientPage({ params }: ClientPageProps) {
                 <p>Создан: {formatDate(client.createdAt)}</p>
                 <p>Обновлён: {formatRelativeTime(client.updatedAt)}</p>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Contacts */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 Контактные лица
-              </CardTitle>
+              </h3>
               <AddContactDialog clientId={client.id} />
-            </CardHeader>
-            <CardContent>
+            </div>
+            <div className="px-6 pb-6">
               {client.contacts && client.contacts.length > 0 ? (
                 <div className="space-y-4">
                   {client.contacts.map((contact: any) => (
                     <div
                       key={contact.id}
-                      className="flex items-start gap-3 p-3 rounded-lg border"
+                      className="flex items-start gap-3 p-3 rounded-lg border border-[#dbdfe6] bg-background-light/30"
                     >
                       <div className="p-2 bg-muted rounded-full">
                         <User className="w-4 h-4" />
@@ -309,8 +299,8 @@ export default async function ClientPage({ params }: ClientPageProps) {
                   Контактные лица не добавлены
                 </p>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Portal Access */}
           <PortalAccess
@@ -323,26 +313,26 @@ export default async function ClientPage({ params }: ClientPageProps) {
         {/* Right Column - Orders & Invoices */}
         <div className="col-span-2 space-y-6">
           {/* Orders */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <Briefcase className="w-4 h-4" />
                 Заказы
-              </CardTitle>
+              </h3>
               <Link href={`/orders?clientId=${client.id}`}>
                 <Button variant="outline" size="sm">
                   Все заказы
                 </Button>
               </Link>
-            </CardHeader>
-            <CardContent>
+            </div>
+            <div className="px-6 pb-6">
               {client.orders && client.orders.length > 0 ? (
                 <div className="space-y-3">
                   {client.orders.map((order: any) => (
                     <Link
                       key={order.id}
                       href={`/orders/${order.id}`}
-                      className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                      className="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6] hover:bg-background-light/50 transition-colors"
                     >
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2">
@@ -374,16 +364,10 @@ export default async function ClientPage({ params }: ClientPageProps) {
                           {order.priority === "URGENT" && "Срочный"}
                         </Badge>
                         {order.status && (
-                          <Badge
-                            style={{
-                              backgroundColor: order.status.color + "20",
-                              color: order.status.color,
-                              borderColor: order.status.color,
-                            }}
-                            variant="outline"
-                          >
-                            {order.status.name}
-                          </Badge>
+                          <div className="inline-flex items-center gap-1.5">
+                            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: order.status.color }} />
+                            <span className="text-sm">{order.status.name}</span>
+                          </div>
                         )}
                       </div>
                     </Link>
@@ -395,28 +379,28 @@ export default async function ClientPage({ params }: ClientPageProps) {
                   <p className="text-sm">Заказов пока нет</p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Invoices */}
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4 flex items-center justify-between">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <FileText className="w-4 h-4" />
                 Счета
-              </CardTitle>
+              </h3>
               <Link href={`/finance?clientId=${client.id}`}>
                 <Button variant="outline" size="sm">
                   Все счета
                 </Button>
               </Link>
-            </CardHeader>
-            <CardContent>
+            </div>
+            <div className="px-6 pb-6">
               {client.invoices && client.invoices.length > 0 ? (
                 <div className="overflow-x-auto">
                   <table className="w-full text-sm">
                     <thead>
-                      <tr className="border-b">
+                      <tr className="border-b border-[#dbdfe6]">
                         <th className="text-left py-2 font-medium">Номер</th>
                         <th className="text-left py-2 font-medium">Дата</th>
                         <th className="text-left py-2 font-medium">Статус</th>
@@ -425,24 +409,25 @@ export default async function ClientPage({ params }: ClientPageProps) {
                     </thead>
                     <tbody>
                       {client.invoices.map((invoice: any) => {
-                        const statusMap: Record<string, { label: string; variant: "default" | "secondary" | "success" | "warning" | "destructive" }> = {
-                          DRAFT: { label: "Черновик", variant: "secondary" },
-                          SENT: { label: "Отправлен", variant: "default" },
-                          VIEWED: { label: "Просмотрен", variant: "default" },
-                          PAID: { label: "Оплачен", variant: "success" },
-                          PARTIALLY_PAID: { label: "Частично", variant: "warning" },
-                          OVERDUE: { label: "Просрочен", variant: "destructive" },
-                          CANCELLED: { label: "Отменён", variant: "secondary" },
+                        const statusMap: Record<string, { label: string; dot: string }> = {
+                          DRAFT: { label: "Черновик", dot: "#9ca3af" },
+                          SENT: { label: "Отправлен", dot: "#3b82f6" },
+                          VIEWED: { label: "Просмотрен", dot: "#8b5cf6" },
+                          PAID: { label: "Оплачен", dot: "#22c55e" },
+                          PARTIALLY_PAID: { label: "Частично", dot: "#f59e0b" },
+                          OVERDUE: { label: "Просрочен", dot: "#ef4444" },
+                          CANCELLED: { label: "Отменён", dot: "#9ca3af" },
                         };
-                        const statusInfo = statusMap[invoice.status] || { label: invoice.status, variant: "secondary" as const };
+                        const statusInfo = statusMap[invoice.status] || { label: invoice.status, dot: "#9ca3af" };
                         return (
-                          <tr key={invoice.id} className="border-b last:border-0">
+                          <tr key={invoice.id} className="border-b border-[#dbdfe6] last:border-0">
                             <td className="py-2 font-mono">{invoice.number}</td>
                             <td className="py-2">{formatDate(invoice.issueDate)}</td>
                             <td className="py-2">
-                              <Badge variant={statusInfo.variant}>
-                                {statusInfo.label}
-                              </Badge>
+                              <div className="inline-flex items-center gap-1.5">
+                                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: statusInfo.dot }} />
+                                <span className="text-sm">{statusInfo.label}</span>
+                              </div>
                             </td>
                             <td className="py-2 text-right font-medium">
                               {formatCurrency(Number(invoice.total), invoice.currency)}
@@ -459,8 +444,8 @@ export default async function ClientPage({ params }: ClientPageProps) {
                   <p className="text-sm">Счетов пока нет</p>
                 </div>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Client Notes */}
           <ClientNotes

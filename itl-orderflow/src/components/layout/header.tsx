@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   Search,
   LogOut,
@@ -14,6 +14,7 @@ import {
   Loader2,
   MessageCircle,
   User,
+  Bell,
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -60,8 +61,30 @@ const quickLinks = [
   { label: "Настройки", icon: Settings, href: "/settings" },
 ];
 
+const pageTitles: Record<string, string> = {
+  "/": "Главная панель",
+  "/orders": "Заказы",
+  "/clients": "Клиенты",
+  "/tasks": "Задачи",
+  "/time": "Время",
+  "/finance": "Финансы",
+  "/proposals": "Предложения",
+  "/tickets": "Обращения",
+  "/reports": "Отчёты",
+  "/settings": "Настройки",
+};
+
+function getPageTitle(pathname: string): string {
+  if (pageTitles[pathname]) return pageTitles[pathname];
+  for (const [path, title] of Object.entries(pageTitles)) {
+    if (path !== "/" && pathname.startsWith(path)) return title;
+  }
+  return "ITL OrderFlow";
+}
+
 export function Header({ user }: HeaderProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
@@ -78,6 +101,7 @@ export function Header({ user }: HeaderProps) {
   const userRole = user?.role || "EMPLOYEE";
   const userImage = user?.image || "";
   const initials = getInitials(userName);
+  const pageTitle = getPageTitle(pathname);
 
   // ⌘K shortcut
   useEffect(() => {
@@ -172,47 +196,59 @@ export function Header({ user }: HeaderProps) {
 
   return (
     <>
-      <header className="h-16 border-b bg-white flex items-center justify-between px-6">
-        <div className="flex items-center gap-4">
-          <nav className="text-sm text-muted-foreground">
-            <span>ITL OrderFlow</span>
-          </nav>
+      <header className="h-16 border-b border-[#dbdfe6] bg-white flex items-center justify-between px-8 shrink-0">
+        {/* Left: Page title + Search */}
+        <div className="flex items-center gap-6 flex-1">
+          <h2 className="text-xl font-bold text-gray-900">{pageTitle}</h2>
+          <div className="relative max-w-md w-full">
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-background-light hover:bg-gray-100 transition-colors text-sm text-gray-400"
+            >
+              <Search className="w-4 h-4" />
+              <span className="flex-1 text-left">Поиск по проектам и задачам</span>
+              <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-white border rounded">
+                ⌘K
+              </kbd>
+            </button>
+          </div>
         </div>
 
-        <div className="flex-1 max-w-md mx-4">
-          <button
-            onClick={() => setSearchOpen(true)}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 transition-colors text-sm text-muted-foreground"
-          >
-            <Search className="w-4 h-4" />
-            <span className="flex-1 text-left">Поиск...</span>
-            <kbd className="hidden sm:inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium bg-white border rounded">
-              ⌘K
-            </kbd>
-          </button>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {/* Chat / Написать */}
-          <Button variant="ghost" size="icon" onClick={() => router.push("/proposals/new")} title="Написать">
-            <MessageCircle className="w-5 h-5" />
-          </Button>
-
+        {/* Right: Actions */}
+        <div className="flex items-center gap-3">
           {/* Notifications */}
           <NotificationsPanel />
 
+          {/* Chat */}
+          <button
+            onClick={() => router.push("/proposals/new")}
+            className="p-2 rounded-lg bg-background-light text-gray-600 hover:bg-gray-200 transition-colors"
+            title="Написать"
+          >
+            <MessageCircle className="w-5 h-5" />
+          </button>
+
+          {/* Divider */}
+          <div className="h-8 w-px bg-gray-200 mx-1" />
+
           {/* User Profile */}
           <div className="relative" ref={profileRef}>
-            <button onClick={() => { setProfileOpen(!profileOpen); }} className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
-              <Avatar className="w-8 h-8">
+            <button
+              onClick={() => setProfileOpen(!profileOpen)}
+              className="flex items-center gap-3 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+            >
+              <div className="text-right hidden md:block">
+                <p className="text-sm font-medium">{userName}</p>
+                <p className="text-xs text-gray-500">{roleLabels[userRole] || userRole}</p>
+              </div>
+              <Avatar className="w-10 h-10 ring-2 ring-primary/20">
                 {userImage && <AvatarImage src={userImage} alt={userName} />}
                 <AvatarFallback className="bg-primary text-white text-xs">{initials}</AvatarFallback>
               </Avatar>
-              <span className="text-sm font-medium hidden md:block">{userName}</span>
             </button>
 
             {profileOpen && (
-              <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg border shadow-lg z-50">
+              <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-xl border shadow-lg z-50">
                 <div className="px-4 py-3 border-b">
                   <p className="font-medium text-sm">{userName}</p>
                   <p className="text-xs text-muted-foreground">{userEmail}</p>

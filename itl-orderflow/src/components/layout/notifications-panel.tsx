@@ -205,7 +205,7 @@ export function NotificationsPanel() {
 
       {/* Dropdown Panel */}
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-lg border shadow-lg z-50">
+        <div className="absolute right-0 top-full mt-2 w-96 bg-white rounded-xl border border-[#dbdfe6] shadow-lg z-50">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b">
             <h3 className="font-semibold text-sm">Уведомления</h3>
@@ -269,7 +269,7 @@ export function NotificationsPanel() {
             {groups.map((group) => (
               <div key={group.key}>
                 {/* Group Header */}
-                <div className="px-4 py-2 bg-gray-50/80">
+                <div className="px-4 py-2 bg-background-light">
                   <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     {group.label}
                   </span>

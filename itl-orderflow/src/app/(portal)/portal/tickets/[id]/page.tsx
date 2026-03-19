@@ -3,21 +3,17 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { getPortalClient } from "@/actions/portal";
 import { getPortalTicket } from "@/actions/tickets";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FolderKanban, User, Clock } from "lucide-react";
 import { PortalTicketMessageForm } from "@/components/portal/ticket-message-form";
 import { formatDateTime, formatRelativeTime } from "@/lib/utils";
 
-const ticketStatusConfig: Record<
-  string,
-  { label: string; variant: "default" | "secondary" | "success" | "warning" }
-> = {
-  OPEN: { label: "Открыт", variant: "default" },
-  IN_PROGRESS: { label: "В работе", variant: "warning" },
-  RESOLVED: { label: "Решён", variant: "success" },
-  CLOSED: { label: "Закрыт", variant: "secondary" },
+const ticketStatusDots: Record<string, { label: string; dot: string }> = {
+  OPEN: { label: "Открыт", dot: "#3b82f6" },
+  IN_PROGRESS: { label: "В работе", dot: "#f59e0b" },
+  RESOLVED: { label: "Решён", dot: "#22c55e" },
+  CLOSED: { label: "Закрыт", dot: "#9ca3af" },
 };
 
 const priorityConfig: Record<string, { label: string; variant: "default" | "secondary" | "destructive" | "warning" }> = {
@@ -43,7 +39,7 @@ export default async function PortalTicketDetailPage({
   const ticket = await getPortalTicket(client.id, params.id);
   if (!ticket) notFound();
 
-  const st = ticketStatusConfig[ticket.status] || ticketStatusConfig.OPEN;
+  const st = ticketStatusDots[ticket.status] || ticketStatusDots.OPEN;
   const pr = priorityConfig[ticket.priority] || priorityConfig.MEDIUM;
   const isClosed = ticket.status === "CLOSED";
 
@@ -63,7 +59,13 @@ export default async function PortalTicketDetailPage({
           <span className="text-sm font-mono text-muted-foreground">
             {ticket.number}
           </span>
-          <Badge variant={st.variant}>{st.label}</Badge>
+          <div
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border"
+            style={{ borderColor: st.dot + "40", backgroundColor: st.dot + "10" }}
+          >
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: st.dot }} />
+            <span className="text-sm font-medium" style={{ color: st.dot }}>{st.label}</span>
+          </div>
           <Badge variant={pr.variant}>{pr.label}</Badge>
         </div>
         <h1 className="text-2xl font-bold">{ticket.subject}</h1>
@@ -85,31 +87,31 @@ export default async function PortalTicketDetailPage({
       </div>
 
       {/* Description */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Описание</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-6 pb-4">
+          <h3 className="text-base font-semibold">Описание</h3>
+        </div>
+        <div className="px-6 pb-6">
           <p className="text-sm whitespace-pre-wrap">{ticket.description}</p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Messages */}
       {ticket.messages.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-base font-semibold">
               Переписка ({ticket.messages.length})
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
+            </h3>
+          </div>
+          <div className="px-6 pb-6 space-y-4">
             {ticket.messages.map((message: any) => (
               <div
                 key={message.id}
                 className={`p-4 rounded-lg ${
                   message.isFromClient
                     ? "bg-primary/5 border border-primary/10"
-                    : "bg-muted/50"
+                    : "bg-background-light"
                 }`}
               >
                 <div className="flex items-center justify-between mb-2">
@@ -128,31 +130,29 @@ export default async function PortalTicketDetailPage({
                 <p className="text-sm whitespace-pre-wrap">{message.content}</p>
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* Reply form */}
       {!isClosed ? (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Ответить</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-base font-semibold">Ответить</h3>
+          </div>
+          <div className="px-6 pb-6">
             <PortalTicketMessageForm
               clientId={client.id}
               clientName={client.name}
               ticketId={ticket.id}
             />
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       ) : (
-        <Card>
-          <CardContent className="p-5 text-center text-muted-foreground">
-            Обращение закрыто. Если у вас остались вопросы, создайте новое
-            обращение.
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5 text-center text-muted-foreground">
+          Обращение закрыто. Если у вас остались вопросы, создайте новое
+          обращение.
+        </div>
       )}
     </div>
   );

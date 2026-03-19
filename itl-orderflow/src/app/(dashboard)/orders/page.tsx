@@ -20,6 +20,8 @@ import { formatCurrency, formatDate, getInitials } from "@/lib/utils";
 import { prisma } from "@/lib/prisma";
 import { CreateOrderDialog } from "@/components/orders/create-order-dialog";
 import { FilterSelect } from "@/components/filters/filter-select";
+import { OrdersKanban } from "@/components/kanban/orders-kanban";
+import { type KanbanColumnData } from "@/components/kanban/kanban-board";
 
 const priorityConfig: Record<string, { label: string; className: string }> = {
   LOW: { label: "Низкий", className: "bg-gray-100 text-gray-700" },
@@ -80,97 +82,33 @@ async function OrdersContent({
   }
 
   if (isKanban) {
-    const getStatusOrders = (sid: string) =>
-      orders.filter((o) => o.statusId === sid);
+    const kanbanColumns: KanbanColumnData[] = statuses.map((status) => ({
+      id: status.id,
+      title: status.name,
+      color: status.color,
+      items: orders
+        .filter((o) => o.statusId === status.id)
+        .map((order) => ({
+          id: order.id,
+          title: order.title,
+          subtitle: order.client?.name,
+          number: order.number,
+          href: `/orders/${order.id}`,
+          priority: order.priority,
+          deadline: order.deadline ? formatDate(order.deadline) : undefined,
+          assignee: order.manager?.name || undefined,
+          progress: order.progressPercent ?? undefined,
+          taskCount: order._count?.tasks,
+        })),
+    }));
 
-    return (
-      <div className="flex gap-4 overflow-x-auto pb-4">
-        {statuses.map((status) => {
-          const statusOrders = getStatusOrders(status.id);
-          return (
-            <div key={status.id} className="flex-shrink-0 w-72">
-              <div className="bg-gray-100 rounded-lg p-3">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{ backgroundColor: status.color }}
-                    />
-                    <span className="font-medium text-sm">{status.name}</span>
-                    <Badge variant="secondary" className="text-xs">
-                      {statusOrders.length}
-                    </Badge>
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  {statusOrders.map((order) => {
-                    const priority =
-                      priorityConfig[order.priority] || priorityConfig.MEDIUM;
-                    return (
-                      <Link key={order.id} href={`/orders/${order.id}`}>
-                        <Card className="cursor-pointer hover:shadow-md transition-shadow">
-                          <CardContent className="p-3">
-                            <div className="flex items-start justify-between mb-2">
-                              <span className="text-xs text-muted-foreground">
-                                {order.number}
-                              </span>
-                              <Badge
-                                className={`text-[10px] ${priority.className}`}
-                              >
-                                {priority.label}
-                              </Badge>
-                            </div>
-                            <h4 className="font-medium text-sm mb-1 line-clamp-2">
-                              {order.title}
-                            </h4>
-                            <p className="text-xs text-muted-foreground mb-2">
-                              {order.client?.name}
-                            </p>
-                            {order.progressPercent != null && (
-                              <Progress
-                                value={order.progressPercent}
-                                className="h-1.5 mb-2"
-                              />
-                            )}
-                            <div className="flex items-center justify-between mt-2 pt-2 border-t">
-                              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                                {order.deadline ? (
-                                  <>
-                                    <Calendar className="w-3 h-3" />
-                                    {formatDate(order.deadline)}
-                                  </>
-                                ) : (
-                                  <span>
-                                    {order._count?.tasks || 0} задач
-                                  </span>
-                                )}
-                              </div>
-                              {order.manager && (
-                                <Avatar className="w-6 h-6">
-                                  <AvatarFallback className="text-[10px] bg-primary/10 text-primary">
-                                    {getInitials(order.manager.name || "")}
-                                  </AvatarFallback>
-                                </Avatar>
-                              )}
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    );
+    return <OrdersKanban columns={kanbanColumns} />;
   }
 
   // Table View
   return (
-    <Card>
-      <CardContent className="p-0">
+    <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+      <div>
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
@@ -226,16 +164,15 @@ async function OrdersContent({
                     </td>
                     <td className="py-4 px-6">
                       {order.status && (
-                        <Badge
-                          variant="outline"
-                          style={{
-                            backgroundColor: order.status.color + "20",
-                            color: order.status.color,
-                            borderColor: order.status.color,
-                          }}
-                        >
-                          {order.status.name}
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-2 h-2 rounded-full shrink-0"
+                            style={{ backgroundColor: order.status.color }}
+                          />
+                          <span className="text-sm font-medium" style={{ color: order.status.color }}>
+                            {order.status.name}
+                          </span>
+                        </div>
                       )}
                     </td>
                     <td className="py-4 px-6">
@@ -296,8 +233,8 @@ async function OrdersContent({
             Показано {orders.length} из {total}
           </p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -353,8 +290,8 @@ async function OrdersFilters({
   const currentView = searchParams.view || "table";
 
   return (
-    <Card>
-      <CardContent className="p-4">
+    <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+      <div className="p-4">
         <form
           action="/orders"
           method="GET"
@@ -446,8 +383,8 @@ async function OrdersFilters({
             )}
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 

@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { Clock, ChevronLeft, ChevronRight, List, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { getTimeEntries, getWeeklyTimeGrid } from "@/actions/time-entries";
@@ -48,95 +47,93 @@ async function WeeklyGridContent({ weekStartStr }: { weekStartStr: string }) {
   });
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">Недельная сетка</CardTitle>
-      </CardHeader>
-      <CardContent className="p-0">
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead>
-              <tr className="border-b bg-gray-50/50">
-                <th className="text-left py-3 px-4 text-sm font-medium text-muted-foreground min-w-[200px]">
-                  Проект
+    <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm overflow-hidden">
+      <div className="p-6 pb-4">
+        <h3 className="text-lg font-semibold">Недельная сетка</h3>
+      </div>
+      <div className="overflow-x-auto">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-[#dbdfe6] bg-background-light">
+              <th className="text-left py-3 px-4 text-xs font-medium text-muted-foreground uppercase tracking-wider min-w-[200px]">
+                Проект
+              </th>
+              {dayLabels.map((dl, i) => (
+                <th
+                  key={i}
+                  className={cn(
+                    "text-center py-3 px-2 text-xs font-medium uppercase tracking-wider min-w-[60px]",
+                    i >= 5 ? "text-muted-foreground/60" : "text-muted-foreground"
+                  )}
+                >
+                  <div>{dl.name}</div>
+                  <div className="text-xs font-normal">{dl.date}</div>
                 </th>
-                {dayLabels.map((dl, i) => (
-                  <th
+              ))}
+              <th className="text-center py-3 px-3 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                Итого
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row) => (
+              <tr key={row.order.id} className="border-b border-[#dbdfe6] last:border-0 hover:bg-background-light/50 transition-colors">
+                <td className="py-3 px-4">
+                  <div className="text-sm">
+                    <span className="font-mono text-muted-foreground mr-1">
+                      {row.order.number}
+                    </span>
+                    <span className="font-medium">{row.order.title}</span>
+                  </div>
+                </td>
+                {row.days.map((hours, i) => (
+                  <td
                     key={i}
                     className={cn(
-                      "text-center py-3 px-2 text-sm font-medium min-w-[60px]",
-                      i >= 5 ? "text-muted-foreground/60" : "text-muted-foreground"
+                      "text-center py-3 px-2 text-sm",
+                      hours > 0 ? "font-medium" : "text-muted-foreground/40"
                     )}
                   >
-                    <div>{dl.name}</div>
-                    <div className="text-xs font-normal">{dl.date}</div>
-                  </th>
+                    {hours > 0 ? hours : "—"}
+                  </td>
                 ))}
-                <th className="text-center py-3 px-3 text-sm font-medium text-muted-foreground">
-                  Итого
-                </th>
+                <td className="text-center py-3 px-3 text-sm font-bold">
+                  {row.total}
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
-                <tr key={row.order.id} className="border-b last:border-0 hover:bg-gray-50/50">
-                  <td className="py-3 px-4">
-                    <div className="text-sm">
-                      <span className="font-mono text-muted-foreground mr-1">
-                        {row.order.number}
-                      </span>
-                      <span className="font-medium">{row.order.title}</span>
-                    </div>
-                  </td>
-                  {row.days.map((hours, i) => (
-                    <td
-                      key={i}
-                      className={cn(
-                        "text-center py-3 px-2 text-sm",
-                        hours > 0 ? "font-medium" : "text-muted-foreground/40"
-                      )}
-                    >
-                      {hours > 0 ? hours : "—"}
-                    </td>
-                  ))}
-                  <td className="text-center py-3 px-3 text-sm font-bold">
-                    {row.total}
-                  </td>
-                </tr>
-              ))}
-              {rows.length === 0 && (
-                <tr>
-                  <td colSpan={9} className="py-12 text-center text-muted-foreground">
-                    Нет записей за эту неделю
-                  </td>
-                </tr>
-              )}
-            </tbody>
-            {rows.length > 0 && (
-              <tfoot>
-                <tr className="border-t-2 bg-gray-50/80">
-                  <td className="py-3 px-4 text-sm font-bold">Итого</td>
-                  {dayTotals.map((dt, i) => (
-                    <td
-                      key={i}
-                      className={cn(
-                        "text-center py-3 px-2 text-sm font-bold",
-                        dt > 0 ? "" : "text-muted-foreground/40"
-                      )}
-                    >
-                      {dt > 0 ? dt : "—"}
-                    </td>
-                  ))}
-                  <td className="text-center py-3 px-3 text-sm font-bold text-primary">
-                    {grandTotal}ч
-                  </td>
-                </tr>
-              </tfoot>
+            ))}
+            {rows.length === 0 && (
+              <tr>
+                <td colSpan={9} className="py-12 text-center text-muted-foreground">
+                  Нет записей за эту неделю
+                </td>
+              </tr>
             )}
-          </table>
-        </div>
-      </CardContent>
-    </Card>
+          </tbody>
+          {rows.length > 0 && (
+            <tfoot>
+              <tr className="border-t-2 border-[#dbdfe6] bg-background-light">
+                <td className="py-3 px-4 text-sm font-bold">Итого</td>
+                {dayTotals.map((dt, i) => (
+                  <td
+                    key={i}
+                    className={cn(
+                      "text-center py-3 px-2 text-sm font-bold",
+                      dt > 0 ? "" : "text-muted-foreground/40"
+                    )}
+                  >
+                    {dt > 0 ? dt : "—"}
+                  </td>
+                ))}
+                <td className="text-center py-3 px-3 text-sm font-bold text-primary">
+                  {grandTotal}ч
+                </td>
+              </tr>
+            </tfoot>
+          )}
+        </table>
+      </div>
+    </div>
   );
 }
 
@@ -165,55 +162,49 @@ async function TimeListContent() {
     <>
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-sm text-muted-foreground mb-1">
-              Всего часов
-            </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold">{totalHours}</span>
-              <span className="text-muted-foreground">ч</span>
-            </div>
-            <Progress
-              value={Math.min((totalHours / weekNorm) * 100, 100)}
-              className="mt-2 h-2"
-            />
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-sm text-muted-foreground mb-1">
-              Оплачиваемых часов
-            </div>
-            <div className="flex items-baseline gap-2">
-              <span className="text-3xl font-bold">{billableHours}</span>
-              {totalHours > 0 && (
-                <Badge variant="secondary" className="text-xs">
-                  {Math.round((billableHours / totalHours) * 100)}%
-                </Badge>
-              )}
-            </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-sm text-muted-foreground mb-1">Проектов</div>
-            <div className="text-3xl font-bold">{orderGroups.length}</div>
-          </CardContent>
-        </Card>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-4">
+          <div className="text-sm text-muted-foreground mb-1">
+            Всего часов
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-bold">{totalHours}</span>
+            <span className="text-muted-foreground">ч</span>
+          </div>
+          <Progress
+            value={Math.min((totalHours / weekNorm) * 100, 100)}
+            className="mt-2 h-2"
+          />
+        </div>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-4">
+          <div className="text-sm text-muted-foreground mb-1">
+            Оплачиваемых часов
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-3xl font-bold">{billableHours}</span>
+            {totalHours > 0 && (
+              <Badge variant="secondary" className="text-xs">
+                {Math.round((billableHours / totalHours) * 100)}%
+              </Badge>
+            )}
+          </div>
+        </div>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-4">
+          <div className="text-sm text-muted-foreground mb-1">Проектов</div>
+          <div className="text-3xl font-bold">{orderGroups.length}</div>
+        </div>
       </div>
 
       {/* By Order Summary */}
       {orderGroups.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">По проектам</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-lg font-semibold">По проектам</h3>
+          </div>
+          <div className="px-6 pb-6 space-y-3">
             {orderGroups.map((group) => (
               <div
                 key={group.order?.id}
-                className="flex items-center justify-between p-3 rounded-lg border"
+                className="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6]"
               >
                 <div>
                   <span className="text-sm font-mono text-muted-foreground mr-2">
@@ -224,80 +215,78 @@ async function TimeListContent() {
                 <Badge variant="secondary">{group.totalHours}ч</Badge>
               </div>
             ))}
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       {/* Recent Entries */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Последние записи</CardTitle>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b bg-gray-50/50">
-                  <th className="text-left py-3 px-6 text-sm font-medium text-muted-foreground">
-                    Дата
-                  </th>
-                  <th className="text-left py-3 px-6 text-sm font-medium text-muted-foreground">
-                    Проект
-                  </th>
-                  <th className="text-left py-3 px-6 text-sm font-medium text-muted-foreground">
-                    Сотрудник
-                  </th>
-                  <th className="text-left py-3 px-6 text-sm font-medium text-muted-foreground">
-                    Описание
-                  </th>
-                  <th className="text-right py-3 px-6 text-sm font-medium text-muted-foreground">
-                    Часы
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {entries.map((entry) => (
-                  <tr
-                    key={entry.id}
-                    className="border-b last:border-0 hover:bg-gray-50/50"
-                  >
-                    <td className="py-3 px-6 text-sm">
-                      {formatDate(entry.date)}
-                    </td>
-                    <td className="py-3 px-6 text-sm">
-                      <span className="font-mono text-muted-foreground mr-1">
-                        {entry.order?.number}
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm overflow-hidden">
+        <div className="p-6 pb-4">
+          <h3 className="text-lg font-semibold">Последние записи</h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-[#dbdfe6] bg-background-light">
+                <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Дата
+                </th>
+                <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Проект
+                </th>
+                <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Сотрудник
+                </th>
+                <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Описание
+                </th>
+                <th className="text-right py-3 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  Часы
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {entries.map((entry) => (
+                <tr
+                  key={entry.id}
+                  className="border-b border-[#dbdfe6] last:border-0 hover:bg-background-light/50 transition-colors"
+                >
+                  <td className="py-3 px-6 text-sm">
+                    {formatDate(entry.date)}
+                  </td>
+                  <td className="py-3 px-6 text-sm">
+                    <span className="font-mono text-muted-foreground mr-1">
+                      {entry.order?.number}
+                    </span>
+                    {entry.order?.title}
+                  </td>
+                  <td className="py-3 px-6 text-sm">
+                    {entry.user?.name}
+                  </td>
+                  <td className="py-3 px-6 text-sm text-muted-foreground">
+                    {entry.description || "—"}
+                  </td>
+                  <td className="py-3 px-6 text-sm text-right font-medium">
+                    {entry.hours}ч
+                    {!entry.isBillable && (
+                      <span className="text-xs text-muted-foreground ml-1">
+                        (внутр.)
                       </span>
-                      {entry.order?.title}
-                    </td>
-                    <td className="py-3 px-6 text-sm">
-                      {entry.user?.name}
-                    </td>
-                    <td className="py-3 px-6 text-sm text-muted-foreground">
-                      {entry.description || "—"}
-                    </td>
-                    <td className="py-3 px-6 text-sm text-right font-medium">
-                      {entry.hours}ч
-                      {!entry.isBillable && (
-                        <span className="text-xs text-muted-foreground ml-1">
-                          (внутр.)
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-                {entries.length === 0 && (
-                  <tr>
-                    <td colSpan={5} className="py-12 text-center text-muted-foreground">
-                      Записей нет
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+                    )}
+                  </td>
+                </tr>
+              ))}
+              {entries.length === 0 && (
+                <tr>
+                  <td colSpan={5} className="py-12 text-center text-muted-foreground">
+                    Записей нет
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </>
   );
 }
@@ -307,10 +296,10 @@ function TimeSkeleton() {
     <div className="space-y-4">
       <div className="grid grid-cols-3 gap-4">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-24 bg-muted animate-pulse rounded-lg" />
+          <div key={i} className="h-24 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
         ))}
       </div>
-      <div className="h-64 bg-muted animate-pulse rounded-lg" />
+      <div className="h-64 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
     </div>
   );
 }
@@ -368,14 +357,14 @@ export default function TimePage({
 
       {/* View Toggle + Week Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex gap-1 bg-gray-100 p-1 rounded-lg">
+        <div className="flex gap-1 bg-background-light p-1 rounded-lg">
           <Link
             href={`/time?view=list${searchParams.week ? `&week=${searchParams.week}` : ""}`}
             className={cn(
               "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors",
               view === "list"
-                ? "bg-white shadow-sm text-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "bg-white text-muted-foreground hover:bg-gray-50 border border-[#dbdfe6]"
             )}
           >
             <List className="w-4 h-4" />
@@ -386,8 +375,8 @@ export default function TimePage({
             className={cn(
               "flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors",
               view === "week"
-                ? "bg-white shadow-sm text-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "bg-white text-muted-foreground hover:bg-gray-50 border border-[#dbdfe6]"
             )}
           >
             <CalendarDays className="w-4 h-4" />

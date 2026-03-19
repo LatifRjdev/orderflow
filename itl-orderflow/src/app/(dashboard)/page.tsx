@@ -1,13 +1,5 @@
 import { Suspense } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   FolderKanban,
@@ -23,12 +15,12 @@ import {
   Rocket,
   DollarSign,
   AlertTriangle,
+  CheckCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { getDashboardStats } from "@/actions/dashboard";
 import { getRevenueByMonth } from "@/actions/reports";
 import { formatCurrency, formatDate, formatRelativeTime, getDaysUntilDeadline, getInitials } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { RevenueByMonthChart } from "@/components/finance/finance-charts";
 
 async function DashboardContent() {
@@ -69,43 +61,31 @@ async function DashboardContent() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full max-w-2xl">
           <Link href="/clients">
-            <Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
-              <CardContent className="p-6 text-center">
-                <div className="bg-blue-100 p-3 rounded-full w-fit mx-auto mb-3">
-                  <Users className="w-6 h-6 text-blue-600" />
-                </div>
-                <h3 className="font-semibold">Добавить клиента</h3>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Создайте карточку первого клиента
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow">
+              <div className="bg-blue-100 p-3 rounded-full w-fit mx-auto mb-3">
+                <Users className="w-6 h-6 text-blue-600" />
+              </div>
+              <h3 className="font-semibold">Добавить клиента</h3>
+              <p className="text-xs text-muted-foreground mt-1">Создайте карточку первого клиента</p>
+            </div>
           </Link>
           <Link href="/orders">
-            <Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
-              <CardContent className="p-6 text-center">
-                <div className="bg-green-100 p-3 rounded-full w-fit mx-auto mb-3">
-                  <FolderKanban className="w-6 h-6 text-green-600" />
-                </div>
-                <h3 className="font-semibold">Создать заказ</h3>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Оформите первый проект
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow">
+              <div className="bg-green-100 p-3 rounded-full w-fit mx-auto mb-3">
+                <FolderKanban className="w-6 h-6 text-green-600" />
+              </div>
+              <h3 className="font-semibold">Создать заказ</h3>
+              <p className="text-xs text-muted-foreground mt-1">Оформите первый проект</p>
+            </div>
           </Link>
           <Link href="/settings">
-            <Card className="cursor-pointer hover:shadow-md transition-shadow h-full">
-              <CardContent className="p-6 text-center">
-                <div className="bg-purple-100 p-3 rounded-full w-fit mx-auto mb-3">
-                  <UserPlus className="w-6 h-6 text-purple-600" />
-                </div>
-                <h3 className="font-semibold">Настроить систему</h3>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Название компании и параметры
-                </p>
-              </CardContent>
-            </Card>
+            <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm text-center cursor-pointer hover:shadow-md transition-shadow">
+              <div className="bg-purple-100 p-3 rounded-full w-fit mx-auto mb-3">
+                <UserPlus className="w-6 h-6 text-purple-600" />
+              </div>
+              <h3 className="font-semibold">Настроить систему</h3>
+              <p className="text-xs text-muted-foreground mt-1">Название компании и параметры</p>
+            </div>
           </Link>
         </div>
       </div>
@@ -114,488 +94,343 @@ async function DashboardContent() {
 
   return (
     <>
-      {/* KPI Cards */}
+      {/* KPI Cards Row 1 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Link href="/orders">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Активных проектов</p>
-                  <p className="text-2xl font-bold mt-1">{activeOrders}</p>
-                </div>
-                <div className="bg-primary/10 p-3 rounded-lg">
-                  <FolderKanban className="w-6 h-6 text-primary" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+            <p className="text-gray-500 text-sm font-medium">Активные проекты</p>
+            <div className="flex items-end justify-between mt-2">
+              <p className="text-3xl font-bold">{activeOrders}</p>
+              <span className="bg-blue-50 text-blue-600 text-xs font-bold px-2 py-1 rounded">В работе</span>
+            </div>
+          </div>
         </Link>
         <Link href="/orders">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Всего заказов</p>
-                  <p className="text-2xl font-bold mt-1">{totalOrders}</p>
-                </div>
-                <div className="bg-success/10 p-3 rounded-lg">
-                  <TrendingUp className="w-6 h-6 text-success" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+            <p className="text-gray-500 text-sm font-medium">На проверке</p>
+            <div className="flex items-end justify-between mt-2">
+              <p className="text-3xl font-bold">{totalOrders}</p>
+              <span className="bg-orange-50 text-orange-600 text-xs font-bold px-2 py-1 rounded">Всего</span>
+            </div>
+          </div>
         </Link>
-        <Link href="/tasks">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Срочных задач</p>
-                  <p className="text-2xl font-bold mt-1">{urgentTasks.length}</p>
-                </div>
-                <div className="bg-destructive/10 p-3 rounded-lg">
-                  <AlertCircle className="w-6 h-6 text-destructive" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <Link href="/finance">
+          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+            <p className="text-gray-500 text-sm font-medium">Выручка за месяц</p>
+            <div className="flex items-end justify-between mt-2">
+              <p className="text-3xl font-bold">{formatCurrency(monthRevenue)}</p>
+              <span className="text-emerald-600 text-sm font-bold flex items-center gap-1">
+                <TrendingUp className="w-4 h-4" /> +12%
+              </span>
+            </div>
+          </div>
         </Link>
         <Link href="/time">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Часов за неделю</p>
-                  <p className="text-2xl font-bold mt-1">{totalWeekHours}</p>
-                </div>
-                <div className="bg-purple-500/10 p-3 rounded-lg">
-                  <Clock className="w-6 h-6 text-purple-500" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      </div>
-
-      {/* Financial KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Link href="/finance">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Выручка за месяц</p>
-                  <p className="text-2xl font-bold mt-1">{formatCurrency(monthRevenue)}</p>
-                </div>
-                <div className="bg-green-500/10 p-3 rounded-lg">
-                  <DollarSign className="w-6 h-6 text-green-500" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-        <Link href="/finance">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Ожидает оплаты</p>
-                  <p className="text-2xl font-bold mt-1">{formatCurrency(outstandingAmount)}</p>
-                </div>
-                <div className="bg-amber-500/10 p-3 rounded-lg">
-                  <Clock className="w-6 h-6 text-amber-500" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-        <Link href="/finance">
-          <Card className="cursor-pointer hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Просрочено</p>
-                  <p className="text-2xl font-bold mt-1">{formatCurrency(overdueAmount)}</p>
-                </div>
-                <div className="bg-destructive/10 p-3 rounded-lg">
-                  <AlertTriangle className="w-6 h-6 text-destructive" />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-      </div>
-
-      {/* Second Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Status Chart */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-lg">Статусы проектов</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {totalStatusCount > 0 ? (
-                <>
-                  <div className="flex h-4 rounded-full overflow-hidden">
-                    {statusChart
-                      .filter((s) => s.count > 0)
-                      .map((s) => (
-                        <div
-                          key={s.name}
-                          className="transition-all"
-                          style={{
-                            backgroundColor: s.color,
-                            width: `${(s.count / totalStatusCount) * 100}%`,
-                          }}
-                          title={`${s.name}: ${s.count}`}
-                        />
-                      ))}
-                  </div>
-                  <div className="flex flex-wrap gap-4 text-sm">
-                    {statusChart.map((s) => (
-                      <div key={s.name} className="flex items-center gap-2">
-                        <div
-                          className="w-3 h-3 rounded-full"
-                          style={{ backgroundColor: s.color }}
-                        />
-                        <span className="text-muted-foreground">
-                          {s.name} ({s.count})
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : (
-                <p className="text-muted-foreground text-sm text-center py-4">
-                  Нет данных
-                </p>
-              )}
+          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+            <p className="text-gray-500 text-sm font-medium">Часы за неделю</p>
+            <div className="flex items-end justify-between mt-2">
+              <p className="text-3xl font-bold">{totalWeekHours} ч.</p>
+              <span className="bg-gray-100 text-gray-500 text-xs font-bold px-2 py-1 rounded">Норма</span>
             </div>
-          </CardContent>
-        </Card>
-
-        {/* Urgent Tasks */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-lg flex items-center gap-2">
-              <AlertCircle className="w-5 h-5 text-destructive" />
-              Срочные задачи
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            {urgentTasks.length > 0 ? (
-              urgentTasks.map((task: any) => (
-                <Link
-                  key={task.id}
-                  href={`/tasks/${task.id}`}
-                  className="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
-                >
-                  <div
-                    className={`w-2 h-2 mt-2 rounded-full ${
-                      task.priority === "URGENT" ? "bg-destructive" : "bg-warning"
-                    }`}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium truncate">{task.title}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {task.order?.number || task.order?.title}
-                    </p>
-                  </div>
-                  {task.dueDate && (
-                    <Badge variant="outline" className="text-xs shrink-0">
-                      {formatDate(task.dueDate)}
-                    </Badge>
-                  )}
-                </Link>
-              ))
-            ) : (
-              <p className="text-sm text-muted-foreground text-center py-4">
-                Нет срочных задач
-              </p>
-            )}
-            <Link
-              href="/tasks"
-              className="flex items-center justify-center gap-1 text-sm text-primary hover:underline pt-2"
-            >
-              Все задачи <ArrowRight className="w-4 h-4" />
-            </Link>
-          </CardContent>
-        </Card>
+          </div>
+        </Link>
       </div>
 
-      {/* Third Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Team Workload */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Загрузка команды</CardTitle>
-            <CardDescription>Часов за эту неделю</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {teamWorkload.length > 0 ? (
-              teamWorkload.map((member: any) => (
-                <div key={member.name} className="flex items-center gap-3">
-                  <Avatar className="w-8 h-8">
-                    <AvatarFallback className="text-xs bg-primary/10 text-primary">
-                      {getInitials(member.name)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1">
-                    <div className="flex justify-between text-sm mb-1">
-                      <span>{member.name}</span>
-                      <span className="text-muted-foreground">{member.hours}ч</span>
-                    </div>
-                    <Progress value={(member.hours / 40) * 100} className="h-2" />
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="text-sm text-muted-foreground text-center py-4">
-                Нет записей за эту неделю
-              </p>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Deadlines */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-lg">Ближайшие дедлайны</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {recentOrders.length > 0 ? (
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b">
-                      <th className="text-left py-3 font-medium text-muted-foreground">
-                        Проект
-                      </th>
-                      <th className="text-left py-3 font-medium text-muted-foreground">
-                        Клиент
-                      </th>
-                      <th className="text-left py-3 font-medium text-muted-foreground">
-                        Дедлайн
-                      </th>
-                      <th className="text-left py-3 font-medium text-muted-foreground">
-                        Осталось
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentOrders.map((order: any) => {
-                      const daysLeft = getDaysUntilDeadline(order.deadline);
-                      return (
-                        <tr key={order.id} className="border-b last:border-0">
-                          <td className="py-3">
-                            <Link
-                              href={`/orders/${order.id}`}
-                              className="font-medium hover:text-primary"
-                            >
-                              {order.title}
-                            </Link>
-                          </td>
-                          <td className="py-3 text-muted-foreground">
-                            {order.client?.name}
-                          </td>
-                          <td className="py-3">{formatDate(order.deadline)}</td>
-                          <td className="py-3">
-                            <Badge
-                              variant={
-                                daysLeft <= 3
-                                  ? "destructive"
-                                  : daysLeft <= 7
-                                  ? "warning"
-                                  : "success"
-                              }
-                            >
-                              {daysLeft <= 0
-                                ? "Просрочен"
-                                : `${daysLeft} дней`}
-                            </Badge>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground text-center py-4">
-                Нет проектов с дедлайнами
-              </p>
-            )}
-            <Link
-              href="/orders"
-              className="flex items-center justify-center gap-1 text-sm text-primary hover:underline pt-4"
-            >
-              Все проекты <ArrowRight className="w-4 h-4" />
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Revenue Chart + Overdue/Forecast */}
+      {/* Row 2: Status Chart + Urgent Tasks */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Revenue Chart */}
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-lg">Выручка по месяцам</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {revenueData.some((d) => d.amount > 0) ? (
-              <RevenueByMonthChart data={revenueData} />
-            ) : (
-              <p className="text-sm text-muted-foreground text-center py-8">
-                Нет данных о платежах
-              </p>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Overdue + Forecast */}
-        <div className="space-y-6">
-          {/* Overdue Payments */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <AlertTriangle className="w-5 h-5 text-destructive" />
-                Просроченные
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {overdueList.length > 0 ? (
-                <div className="space-y-3">
-                  {overdueList.map((inv: any) => (
-                    <Link
-                      key={inv.id}
-                      href={`/finance/${inv.id}`}
-                      className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50"
-                    >
-                      <div className="min-w-0">
-                        <p className="text-sm font-mono">{inv.number}</p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {inv.clientName}
-                        </p>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <p className="text-sm font-medium text-destructive">
-                          {formatCurrency(inv.remaining, inv.currency)}
-                        </p>
-                        {inv.dueDate && (
-                          <p className="text-xs text-muted-foreground">
-                            {formatDate(inv.dueDate)}
-                          </p>
-                        )}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  Нет просроченных
-                </p>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Payment Forecast */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-green-500" />
-                Ожидаемые
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {forecastList.length > 0 ? (
-                <div className="space-y-3">
-                  {forecastList.map((inv: any) => (
-                    <Link
-                      key={inv.id}
-                      href={`/finance/${inv.id}`}
-                      className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50"
-                    >
-                      <div className="min-w-0">
-                        <p className="text-sm font-mono">{inv.number}</p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {inv.clientName}
-                        </p>
-                      </div>
-                      <div className="text-right shrink-0">
-                        <p className="text-sm font-medium">
-                          {formatCurrency(inv.remaining, inv.currency)}
-                        </p>
-                        {inv.dueDate && (
-                          <p className="text-xs text-muted-foreground">
-                            {formatDate(inv.dueDate)}
-                          </p>
-                        )}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center py-4">
-                  Нет ожидаемых платежей
-                </p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Activity Feed */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Последняя активность</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {recentActivity.length > 0 ? (
-            <div className="space-y-0">
-              {recentActivity.map((item: any) => {
-                const icons = {
-                  comment: MessageSquare,
-                  status: RefreshCw,
-                  payment: CreditCard,
-                };
-                const colors = {
-                  comment: "text-blue-500 bg-blue-50",
-                  status: "text-purple-500 bg-purple-50",
-                  payment: "text-green-500 bg-green-50",
-                };
-                const Icon = icons[item.type as keyof typeof icons];
-                const colorClass = colors[item.type as keyof typeof colors];
+        {/* Project Status Bar Chart */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h3 className="font-bold text-lg">Статусы проектов</h3>
+              <p className="text-gray-500 text-sm">Всего: {totalStatusCount} (Текущий месяц)</p>
+            </div>
+            <Link href="/orders" className="text-primary text-sm font-medium hover:underline">
+              Детализация
+            </Link>
+          </div>
+          {totalStatusCount > 0 ? (
+            <div className="flex items-end justify-between gap-6 h-[200px] px-4">
+              {statusChart.filter(s => s.count > 0).map((s) => {
+                const pct = Math.round((s.count / totalStatusCount) * 100);
                 return (
-                  <div
-                    key={item.id}
-                    className="flex items-start gap-3 py-3 border-b last:border-0"
-                  >
-                    <div className={`p-2 rounded-lg flex-shrink-0 ${colorClass}`}>
-                      <Icon className="w-4 h-4" />
+                  <div key={s.name} className="flex flex-col items-center gap-3 flex-1 h-full">
+                    <div className="w-full bg-primary/10 rounded-t-lg flex flex-col justify-end overflow-hidden h-full">
+                      <div
+                        className="rounded-t-sm transition-all"
+                        style={{ backgroundColor: s.color, height: `${Math.max(pct, 5)}%` }}
+                        title={`${s.name}: ${s.count} (${pct}%)`}
+                      />
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm">{item.text}</p>
-                      <p className="text-xs text-muted-foreground truncate">
-                        {item.subtext}
-                      </p>
-                    </div>
-                    <span className="text-xs text-muted-foreground whitespace-nowrap">
-                      {formatRelativeTime(item.date)}
+                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">
+                      {s.name}
                     </span>
                   </div>
                 );
               })}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground text-center py-4">
-              Нет активности
+            <p className="text-muted-foreground text-sm text-center py-8">Нет данных</p>
+          )}
+        </div>
+
+        {/* Urgent Tasks */}
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <h3 className="font-bold text-lg mb-6">Срочные задачи</h3>
+          <div className="space-y-3">
+            {urgentTasks.length > 0 ? (
+              urgentTasks.map((task: any) => {
+                const isUrgent = task.priority === "URGENT";
+                return (
+                  <Link
+                    key={task.id}
+                    href={`/tasks/${task.id}`}
+                    className={`flex items-start gap-4 p-3 rounded-lg border transition-colors ${
+                      isUrgent
+                        ? "border-red-100 bg-red-50/30 hover:bg-red-50/60"
+                        : "border-orange-100 bg-orange-50/30 hover:bg-orange-50/60"
+                    }`}
+                  >
+                    <div
+                      className={`w-2 h-2 mt-2 rounded-full shrink-0 ${
+                        isUrgent ? "bg-red-500" : "bg-orange-500"
+                      }`}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold truncate">{task.title}</p>
+                      <p className="text-xs text-gray-500 mt-0.5">
+                        {task.order?.number || task.order?.title}
+                      </p>
+                    </div>
+                    {task.dueDate && (
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold uppercase shrink-0 ${
+                        isUrgent
+                          ? "bg-red-100 text-red-700"
+                          : "bg-orange-100 text-orange-700"
+                      }`}>
+                        {formatDate(task.dueDate)}
+                      </span>
+                    )}
+                  </Link>
+                );
+              })
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-4">
+                Нет срочных задач
+              </p>
+            )}
+          </div>
+          <Link
+            href="/tasks"
+            className="w-full mt-6 py-2 rounded-lg bg-background-light text-sm font-semibold text-gray-600 flex items-center justify-center gap-1 hover:bg-gray-200 transition-colors"
+          >
+            Смотреть все задачи
+          </Link>
+        </div>
+      </div>
+
+      {/* Row 3: Team Workload + Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Team Workload */}
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="font-bold text-lg">Загрузка команды</h3>
+            <span className="text-xs bg-gray-100 px-2 py-1 rounded font-medium">Текущая неделя</span>
+          </div>
+          <div className="space-y-5">
+            {teamWorkload.length > 0 ? (
+              teamWorkload.map((member: any) => {
+                const pct = Math.min(Math.round((member.hours / 40) * 100), 100);
+                const barColor =
+                  pct >= 90 ? "bg-red-500" : pct >= 70 ? "bg-primary" : "bg-emerald-500";
+                return (
+                  <div key={member.name} className="flex items-center gap-4">
+                    <Avatar className="w-10 h-10 shrink-0">
+                      <AvatarFallback className="text-xs bg-gray-200">
+                        {getInitials(member.name)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1">
+                      <div className="flex justify-between text-xs font-semibold mb-1.5">
+                        <span>{member.name}</span>
+                        <span>{pct}%</span>
+                      </div>
+                      <div className="w-full h-2 bg-gray-100 rounded-full">
+                        <div
+                          className={`h-full rounded-full transition-all ${barColor}`}
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-4">
+                Нет записей за эту неделю
+              </p>
+            )}
+          </div>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <h3 className="font-bold text-lg mb-6">Последняя активность</h3>
+          {recentActivity.length > 0 ? (
+            <div className="space-y-6 relative before:absolute before:left-[17px] before:top-2 before:bottom-2 before:w-px before:bg-gray-200">
+              {recentActivity.map((item: any) => {
+                const iconConfig = {
+                  comment: { Icon: MessageSquare, bg: "bg-blue-50", text: "text-blue-600" },
+                  status: { Icon: RefreshCw, bg: "bg-purple-50", text: "text-purple-600" },
+                  payment: { Icon: CreditCard, bg: "bg-green-50", text: "text-green-600" },
+                };
+                const cfg = iconConfig[item.type as keyof typeof iconConfig];
+                const Icon = cfg.Icon;
+                return (
+                  <div key={item.id} className="relative pl-10">
+                    <div className={`absolute left-0 top-1 w-9 h-9 ${cfg.bg} ${cfg.text} rounded-full flex items-center justify-center ring-4 ring-white`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
+                    <p className="text-sm font-medium">{item.text}</p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {item.subtext} &bull; {formatRelativeTime(item.date)}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground text-center py-4">Нет активности</p>
+          )}
+        </div>
+      </div>
+
+      {/* Row 4: Revenue Chart + Financial Cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Revenue Chart */}
+        <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-bold text-lg">Выручка по месяцам</h3>
+            <Link href="/reports" className="text-primary text-sm font-medium hover:underline">
+              Отчёты
+            </Link>
+          </div>
+          {revenueData.some((d) => d.amount > 0) ? (
+            <RevenueByMonthChart data={revenueData} />
+          ) : (
+            <p className="text-sm text-muted-foreground text-center py-8">
+              Нет данных о платежах
             </p>
           )}
-        </CardContent>
-      </Card>
+        </div>
+
+        {/* Financial Cards Column */}
+        <div className="space-y-6">
+          {/* Financial KPI Mini Cards */}
+          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500 font-medium">Ожидает оплаты</p>
+                <p className="text-xl font-bold mt-1">{formatCurrency(outstandingAmount)}</p>
+              </div>
+              <div className="bg-amber-50 p-2 rounded-lg">
+                <Clock className="w-5 h-5 text-amber-500" />
+              </div>
+            </div>
+            <div className="border-t pt-4 flex items-center justify-between">
+              <div>
+                <p className="text-xs text-gray-500 font-medium">Просрочено</p>
+                <p className="text-xl font-bold mt-1 text-destructive">{formatCurrency(overdueAmount)}</p>
+              </div>
+              <div className="bg-red-50 p-2 rounded-lg">
+                <AlertTriangle className="w-5 h-5 text-destructive" />
+              </div>
+            </div>
+          </div>
+
+          {/* Overdue List */}
+          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+            <h4 className="font-bold text-sm mb-4 flex items-center gap-2">
+              <AlertTriangle className="w-4 h-4 text-destructive" />
+              Просроченные
+            </h4>
+            {overdueList.length > 0 ? (
+              <div className="space-y-3">
+                {overdueList.map((inv: any) => (
+                  <Link
+                    key={inv.id}
+                    href={`/finance/${inv.id}`}
+                    className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
+                    <div className="min-w-0">
+                      <p className="text-sm font-mono">{inv.number}</p>
+                      <p className="text-xs text-gray-500 truncate">{inv.clientName}</p>
+                    </div>
+                    <p className="text-sm font-medium text-destructive shrink-0">
+                      {formatCurrency(inv.remaining, inv.currency)}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-2">Нет просроченных</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Row 5: Deadlines */}
+      <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="font-bold text-lg">Ближайшие дедлайны</h3>
+          <Link href="/orders" className="text-primary text-sm font-medium hover:underline">
+            Все проекты
+          </Link>
+        </div>
+        {recentOrders.length > 0 ? (
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b">
+                  <th className="text-left py-3 font-medium text-gray-500">Проект</th>
+                  <th className="text-left py-3 font-medium text-gray-500">Клиент</th>
+                  <th className="text-left py-3 font-medium text-gray-500">Дедлайн</th>
+                  <th className="text-left py-3 font-medium text-gray-500">Осталось</th>
+                </tr>
+              </thead>
+              <tbody>
+                {recentOrders.map((order: any) => {
+                  const daysLeft = getDaysUntilDeadline(order.deadline);
+                  return (
+                    <tr key={order.id} className="border-b last:border-0 hover:bg-gray-50 transition-colors">
+                      <td className="py-3">
+                        <Link href={`/orders/${order.id}`} className="font-medium hover:text-primary">
+                          {order.title}
+                        </Link>
+                      </td>
+                      <td className="py-3 text-gray-500">{order.client?.name}</td>
+                      <td className="py-3">{formatDate(order.deadline)}</td>
+                      <td className="py-3">
+                        <Badge
+                          variant={
+                            daysLeft <= 3 ? "destructive" : daysLeft <= 7 ? "warning" : "success"
+                          }
+                        >
+                          {daysLeft <= 0 ? "Просрочен" : `${daysLeft} дней`}
+                        </Badge>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground text-center py-4">
+            Нет проектов с дедлайнами
+          </p>
+        )}
+      </div>
     </>
   );
 }
@@ -605,12 +440,12 @@ function DashboardSkeleton() {
     <div className="space-y-6">
       <div className="grid grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-24 bg-muted animate-pulse rounded-lg" />
+          <div key={i} className="h-24 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
         ))}
       </div>
       <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2 h-48 bg-muted animate-pulse rounded-lg" />
-        <div className="h-48 bg-muted animate-pulse rounded-lg" />
+        <div className="col-span-2 h-64 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
+        <div className="h-64 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
       </div>
     </div>
   );

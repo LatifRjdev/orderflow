@@ -6,7 +6,6 @@ import { Building2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 export default function PortalLoginPage() {
   const router = useRouter();
@@ -43,17 +42,17 @@ export default function PortalLoginPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
+      <div className="w-full max-w-md bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-6 text-center">
           <div className="mx-auto w-12 h-12 bg-primary rounded-xl flex items-center justify-center mb-4">
             <Building2 className="w-6 h-6 text-white" />
           </div>
-          <CardTitle className="text-xl">Клиентский портал</CardTitle>
-          <CardDescription>
+          <h2 className="text-xl font-bold">Клиентский портал</h2>
+          <p className="text-sm text-muted-foreground mt-1">
             ITL Solutions — портал для отслеживания проектов
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </p>
+        </div>
+        <div className="px-6 pb-6">
           <form onSubmit={handleSubmit} className="space-y-4">
             {error && (
               <div className="p-3 bg-destructive/10 text-destructive rounded-lg text-sm">
@@ -80,8 +79,8 @@ export default function PortalLoginPage() {
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

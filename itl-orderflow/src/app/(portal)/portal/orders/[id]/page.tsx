@@ -2,11 +2,9 @@ import { cookies } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { getPortalClient, getPortalOrder } from "@/actions/portal";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
 import {
   ArrowLeft,
   CheckCircle2,
@@ -36,11 +34,11 @@ const taskStatusIcons: Record<string, { icon: any; color: string }> = {
   DONE: { icon: CheckCircle2, color: "text-green-500" },
 };
 
-const milestoneStatusConfig: Record<string, { label: string; variant: "default" | "secondary" | "success" | "warning" }> = {
-  PENDING: { label: "Ожидает", variant: "secondary" },
-  IN_PROGRESS: { label: "В работе", variant: "default" },
-  COMPLETED: { label: "Завершён", variant: "warning" },
-  APPROVED: { label: "Согласован", variant: "success" },
+const milestoneStatusDots: Record<string, { label: string; dot: string }> = {
+  PENDING: { label: "Ожидает", dot: "#9ca3af" },
+  IN_PROGRESS: { label: "В работе", dot: "#3b82f6" },
+  COMPLETED: { label: "Завершён", dot: "#f59e0b" },
+  APPROVED: { label: "Согласован", dot: "#22c55e" },
 };
 
 export default async function PortalOrderPage({ params }: PortalOrderPageProps) {
@@ -87,16 +85,17 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
           </div>
           <div className="flex items-center gap-3 mt-2">
             {order.status && (
-              <Badge
-                variant="outline"
+              <div
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-sm font-medium"
                 style={{
-                  backgroundColor: order.status.color + "20",
+                  backgroundColor: order.status.color + "10",
                   color: order.status.color,
-                  borderColor: order.status.color,
+                  borderColor: order.status.color + "40",
                 }}
               >
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: order.status.color }} />
                 {order.status.name}
-              </Badge>
+              </div>
             )}
             {order.deadline && (
               <span className="text-sm text-muted-foreground flex items-center gap-1">
@@ -109,41 +108,39 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
       </div>
 
       {/* Progress Overview */}
-      <Card>
-        <CardContent className="p-6">
-          <div className="grid grid-cols-3 gap-8">
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">Прогресс</p>
-              <div className="flex items-center gap-3">
-                <Progress value={progressPercent} className="flex-1 h-3" />
-                <span className="text-lg font-bold">{progressPercent}%</span>
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                {doneTasks} из {totalTasks} задач выполнено
-              </p>
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-6">
+        <div className="grid grid-cols-3 gap-8">
+          <div>
+            <p className="text-sm text-muted-foreground mb-2">Прогресс</p>
+            <div className="flex items-center gap-3">
+              <Progress value={progressPercent} className="flex-1 h-3" />
+              <span className="text-lg font-bold">{progressPercent}%</span>
             </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">Этапов</p>
-              <p className="text-2xl font-bold">{order.milestones?.length || 0}</p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground mb-2">Счетов на сумму</p>
-              <p className="text-2xl font-bold">{formatCurrency(totalInvoiced)}</p>
-            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              {doneTasks} из {totalTasks} задач выполнено
+            </p>
           </div>
-        </CardContent>
-      </Card>
+          <div>
+            <p className="text-sm text-muted-foreground mb-2">Этапов</p>
+            <p className="text-2xl font-bold">{order.milestones?.length || 0}</p>
+          </div>
+          <div>
+            <p className="text-sm text-muted-foreground mb-2">Счетов на сумму</p>
+            <p className="text-2xl font-bold">{formatCurrency(totalInvoiced)}</p>
+          </div>
+        </div>
+      </div>
 
       {/* Description */}
       {order.description && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">О проекте</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-base font-semibold">О проекте</h3>
+          </div>
+          <div className="px-6 pb-6">
             <p className="text-sm whitespace-pre-wrap">{order.description}</p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       )}
 
       <div className="grid grid-cols-3 gap-6">
@@ -156,131 +153,130 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
               const mTasks = milestone.tasks || [];
               const mDone = mTasks.filter((t: any) => t.status === "DONE").length;
               const mProgress = mTasks.length > 0 ? Math.round((mDone / mTasks.length) * 100) : 0;
-              const msStatus = milestoneStatusConfig[milestone.status] || milestoneStatusConfig.PENDING;
+              const msStatus = milestoneStatusDots[milestone.status] || milestoneStatusDots.PENDING;
               const canApprove = milestone.status === "COMPLETED";
 
               return (
-                <Card key={milestone.id}>
-                  <CardContent className="p-5">
-                    <div className="flex items-start justify-between mb-4">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm text-muted-foreground">
-                            Этап {idx + 1}
-                          </span>
-                          <Badge variant={msStatus.variant}>
-                            {msStatus.label}
-                          </Badge>
+                <div key={milestone.id} className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-muted-foreground">
+                          Этап {idx + 1}
+                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: msStatus.dot }} />
+                          <span className="text-sm font-medium">{msStatus.label}</span>
                         </div>
-                        <h3 className="font-medium text-lg mt-1">
-                          {milestone.title}
-                        </h3>
-                        {milestone.description && (
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {milestone.description}
-                          </p>
+                      </div>
+                      <h3 className="font-medium text-lg mt-1">
+                        {milestone.title}
+                      </h3>
+                      {milestone.description && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {milestone.description}
+                        </p>
+                      )}
+                    </div>
+                    {canApprove && (
+                      <MilestoneApproveButton
+                        clientId={client.id}
+                        milestoneId={milestone.id}
+                      />
+                    )}
+                    {milestone.status === "APPROVED" && (
+                      <div className="flex items-center gap-1.5 text-green-600 text-sm">
+                        <CheckCheck className="w-4 h-4" />
+                        Согласован
+                        {milestone.clientApprovedAt && (
+                          <span className="text-xs text-muted-foreground ml-1">
+                            {formatDate(milestone.clientApprovedAt)}
+                          </span>
                         )}
                       </div>
-                      {canApprove && (
-                        <MilestoneApproveButton
-                          clientId={client.id}
-                          milestoneId={milestone.id}
-                        />
-                      )}
-                      {milestone.status === "APPROVED" && (
-                        <div className="flex items-center gap-1.5 text-green-600 text-sm">
-                          <CheckCheck className="w-4 h-4" />
-                          Согласован
-                          {milestone.clientApprovedAt && (
-                            <span className="text-xs text-muted-foreground ml-1">
-                              {formatDate(milestone.clientApprovedAt)}
-                            </span>
-                          )}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Progress */}
-                    <div className="flex items-center gap-3 mb-4">
-                      <Progress value={mProgress} className="flex-1 h-2" />
-                      <span className="text-sm text-muted-foreground">
-                        {mDone}/{mTasks.length}
-                      </span>
-                    </div>
-
-                    {/* Tasks */}
-                    {mTasks.length > 0 && (
-                      <div className="space-y-1.5">
-                        {mTasks.map((task: any) => {
-                          const st = taskStatusIcons[task.status] || taskStatusIcons.TODO;
-                          const Icon = st.icon;
-                          return (
-                            <div
-                              key={task.id}
-                              className="flex items-center gap-2 p-2 rounded hover:bg-muted/50"
-                            >
-                              <Icon className={`w-4 h-4 ${st.color}`} />
-                              <span
-                                className={
-                                  task.status === "DONE"
-                                    ? "text-sm line-through text-muted-foreground"
-                                    : "text-sm"
-                                }
-                              >
-                                {task.title}
-                              </span>
-                            </div>
-                          );
-                        })}
-                      </div>
                     )}
+                  </div>
 
-                    {/* Milestone Files */}
-                    {milestone.files && milestone.files.length > 0 && (
-                      <div className="mt-4 pt-3 border-t space-y-2">
-                        <p className="text-xs font-medium text-muted-foreground flex items-center gap-1">
-                          <Paperclip className="w-3 h-3" />
-                          Файлы этапа
-                        </p>
-                        {milestone.files.map((file: any) => (
+                  {/* Progress */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <Progress value={mProgress} className="flex-1 h-2" />
+                    <span className="text-sm text-muted-foreground">
+                      {mDone}/{mTasks.length}
+                    </span>
+                  </div>
+
+                  {/* Tasks */}
+                  {mTasks.length > 0 && (
+                    <div className="space-y-1.5">
+                      {mTasks.map((task: any) => {
+                        const st = taskStatusIcons[task.status] || taskStatusIcons.TODO;
+                        const Icon = st.icon;
+                        return (
                           <div
-                            key={file.id}
-                            className="flex items-center gap-2 p-2 rounded border hover:bg-muted/50"
+                            key={task.id}
+                            className="flex items-center gap-2 p-2 rounded hover:bg-background-light/50 transition-colors"
                           >
+                            <Icon className={`w-4 h-4 ${st.color}`} />
+                            <span
+                              className={
+                                task.status === "DONE"
+                                  ? "text-sm line-through text-muted-foreground"
+                                  : "text-sm"
+                              }
+                            >
+                              {task.title}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
+                  {/* Milestone Files */}
+                  {milestone.files && milestone.files.length > 0 && (
+                    <div className="mt-4 pt-3 border-t border-[#dbdfe6] space-y-2">
+                      <p className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                        <Paperclip className="w-3 h-3" />
+                        Файлы этапа
+                      </p>
+                      {milestone.files.map((file: any) => (
+                        <div
+                          key={file.id}
+                          className="flex items-center gap-2 p-2 rounded border border-[#dbdfe6] hover:bg-background-light/50 transition-colors"
+                        >
+                          <a
+                            href={file.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 flex-1 min-w-0"
+                          >
+                            <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
+                            <span className="text-sm truncate flex-1 hover:text-primary">{file.originalName}</span>
+                          </a>
+                          {file.isClientDownloadable && (
                             <a
                               href={file.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="flex items-center gap-2 flex-1 min-w-0"
+                              download={file.originalName}
+                              className="p-1 rounded hover:bg-background-light text-muted-foreground hover:text-foreground shrink-0"
+                              title="Скачать"
                             >
-                              <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
-                              <span className="text-sm truncate flex-1 hover:text-primary">{file.originalName}</span>
+                              <Download className="w-4 h-4" />
                             </a>
-                            {file.isClientDownloadable && (
-                              <a
-                                href={file.url}
-                                download={file.originalName}
-                                className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground shrink-0"
-                                title="Скачать"
-                              >
-                                <Download className="w-4 h-4" />
-                              </a>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               );
             })
           ) : order.tasks && order.tasks.length > 0 ? (
             /* Show direct tasks when no milestones */
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Задачи проекта</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-4">
+                <h3 className="text-base font-semibold">Задачи проекта</h3>
+              </div>
+              <div className="px-6 pb-6">
                 <div className="space-y-1.5">
                   {order.tasks.map((task: any) => {
                     const st = taskStatusIcons[task.status] || taskStatusIcons.TODO;
@@ -288,7 +284,7 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
                     return (
                       <div
                         key={task.id}
-                        className="flex items-center gap-2 p-2 rounded hover:bg-muted/50"
+                        className="flex items-center gap-2 p-2 rounded hover:bg-background-light/50 transition-colors"
                       >
                         <Icon className={`w-4 h-4 ${st.color}`} />
                         <span
@@ -304,34 +300,32 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
                     );
                   })}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ) : (
-            <Card>
-              <CardContent className="p-12 text-center text-muted-foreground">
-                Этапы проекта пока не добавлены
-              </CardContent>
-            </Card>
+            <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-12 text-center text-muted-foreground">
+              Этапы проекта пока не добавлены
+            </div>
           )}
         </div>
 
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Files */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <Paperclip className="w-4 h-4" />
                 Файлы
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </h3>
+            </div>
+            <div className="px-6 pb-6">
               {order.files && order.files.length > 0 ? (
                 <div className="space-y-2">
                   {order.files.map((file: any) => (
                     <div
                       key={file.id}
-                      className="flex items-center gap-2 p-2 rounded border hover:bg-muted/50"
+                      className="flex items-center gap-2 p-2 rounded border border-[#dbdfe6] hover:bg-background-light/50 transition-colors"
                     >
                       <a
                         href={file.url}
@@ -351,7 +345,7 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
                         <a
                           href={file.url}
                           download={file.originalName}
-                          className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground shrink-0"
+                          className="p-1 rounded hover:bg-background-light text-muted-foreground hover:text-foreground shrink-0"
                           title="Скачать"
                         >
                           <Download className="w-4 h-4" />
@@ -365,22 +359,22 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
                   Файлов нет
                 </p>
               )}
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Comments */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base flex items-center gap-2">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+            <div className="p-6 pb-4">
+              <h3 className="text-base font-semibold flex items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
                 Комментарии
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
+              </h3>
+            </div>
+            <div className="px-6 pb-6">
               {order.comments && order.comments.length > 0 ? (
                 <div className="space-y-3 mb-4">
                   {order.comments.map((comment: any) => (
-                    <div key={comment.id} className="border rounded-lg p-3">
+                    <div key={comment.id} className="border border-[#dbdfe6] rounded-lg p-3">
                       <div className="flex items-center justify-between mb-1">
                         <span className="text-sm font-medium">
                           {comment.user?.name || "Клиент"}
@@ -405,53 +399,53 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
                 clientName={client.name}
                 orderId={order.id}
               />
-            </CardContent>
-          </Card>
+            </div>
+          </div>
 
           {/* Invoices */}
           {order.invoices && order.invoices.length > 0 && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base flex items-center gap-2">
+            <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+              <div className="p-6 pb-4">
+                <h3 className="text-base font-semibold flex items-center gap-2">
                   <FileText className="w-4 h-4" />
                   Счета
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </h3>
+              </div>
+              <div className="px-6 pb-6">
                 <div className="space-y-2">
-                  {order.invoices.map((inv: any) => (
-                    <div
-                      key={inv.id}
-                      className="flex items-center justify-between p-3 rounded-lg border"
-                    >
-                      <div>
-                        <p className="text-sm font-mono">{inv.number}</p>
-                        <p className="text-xs text-muted-foreground">
-                          {formatDate(inv.issueDate)}
-                        </p>
+                  {order.invoices.map((inv: any) => {
+                    const invoiceDots: Record<string, { label: string; dot: string }> = {
+                      PAID: { label: "Оплачен", dot: "#22c55e" },
+                      OVERDUE: { label: "Просрочен", dot: "#ef4444" },
+                      SENT: { label: "Ожидает", dot: "#9ca3af" },
+                    };
+                    const st = invoiceDots[inv.status] || invoiceDots.SENT;
+                    return (
+                      <div
+                        key={inv.id}
+                        className="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6]"
+                      >
+                        <div>
+                          <p className="text-sm font-mono">{inv.number}</p>
+                          <p className="text-xs text-muted-foreground">
+                            {formatDate(inv.issueDate)}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-sm font-medium">
+                            {formatCurrency(Number(inv.total), inv.currency)}
+                          </p>
+                          <div className="flex items-center gap-1.5 justify-end mt-0.5">
+                            <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: st.dot }} />
+                            <span className="text-xs">{st.label}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium">
-                          {formatCurrency(Number(inv.total), inv.currency)}
-                        </p>
-                        <Badge
-                          variant={
-                            inv.status === "PAID"
-                              ? "success"
-                              : inv.status === "OVERDUE"
-                              ? "destructive"
-                              : "secondary"
-                          }
-                          className="text-xs"
-                        >
-                          {inv.status === "PAID" ? "Оплачен" : inv.status === "OVERDUE" ? "Просрочен" : "Ожидает"}
-                        </Badge>
-                      </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           )}
         </div>
       </div>

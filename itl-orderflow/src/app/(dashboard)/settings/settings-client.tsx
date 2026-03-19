@@ -24,7 +24,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import {
@@ -137,21 +136,23 @@ export function SettingsClient({ settings, users, statuses }: SettingsClientProp
       </div>
 
       <div className="flex gap-6">
-        <nav className="w-64 flex-shrink-0 space-y-1">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-colors text-left ${
-                activeTab === tab.id
-                  ? "bg-primary/10 text-primary font-medium"
-                  : "hover:bg-gray-100 text-muted-foreground"
-              }`}
-            >
-              <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? "text-primary" : tab.color}`} />
-              {tab.title}
-            </button>
-          ))}
+        <nav className="w-64 flex-shrink-0">
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-2 space-y-1">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm transition-colors text-left ${
+                  activeTab === tab.id
+                    ? "bg-primary/10 text-primary font-medium"
+                    : "hover:bg-background-light text-muted-foreground"
+                }`}
+              >
+                <tab.icon className={`w-5 h-5 ${activeTab === tab.id ? "text-primary" : tab.color}`} />
+                {tab.title}
+              </button>
+            ))}
+          </div>
         </nav>
 
         <div className="flex-1 min-w-0">
@@ -192,12 +193,12 @@ function OrganizationSettings({ settings }: { settings: SettingsData }) {
   return (
     <form onSubmit={handleSubmit}>
       <div className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Профиль организации</CardTitle>
-            <CardDescription>Основная информация о компании</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
+        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+          <div className="p-6 pb-4">
+            <h3 className="text-base font-semibold">Профиль организации</h3>
+            <p className="text-sm text-muted-foreground mt-1">Основная информация о компании</p>
+          </div>
+          <div className="px-6 pb-6 space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Название компании</Label>
@@ -249,8 +250,8 @@ function OrganizationSettings({ settings }: { settings: SettingsData }) {
                 {isPending ? "Сохранение..." : "Сохранить"}
               </Button>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </form>
   );
@@ -275,11 +276,11 @@ function UsersSettings({ users }: { users: UserData[] }) {
     VIEWER: "Наблюдатель",
   };
 
-  const roleColors: Record<string, string> = {
-    ADMIN: "bg-red-100 text-red-700",
-    MANAGER: "bg-blue-100 text-blue-700",
-    DEVELOPER: "bg-purple-100 text-purple-700",
-    VIEWER: "bg-gray-100 text-gray-700",
+  const roleDots: Record<string, string> = {
+    ADMIN: "#ef4444",
+    MANAGER: "#3b82f6",
+    DEVELOPER: "#8b5cf6",
+    VIEWER: "#9ca3af",
   };
 
   const handleCreateUser = (e: React.FormEvent<HTMLFormElement>) => {
@@ -344,67 +345,67 @@ function UsersSettings({ users }: { users: UserData[] }) {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm overflow-hidden">
+        <div className="p-6 pb-4 flex items-center justify-between">
           <div>
-            <CardTitle>Пользователи</CardTitle>
-            <CardDescription>Управление пользователями системы</CardDescription>
+            <h3 className="text-base font-semibold">Пользователи</h3>
+            <p className="text-sm text-muted-foreground mt-1">Управление пользователями системы</p>
           </div>
           <Button size="sm" onClick={() => setInviteOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Добавить
           </Button>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b bg-gray-50/50">
-                  <th className="text-left py-3 px-6 text-sm font-medium text-muted-foreground">Имя</th>
-                  <th className="text-left py-3 px-6 text-sm font-medium text-muted-foreground">Email</th>
-                  <th className="text-left py-3 px-6 text-sm font-medium text-muted-foreground">Роль</th>
-                  <th className="text-left py-3 px-6 text-sm font-medium text-muted-foreground">Статус</th>
-                  <th className="w-32"></th>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-[#dbdfe6]">
+                <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">Имя</th>
+                <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">Email</th>
+                <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">Роль</th>
+                <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground uppercase tracking-wider">Статус</th>
+                <th className="w-32"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr key={user.id} className="border-b border-[#dbdfe6] last:border-0 hover:bg-background-light/50 transition-colors">
+                  <td className="py-3 px-6 font-medium">{user.name || "—"}</td>
+                  <td className="py-3 px-6 text-sm text-muted-foreground">{user.email}</td>
+                  <td className="py-3 px-6">
+                    <div className="inline-flex items-center gap-1.5">
+                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: roleDots[user.role] || "#9ca3af" }} />
+                      <span className="text-sm">{roleLabels[user.role] || user.role}</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-6">
+                    <div className="inline-flex items-center gap-1.5">
+                      <div className={`w-2 h-2 rounded-full ${user.isActive ? "bg-green-500" : "bg-gray-400"}`} />
+                      <span className="text-sm">{user.isActive ? "Активен" : "Отключён"}</span>
+                    </div>
+                  </td>
+                  <td className="py-3 px-6 flex gap-1">
+                    <Button variant="ghost" size="icon" onClick={() => setEditUser(user)} title="Редактировать">
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={() => setResetPasswordUser(user)} title="Сбросить пароль">
+                      <KeyRound className="w-4 h-4" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleToggleActive(user)}
+                      title={user.isActive ? "Деактивировать" : "Активировать"}
+                    >
+                      {user.isActive ? <UserX className="w-4 h-4 text-red-500" /> : <UserCheck className="w-4 h-4 text-green-500" />}
+                    </Button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user.id} className="border-b last:border-0 hover:bg-gray-50/50">
-                    <td className="py-3 px-6 font-medium">{user.name || "—"}</td>
-                    <td className="py-3 px-6 text-sm text-muted-foreground">{user.email}</td>
-                    <td className="py-3 px-6">
-                      <Badge className={roleColors[user.role] || "bg-gray-100 text-gray-700"}>
-                        {roleLabels[user.role] || user.role}
-                      </Badge>
-                    </td>
-                    <td className="py-3 px-6">
-                      <Badge variant={user.isActive ? "success" : "secondary"}>
-                        {user.isActive ? "Активен" : "Отключён"}
-                      </Badge>
-                    </td>
-                    <td className="py-3 px-6 flex gap-1">
-                      <Button variant="ghost" size="icon" onClick={() => setEditUser(user)} title="Редактировать">
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button variant="ghost" size="icon" onClick={() => setResetPasswordUser(user)} title="Сбросить пароль">
-                        <KeyRound className="w-4 h-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleToggleActive(user)}
-                        title={user.isActive ? "Деактивировать" : "Активировать"}
-                      >
-                        {user.isActive ? <UserX className="w-4 h-4 text-red-500" /> : <UserCheck className="w-4 h-4 text-green-500" />}
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </CardContent>
-      </Card>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       {/* Create User Dialog */}
       <Dialog open={inviteOpen} onOpenChange={setInviteOpen}>
@@ -593,12 +594,12 @@ function StatusesSettings({ statuses }: { statuses: StatusData[] }) {
   return (
     <div className="space-y-6">
       {/* Visual Pipeline */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Pipeline статусов</CardTitle>
-          <CardDescription>Визуальный поток обработки заказов</CardDescription>
-        </CardHeader>
-        <CardContent>
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-6 pb-4">
+          <h3 className="text-base font-semibold">Pipeline статусов</h3>
+          <p className="text-sm text-muted-foreground mt-1">Визуальный поток обработки заказов</p>
+        </div>
+        <div className="px-6 pb-6">
           <div className="flex items-center gap-1 overflow-x-auto pb-2">
             {statuses.filter(s => s.isActive).map((status, idx, arr) => (
               <div key={status.id} className="flex items-center flex-shrink-0">
@@ -620,31 +621,31 @@ function StatusesSettings({ statuses }: { statuses: StatusData[] }) {
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Status List */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Статусы заказов</CardTitle>
-          <CardDescription>Настройте pipeline статусов для заказов</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-2">
-          <div className="flex items-center gap-3 px-3 pb-2 border-b">
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-6 pb-4">
+          <h3 className="text-base font-semibold">Статусы заказов</h3>
+          <p className="text-sm text-muted-foreground mt-1">Настройте pipeline статусов для заказов</p>
+        </div>
+        <div className="px-6 pb-6 space-y-2">
+          <div className="flex items-center gap-3 px-3 pb-2 border-b border-[#dbdfe6]">
             <div className="w-4" />
             <div className="w-4" />
-            <div className="flex-1 text-xs font-medium text-muted-foreground">Статус</div>
-            <div className="w-16 text-center text-xs font-medium text-muted-foreground">Заказов</div>
-            <div className="w-20 text-center text-xs font-medium text-muted-foreground">Начальный</div>
-            <div className="w-20 text-center text-xs font-medium text-muted-foreground">Конечный</div>
-            <div className="w-24 text-center text-xs font-medium text-muted-foreground">Уведомлять</div>
+            <div className="flex-1 text-xs font-medium text-muted-foreground uppercase tracking-wider">Статус</div>
+            <div className="w-16 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">Заказов</div>
+            <div className="w-20 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">Начальный</div>
+            <div className="w-20 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">Конечный</div>
+            <div className="w-24 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider">Уведомлять</div>
             <div className="w-20" />
           </div>
 
           {statuses.map((status) => (
             <div
               key={status.id}
-              className={`flex items-center gap-3 p-3 rounded-lg border hover:bg-gray-50/50 ${!status.isActive ? "opacity-50" : ""}`}
+              className={`flex items-center gap-3 p-3 rounded-lg border border-[#dbdfe6] hover:bg-background-light/50 transition-colors ${!status.isActive ? "opacity-50" : ""}`}
             >
               <GripVertical className="w-4 h-4 text-muted-foreground cursor-grab" />
               <div
@@ -660,13 +661,28 @@ function StatusesSettings({ statuses }: { statuses: StatusData[] }) {
                 {status._count.orders}
               </div>
               <div className="w-20 text-center">
-                {status.isInitial && <Badge className="bg-blue-100 text-blue-700 text-xs">Да</Badge>}
+                {status.isInitial && (
+                  <div className="inline-flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-blue-500" />
+                    <span className="text-xs text-blue-600">Да</span>
+                  </div>
+                )}
               </div>
               <div className="w-20 text-center">
-                {status.isFinal && <Badge className="bg-green-100 text-green-700 text-xs">Да</Badge>}
+                {status.isFinal && (
+                  <div className="inline-flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-green-500" />
+                    <span className="text-xs text-green-600">Да</span>
+                  </div>
+                )}
               </div>
               <div className="w-24 text-center">
-                {status.notifyClient && <Badge className="bg-amber-100 text-amber-700 text-xs">Да</Badge>}
+                {status.notifyClient && (
+                  <div className="inline-flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-amber-500" />
+                    <span className="text-xs text-amber-600">Да</span>
+                  </div>
+                )}
               </div>
               <div className="w-20 flex gap-1">
                 <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setEditingStatus(status)}>
@@ -691,8 +707,8 @@ function StatusesSettings({ statuses }: { statuses: StatusData[] }) {
               Добавить статус
             </Button>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
       {/* Create Status Dialog */}
       <Dialog open={createOpen} onOpenChange={setCreateOpen}>
@@ -810,71 +826,83 @@ function StatusesSettings({ statuses }: { statuses: StatusData[] }) {
 }
 
 /* =============================================================================
-   Notifications Settings (read-only display for now)
+   Notifications Settings
    ============================================================================= */
 
 function NotificationsSettings() {
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Уведомления</CardTitle>
-          <CardDescription>
+      <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+        <div className="p-6 pb-4">
+          <h3 className="text-base font-semibold">Уведомления</h3>
+          <p className="text-sm text-muted-foreground mt-1">
             Настройка уведомлений доступна через системные настройки.
             Уведомления в системе работают автоматически.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </p>
+        </div>
+        <div className="px-6 pb-6">
           <div className="space-y-3">
-            <div className="flex items-center justify-between p-3 rounded-lg border">
+            <div className="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6]">
               <div>
                 <p className="font-medium text-sm">Смена статуса заказа</p>
                 <p className="text-xs text-muted-foreground">Уведомления менеджеру и клиенту</p>
               </div>
-              <Badge className="bg-green-100 text-green-700">Активно</Badge>
+              <div className="inline-flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="text-sm text-green-600">Активно</span>
+              </div>
             </div>
-            <div className="flex items-center justify-between p-3 rounded-lg border">
+            <div className="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6]">
               <div>
                 <p className="font-medium text-sm">Новый комментарий</p>
                 <p className="text-xs text-muted-foreground">Уведомления участникам обсуждения</p>
               </div>
-              <Badge className="bg-green-100 text-green-700">Активно</Badge>
+              <div className="inline-flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="text-sm text-green-600">Активно</span>
+              </div>
             </div>
-            <div className="flex items-center justify-between p-3 rounded-lg border">
+            <div className="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6]">
               <div>
                 <p className="font-medium text-sm">Этап готов к проверке</p>
                 <p className="text-xs text-muted-foreground">Уведомление клиенту по email</p>
               </div>
-              <Badge className="bg-green-100 text-green-700">Активно</Badge>
+              <div className="inline-flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="text-sm text-green-600">Активно</span>
+              </div>
             </div>
-            <div className="flex items-center justify-between p-3 rounded-lg border">
+            <div className="flex items-center justify-between p-3 rounded-lg border border-[#dbdfe6]">
               <div>
                 <p className="font-medium text-sm">Новое КП / ответ клиента</p>
                 <p className="text-xs text-muted-foreground">Уведомления о предложениях</p>
               </div>
-              <Badge className="bg-green-100 text-green-700">Активно</Badge>
+              <div className="inline-flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-green-500" />
+                <span className="text-sm text-green-600">Активно</span>
+              </div>
             </div>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
 
 /* =============================================================================
-   Placeholder for Templates and Integrations
+   Placeholder for Integrations
    ============================================================================= */
 
 function PlaceholderSection({ title }: { title: string }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>Функция в разработке</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm">
+      <div className="p-6 pb-4">
+        <h3 className="text-base font-semibold">{title}</h3>
+        <p className="text-sm text-muted-foreground mt-1">Функция в разработке</p>
+      </div>
+      <div className="px-6 pb-6">
         <div className="flex flex-col items-center justify-center py-12 text-center">
-          <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+          <div className="w-16 h-16 rounded-full bg-background-light flex items-center justify-center mb-4">
             <Puzzle className="w-8 h-8 text-gray-400" />
           </div>
           <h3 className="font-medium text-lg mb-1">Скоро</h3>
@@ -882,7 +910,7 @@ function PlaceholderSection({ title }: { title: string }) {
             Эта функция находится в разработке и будет доступна в ближайшем обновлении.
           </p>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
