@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn, formatCurrency, formatDate } from "@/lib/utils";
-import { getInvoices } from "@/actions/invoices";
+import { getInvoices, getPaymentForecast, getOverdueInvoices } from "@/actions/invoices";
 import { getRevenueByMonth, getFinanceSummary, getTopClients } from "@/actions/reports";
 import { RevenueByMonthChart } from "@/components/finance/finance-charts";
 
@@ -42,11 +42,13 @@ const statusTabs = [
 // --- Dashboard Content (server component) ---
 
 async function FinanceDashboardContent() {
-  const [summary, revenueData, topClients, { invoices: recentInvoices }] = await Promise.all([
+  const [summary, revenueData, topClients, { invoices: recentInvoices }, forecast, overdueList] = await Promise.all([
     getFinanceSummary(),
     getRevenueByMonth(12),
     getTopClients(5),
     getInvoices({ limit: 10 }),
+    getPaymentForecast(5),
+    getOverdueInvoices(5),
   ]);
 
   const revenue = summary.totalPaid;
@@ -195,6 +197,54 @@ async function FinanceDashboardContent() {
             ) : (
               <div className="h-40 flex items-center justify-center text-muted-foreground">
                 Нет данных о клиентах
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Payment Forecast */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Clock className="w-4 h-4" />
+              Прогноз поступлений
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="p-0">
+            {forecast.length > 0 ? (
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b bg-gray-50/50">
+                      <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">Счёт</th>
+                      <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">Клиент</th>
+                      <th className="text-left py-3 px-6 text-xs font-medium text-muted-foreground">Срок</th>
+                      <th className="text-right py-3 px-6 text-xs font-medium text-muted-foreground">Ожидаемая сумма</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {forecast.map((inv) => (
+                      <tr key={inv.id} className="border-b last:border-0 hover:bg-gray-50/50">
+                        <td className="py-3 px-6 text-sm">
+                          <Link href={`/finance/${inv.id}`} className="font-mono hover:text-primary">
+                            {inv.number}
+                          </Link>
+                        </td>
+                        <td className="py-3 px-6 text-sm">{inv.client?.name || "—"}</td>
+                        <td className="py-3 px-6 text-sm text-muted-foreground">
+                          {inv.dueDate ? formatDate(inv.dueDate) : "—"}
+                        </td>
+                        <td className="py-3 px-6 text-sm text-right font-medium text-green-600">
+                          {formatCurrency(inv.remaining, inv.currency)}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : (
+              <div className="h-40 flex items-center justify-center text-muted-foreground">
+                Нет ожидаемых платежей
               </div>
             )}
           </CardContent>

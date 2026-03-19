@@ -91,6 +91,44 @@ export default async function EditClientPage({ params }: EditClientPageProps) {
               </label>
               <Input name="industry" defaultValue={client.industry || ""} />
             </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm font-medium mb-1 block">
+                  Источник
+                </label>
+                <select
+                  name="source"
+                  defaultValue={client.source || ""}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="">Не указан</option>
+                  <option value="REFERRAL">Рекомендация</option>
+                  <option value="WEBSITE">Сайт</option>
+                  <option value="LINKEDIN">LinkedIn</option>
+                  <option value="TELEGRAM">Telegram</option>
+                  <option value="UPWORK">Upwork</option>
+                  <option value="DIRECT">Прямое обращение</option>
+                  <option value="OTHER">Другое</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium mb-1 block">
+                  Валюта
+                </label>
+                <select
+                  name="currency"
+                  defaultValue={client.currency || "USD"}
+                  className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                  <option value="USD">USD</option>
+                  <option value="EUR">EUR</option>
+                  <option value="TJS">TJS</option>
+                  <option value="RUB">RUB</option>
+                  <option value="UZS">UZS</option>
+                  <option value="KZT">KZT</option>
+                </select>
+              </div>
+            </div>
             <div>
               <label className="text-sm font-medium mb-1 block">
                 Заметки

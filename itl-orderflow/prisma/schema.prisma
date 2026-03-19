@@ -26,6 +26,7 @@ model User {
   timeEntries   TimeEntry[]
   comments      Comment[]
   notifications Notification[]
+  clientNotes   ClientNote[]
 
   // Timestamps
   createdAt     DateTime  @default(now())
@@ -98,6 +99,10 @@ model Client {
   industry      String?
   notes         String?   @db.Text
 
+  // CRM
+  source        LeadSource?
+  currency      String    @default("USD")
+
   // Status
   isArchived    Boolean   @default(false)
 
@@ -111,6 +116,7 @@ model Client {
   invoices      Invoice[]
   proposals     Proposal[]
   tickets       Ticket[]
+  clientNotes   ClientNote[]
 
   // Timestamps
   createdAt     DateTime  @default(now())
@@ -139,6 +145,32 @@ model ClientContact {
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
+
+  @@index([clientId])
+}
+
+enum LeadSource {
+  REFERRAL
+  WEBSITE
+  LINKEDIN
+  TELEGRAM
+  UPWORK
+  DIRECT
+  OTHER
+}
+
+model ClientNote {
+  id        String   @id @default(cuid())
+
+  clientId  String
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  text      String   @db.Text
+
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+
+  createdAt DateTime @default(now())
 
   @@index([clientId])
 }
@@ -426,6 +458,11 @@ model Invoice {
 
   items         InvoiceItem[]
   payments      Payment[]
+  events        InvoiceEvent[]
+
+  // Generated PDF
+  generatedPdfUrl  String?
+  generatedPdfKey  String?
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -433,6 +470,7 @@ model Invoice {
   @@index([clientId])
   @@index([orderId])
   @@index([status])
+  @@index([dueDate])
 }
 
 enum InvoiceStatus {
@@ -480,6 +518,29 @@ model Payment {
 
   @@index([invoiceId])
   @@index([paymentDate])
+}
+
+enum InvoiceEventType {
+  CREATED
+  REMINDER_SENT
+  PAID
+  OVERDUE
+  CANCELLED
+  STATUS_CHANGED
+}
+
+model InvoiceEvent {
+  id        String           @id @default(cuid())
+
+  invoiceId String
+  invoice   Invoice          @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  type      InvoiceEventType
+  note      String?
+
+  createdAt DateTime         @default(now())
+
+  @@index([invoiceId])
 }
 
 // ==================== FILES ====================
@@ -573,6 +634,10 @@ model Proposal {
   sentAt        DateTime?
   viewedAt      DateTime?
   respondedAt   DateTime?
+
+  // Generated PDF
+  generatedPdfUrl  String?
+  generatedPdfKey  String?
 
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt

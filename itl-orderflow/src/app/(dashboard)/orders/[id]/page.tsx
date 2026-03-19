@@ -36,6 +36,7 @@ import { OrderCommentForm } from "@/components/orders/order-comments";
 import { MilestoneCard } from "@/components/milestones/milestone-card";
 import { CreateMilestoneDialog } from "@/components/milestones/create-milestone-dialog";
 import { CreateTaskDialog } from "@/components/tasks/create-task-dialog";
+import { GenerateActDialog } from "@/components/orders/generate-act-dialog";
 
 interface OrderPageProps {
   params: { id: string };
@@ -138,6 +139,13 @@ export default async function OrderPage({ params }: OrderPageProps) {
               Редактировать
             </Button>
           </Link>
+          <GenerateActDialog
+            orderId={params.id}
+            orderNumber={order.number}
+            currency={order.currency || "TJS"}
+            tasks={order.tasks?.map((t: any) => ({ title: t.title })) || []}
+            milestones={order.milestones?.map((m: any) => ({ title: m.title, amount: Number(m.amount || 0) })) || []}
+          />
           {userRole === "ADMIN" && (
             <OrderDeleteButton orderId={params.id} orderNumber={order.number} />
           )}

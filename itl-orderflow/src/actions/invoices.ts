@@ -91,6 +91,7 @@ export async function getInvoice(id: string) {
       order: { select: { id: true, title: true, number: true } },
       items: { orderBy: { position: "asc" } },
       payments: { orderBy: { paymentDate: "desc" } },
+      events: { orderBy: { createdAt: "desc" } },
     },
   });
 
@@ -165,6 +166,12 @@ export async function createInvoice(
             total: item.total,
             position: idx,
           })),
+        },
+        events: {
+          create: {
+            type: "CREATED",
+            note: `Счёт ${invoiceNumber} создан`,
+          },
         },
       },
     });
@@ -244,6 +251,7 @@ export async function updateInvoice(
 export async function updateInvoiceStatus(id: string, status: string) {
   try {
     await requireAuth();
+    const oldInvoice = await prisma.invoice.findUnique({ where: { id }, select: { status: true } });
     const invoice = await prisma.invoice.update({
       where: { id },
       data: {
@@ -257,6 +265,16 @@ export async function updateInvoiceStatus(id: string, status: string) {
       PAID: "Оплачен", PARTIALLY_PAID: "Частично оплачен",
       OVERDUE: "Просрочен", CANCELLED: "Отменён",
     };
+
+    // Create InvoiceEvent
+    const eventType = status === "PAID" ? "PAID" : status === "CANCELLED" ? "CANCELLED" : status === "OVERDUE" ? "OVERDUE" : "STATUS_CHANGED";
+    await prisma.invoiceEvent.create({
+      data: {
+        invoiceId: id,
+        type: eventType,
+        note: `${statusLabels[oldInvoice?.status || ""] || oldInvoice?.status} → ${statusLabels[status] || status}`,
+      },
+    });
     const adminsAndManagers = await prisma.user.findMany({
       where: { role: { in: ["ADMIN", "MANAGER"] } },
       select: { id: true },
@@ -318,6 +336,13 @@ export async function recordPayment(
           ...(newStatus === "PAID" ? { paidAt: new Date() } : {}),
         },
       }),
+      prisma.invoiceEvent.create({
+        data: {
+          invoiceId,
+          type: "PAID",
+          note: `${data.amount} ${invoice.currency} (${data.paymentMethod || "не указан"})`,
+        },
+      }),
     ]);
 
     // Notify admins/managers about payment
@@ -355,4 +380,127 @@ export async function deleteInvoice(id: string) {
     log.error("Error deleting invoice", error);
     return { error: "Ошибка при удалении счёта" };
   }
+}
+
+// Mark overdue invoices (called by cron)
+export async function markOverdueInvoices() {
+  try {
+    const now = new Date();
+    const overdueInvoices = await prisma.invoice.findMany({
+      where: {
+        dueDate: { lt: now },
+        status: { in: ["SENT", "VIEWED", "PARTIALLY_PAID"] },
+      },
+      select: { id: true, number: true, orderId: true },
+    });
+
+    if (overdueInvoices.length === 0) {
+      return { updated: 0 };
+    }
+
+    // Update all overdue invoices
+    await prisma.invoice.updateMany({
+      where: {
+        id: { in: overdueInvoices.map((i) => i.id) },
+      },
+      data: { status: "OVERDUE" },
+    });
+
+    // Create events for each
+    await prisma.invoiceEvent.createMany({
+      data: overdueInvoices.map((inv) => ({
+        invoiceId: inv.id,
+        type: "OVERDUE" as const,
+        note: "Автоматически помечен как просроченный",
+      })),
+    });
+
+    // Notify admins/managers
+    const adminsAndManagers = await prisma.user.findMany({
+      where: { role: { in: ["ADMIN", "MANAGER"] } },
+      select: { id: true },
+    });
+
+    if (adminsAndManagers.length > 0 && overdueInvoices.length > 0) {
+      createNotificationForUsers(adminsAndManagers.map((u) => u.id), {
+        type: "DEADLINE",
+        title: "Просроченные счета",
+        description: `${overdueInvoices.length} счёт(ов) помечены как просроченные: ${overdueInvoices.map((i) => i.number).join(", ")}`,
+        linkUrl: "/finance?status=OVERDUE",
+        entityType: "invoice",
+        entityId: overdueInvoices[0].id,
+      });
+    }
+
+    log.info(`Marked ${overdueInvoices.length} invoices as overdue`);
+    return { updated: overdueInvoices.length };
+  } catch (error) {
+    log.error("Error marking overdue invoices", error);
+    return { error: "Ошибка при обновлении просроченных счетов" };
+  }
+}
+
+// Get payment forecast (upcoming payments)
+export async function getPaymentForecast(limit: number = 10) {
+  const now = new Date();
+  const invoices = await prisma.invoice.findMany({
+    where: {
+      status: { in: ["SENT", "VIEWED", "PARTIALLY_PAID"] },
+      dueDate: { gte: now },
+    },
+    include: {
+      client: { select: { id: true, name: true } },
+      order: { select: { id: true, number: true, title: true } },
+    },
+    orderBy: { dueDate: "asc" },
+    take: limit,
+  });
+
+  return invoices.map((inv) => ({
+    id: inv.id,
+    number: inv.number,
+    client: inv.client,
+    order: inv.order,
+    dueDate: inv.dueDate,
+    total: Number(inv.total),
+    paidAmount: Number(inv.paidAmount),
+    remaining: Number(inv.total) - Number(inv.paidAmount),
+    currency: inv.currency,
+    status: inv.status,
+  }));
+}
+
+// Get overdue invoices
+export async function getOverdueInvoices(limit: number = 10) {
+  const now = new Date();
+  const invoices = await prisma.invoice.findMany({
+    where: {
+      OR: [
+        { status: "OVERDUE" },
+        {
+          dueDate: { lt: now },
+          status: { in: ["SENT", "VIEWED", "PARTIALLY_PAID"] },
+        },
+      ],
+    },
+    include: {
+      client: { select: { id: true, name: true } },
+      order: { select: { id: true, number: true, title: true } },
+    },
+    orderBy: { dueDate: "asc" },
+    take: limit,
+  });
+
+  return invoices.map((inv) => ({
+    id: inv.id,
+    number: inv.number,
+    client: inv.client,
+    order: inv.order,
+    dueDate: inv.dueDate,
+    total: Number(inv.total),
+    paidAmount: Number(inv.paidAmount),
+    remaining: Number(inv.total) - Number(inv.paidAmount),
+    currency: inv.currency,
+    status: inv.status,
+  }));
 }

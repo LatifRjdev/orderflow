@@ -18,6 +18,8 @@ import {
   Pencil,
 } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import { InvoiceEventTimeline } from "@/components/finance/invoice-event-timeline";
+import { DownloadInvoicePdfButton } from "@/components/finance/download-pdf-button";
 
 interface InvoicePageProps {
   params: { id: string };
@@ -330,6 +332,9 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
             </CardContent>
           </Card>
 
+          {/* Event Timeline */}
+          <InvoiceEventTimeline events={invoice.events || []} />
+
           {/* Actions */}
           <Card>
             <CardHeader>
@@ -342,10 +347,12 @@ export default async function InvoicePage({ params }: InvoicePageProps) {
                   Отправить клиенту
                 </Button>
               )}
-              <Button variant="outline" className="w-full justify-start" size="sm">
-                <Download className="w-4 h-4 mr-2" />
-                Скачать PDF
-              </Button>
+              <DownloadInvoicePdfButton
+                invoiceId={params.id}
+                variant="outline"
+                size="sm"
+                className="w-full justify-start"
+              />
               <Button variant="outline" className="w-full justify-start" size="sm">
                 <Printer className="w-4 h-4 mr-2" />
                 Печать

@@ -15,7 +15,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Building2, User, Mail, Phone, Globe, MapPin } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Plus, Building2, User, Mail, Phone, Globe, MapPin, Target, Coins } from "lucide-react";
 import { createClient } from "@/actions/clients";
 
 interface CreateClientDialogProps {
@@ -170,6 +177,41 @@ export function CreateClientDialog({ children }: CreateClientDialogProps) {
                   name="industry"
                   placeholder="IT, Ритейл, Финансы..."
                 />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="source">Источник</Label>
+                <Select name="source">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Откуда клиент?" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="REFERRAL">Рекомендация</SelectItem>
+                    <SelectItem value="WEBSITE">Сайт</SelectItem>
+                    <SelectItem value="LINKEDIN">LinkedIn</SelectItem>
+                    <SelectItem value="TELEGRAM">Telegram</SelectItem>
+                    <SelectItem value="UPWORK">Upwork</SelectItem>
+                    <SelectItem value="DIRECT">Прямое обращение</SelectItem>
+                    <SelectItem value="OTHER">Другое</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="currency">Валюта</Label>
+                <Select name="currency" defaultValue="USD">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Валюта" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="USD">USD</SelectItem>
+                    <SelectItem value="EUR">EUR</SelectItem>
+                    <SelectItem value="TJS">TJS</SelectItem>
+                    <SelectItem value="RUB">RUB</SelectItem>
+                    <SelectItem value="UZS">UZS</SelectItem>
+                    <SelectItem value="KZT">KZT</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <div className="col-span-2 space-y-2">

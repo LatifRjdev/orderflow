@@ -15,6 +15,7 @@ import {
 import { formatCurrency, formatDate } from "@/lib/utils";
 import { ProposalActions, ProposalSendButton } from "@/components/proposals/proposal-actions";
 import { SectionRenderer, PaymentScheduleRenderer } from "@/components/proposals/sections/section-renderer";
+import { DownloadProposalPdfButton } from "@/components/proposals/download-pdf-button";
 
 interface ProposalPageProps {
   params: { id: string };
@@ -293,8 +294,14 @@ export default async function ProposalPage({ params }: ProposalPageProps) {
             <CardHeader>
               <CardTitle className="text-base">Действия</CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-2">
               <ProposalActions proposalId={proposal.id} status={proposal.status} userRole={userRole} />
+              <DownloadProposalPdfButton
+                proposalId={proposal.id}
+                variant="outline"
+                size="sm"
+                className="w-full justify-start"
+              />
             </CardContent>
           </Card>
         </div>

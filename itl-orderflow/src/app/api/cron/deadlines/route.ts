@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { checkDeadlines } from "@/actions/milestones";
+import { markOverdueInvoices } from "@/actions/invoices";
 
 export async function GET(request: Request) {
   // Auth via secret header (for cron services like Vercel Cron, Railway, etc.)
@@ -17,11 +18,13 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const result = await checkDeadlines();
+  const [deadlinesResult, overdueResult] = await Promise.all([
+    checkDeadlines(),
+    markOverdueInvoices(),
+  ]);
 
-  if ("error" in result) {
-    return NextResponse.json(result, { status: 500 });
-  }
-
-  return NextResponse.json(result);
+  return NextResponse.json({
+    deadlines: deadlinesResult,
+    overdueInvoices: overdueResult,
+  });
 }

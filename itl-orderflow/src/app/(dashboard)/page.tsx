@@ -21,13 +21,22 @@ import {
   Users,
   UserPlus,
   Rocket,
+  DollarSign,
+  AlertTriangle,
 } from "lucide-react";
 import Link from "next/link";
 import { getDashboardStats } from "@/actions/dashboard";
-import { formatDate, formatRelativeTime, getDaysUntilDeadline, getInitials } from "@/lib/utils";
+import { getRevenueByMonth } from "@/actions/reports";
+import { formatCurrency, formatDate, formatRelativeTime, getDaysUntilDeadline, getInitials } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { RevenueByMonthChart } from "@/components/finance/finance-charts";
 
 async function DashboardContent() {
+  const [stats, revenueData] = await Promise.all([
+    getDashboardStats(),
+    getRevenueByMonth(6),
+  ]);
+
   const {
     activeOrders,
     totalOrders,
@@ -37,7 +46,12 @@ async function DashboardContent() {
     totalWeekHours,
     statusChart,
     recentActivity,
-  } = await getDashboardStats();
+    monthRevenue,
+    outstandingAmount,
+    overdueAmount,
+    overdueList,
+    forecastList,
+  } = stats;
 
   const totalStatusCount = statusChart.reduce((sum, s) => sum + s.count, 0);
 
@@ -164,6 +178,55 @@ async function DashboardContent() {
         </Link>
       </div>
 
+      {/* Financial KPI Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <Link href="/finance">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Выручка за месяц</p>
+                  <p className="text-2xl font-bold mt-1">{formatCurrency(monthRevenue)}</p>
+                </div>
+                <div className="bg-green-500/10 p-3 rounded-lg">
+                  <DollarSign className="w-6 h-6 text-green-500" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/finance">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Ожидает оплаты</p>
+                  <p className="text-2xl font-bold mt-1">{formatCurrency(outstandingAmount)}</p>
+                </div>
+                <div className="bg-amber-500/10 p-3 rounded-lg">
+                  <Clock className="w-6 h-6 text-amber-500" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+        <Link href="/finance">
+          <Card className="cursor-pointer hover:shadow-md transition-shadow">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-muted-foreground">Просрочено</p>
+                  <p className="text-2xl font-bold mt-1">{formatCurrency(overdueAmount)}</p>
+                </div>
+                <div className="bg-destructive/10 p-3 rounded-lg">
+                  <AlertTriangle className="w-6 h-6 text-destructive" />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+      </div>
+
       {/* Second Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Status Chart */}
@@ -227,7 +290,7 @@ async function DashboardContent() {
                 <Link
                   key={task.id}
                   href={`/tasks/${task.id}`}
-                  className="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer block"
+                  className="flex items-start gap-3 p-2 rounded-lg hover:bg-gray-50 cursor-pointer"
                 >
                   <div
                     className={`w-2 h-2 mt-2 rounded-full ${
@@ -372,6 +435,116 @@ async function DashboardContent() {
             </Link>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Revenue Chart + Overdue/Forecast */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Revenue Chart */}
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle className="text-lg">Выручка по месяцам</CardTitle>
+          </CardHeader>
+          <CardContent>
+            {revenueData.some((d) => d.amount > 0) ? (
+              <RevenueByMonthChart data={revenueData} />
+            ) : (
+              <p className="text-sm text-muted-foreground text-center py-8">
+                Нет данных о платежах
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Overdue + Forecast */}
+        <div className="space-y-6">
+          {/* Overdue Payments */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-destructive" />
+                Просроченные
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {overdueList.length > 0 ? (
+                <div className="space-y-3">
+                  {overdueList.map((inv: any) => (
+                    <Link
+                      key={inv.id}
+                      href={`/finance/${inv.id}`}
+                      className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-mono">{inv.number}</p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {inv.clientName}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="text-sm font-medium text-destructive">
+                          {formatCurrency(inv.remaining, inv.currency)}
+                        </p>
+                        {inv.dueDate && (
+                          <p className="text-xs text-muted-foreground">
+                            {formatDate(inv.dueDate)}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  Нет просроченных
+                </p>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Payment Forecast */}
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="text-lg flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 text-green-500" />
+                Ожидаемые
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              {forecastList.length > 0 ? (
+                <div className="space-y-3">
+                  {forecastList.map((inv: any) => (
+                    <Link
+                      key={inv.id}
+                      href={`/finance/${inv.id}`}
+                      className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/50"
+                    >
+                      <div className="min-w-0">
+                        <p className="text-sm font-mono">{inv.number}</p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          {inv.clientName}
+                        </p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="text-sm font-medium">
+                          {formatCurrency(inv.remaining, inv.currency)}
+                        </p>
+                        {inv.dueDate && (
+                          <p className="text-xs text-muted-foreground">
+                            {formatDate(inv.dueDate)}
+                          </p>
+                        )}
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground text-center py-4">
+                  Нет ожидаемых платежей
+                </p>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* Activity Feed */}

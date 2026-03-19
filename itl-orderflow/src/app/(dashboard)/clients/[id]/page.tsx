@@ -25,6 +25,17 @@ import { formatCurrency, formatDate, formatRelativeTime } from "@/lib/utils";
 import { ClientActions } from "@/components/clients/client-actions";
 import { PortalAccess } from "@/components/clients/portal-access";
 import { AddContactDialog } from "@/components/clients/add-contact-dialog";
+import { ClientNotes } from "@/components/clients/client-notes";
+
+const sourceLabels: Record<string, string> = {
+  REFERRAL: "Рекомендация",
+  WEBSITE: "Сайт",
+  LINKEDIN: "LinkedIn",
+  TELEGRAM: "Telegram",
+  UPWORK: "Upwork",
+  DIRECT: "Прямое обращение",
+  OTHER: "Другое",
+};
 
 interface ClientPageProps {
   params: { id: string };
@@ -72,11 +83,23 @@ export default async function ClientPage({ params }: ClientPageProps) {
             {client.legalName && (
               <p className="text-muted-foreground mt-1">{client.legalName}</p>
             )}
-            {client.industry && (
-              <Badge variant="outline" className="mt-2">
-                {client.industry}
-              </Badge>
-            )}
+            <div className="flex items-center gap-2 mt-2">
+              {client.industry && (
+                <Badge variant="outline">
+                  {client.industry}
+                </Badge>
+              )}
+              {client.source && (
+                <Badge variant="secondary">
+                  {sourceLabels[client.source] || client.source}
+                </Badge>
+              )}
+              {client.currency && (
+                <Badge variant="outline" className="font-mono">
+                  {client.currency}
+                </Badge>
+              )}
+            </div>
           </div>
         </div>
         <ClientActions clientId={client.id} isArchived={client.isArchived} userRole={userRole} />
@@ -438,6 +461,12 @@ export default async function ClientPage({ params }: ClientPageProps) {
               )}
             </CardContent>
           </Card>
+
+          {/* Client Notes */}
+          <ClientNotes
+            clientId={client.id}
+            notes={(client.clientNotes || []) as any}
+          />
         </div>
       </div>
     </div>

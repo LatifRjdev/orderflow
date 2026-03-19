@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
+import { LeadSource } from "@prisma/client";
 import { requireAuth, requireRole } from "@/lib/auth-guard";
 
 // Validation schemas
@@ -16,6 +17,8 @@ const createClientSchema = z.object({
   address: z.string().max(500).optional(),
   industry: z.string().max(100).optional(),
   notes: z.string().max(2000).optional(),
+  source: z.nativeEnum(LeadSource).optional(),
+  currency: z.string().max(10).default("USD"),
 });
 
 const updateClientSchema = createClientSchema.partial();
@@ -80,6 +83,13 @@ export async function getClient(id: string) {
         orderBy: { createdAt: "desc" },
         take: 10,
       },
+      clientNotes: {
+        include: {
+          author: { select: { id: true, name: true } },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 20,
+      },
       _count: {
         select: { orders: true, invoices: true },
       },
@@ -92,6 +102,7 @@ export async function getClient(id: string) {
 // Create client
 export async function createClient(formData: FormData) {
   await requireAuth();
+  const sourceValue = formData.get("source") as string;
   const rawData = {
     name: formData.get("name") as string,
     legalName: formData.get("legalName") as string || undefined,
@@ -102,6 +113,8 @@ export async function createClient(formData: FormData) {
     address: formData.get("address") as string || undefined,
     industry: formData.get("industry") as string || undefined,
     notes: formData.get("notes") as string || undefined,
+    source: sourceValue && sourceValue in LeadSource ? sourceValue as LeadSource : undefined,
+    currency: (formData.get("currency") as string) || "USD",
   };
 
   const validated = createClientSchema.safeParse(rawData);
@@ -128,6 +141,7 @@ export async function createClient(formData: FormData) {
 // Update client
 export async function updateClient(id: string, formData: FormData) {
   await requireAuth();
+  const sourceValue = formData.get("source") as string;
   const rawData = {
     name: formData.get("name") as string,
     legalName: formData.get("legalName") as string || undefined,
@@ -138,6 +152,8 @@ export async function updateClient(id: string, formData: FormData) {
     address: formData.get("address") as string || undefined,
     industry: formData.get("industry") as string || undefined,
     notes: formData.get("notes") as string || undefined,
+    source: sourceValue && sourceValue in LeadSource ? sourceValue as LeadSource : undefined,
+    currency: (formData.get("currency") as string) || "USD",
   };
 
   const validated = updateClientSchema.safeParse(rawData);
@@ -241,5 +257,45 @@ export async function addClientContact(
   } catch (error) {
     console.error("Error adding contact:", error);
     return { error: "Ошибка при добавлении контакта" };
+  }
+}
+
+// Add client note
+export async function addClientNote(clientId: string, text: string) {
+  const session = await requireAuth();
+  if (!text.trim()) {
+    return { error: "Текст заметки обязателен" };
+  }
+
+  try {
+    const note = await prisma.clientNote.create({
+      data: {
+        clientId,
+        text: text.trim(),
+        authorId: session.user.id,
+      },
+      include: {
+        author: { select: { id: true, name: true } },
+      },
+    });
+
+    revalidatePath(`/clients/${clientId}`);
+    return { success: true, note };
+  } catch (error) {
+    console.error("Error adding client note:", error);
+    return { error: "Ошибка при добавлении заметки" };
+  }
+}
+
+// Delete client note
+export async function deleteClientNote(noteId: string, clientId: string) {
+  await requireAuth();
+  try {
+    await prisma.clientNote.delete({ where: { id: noteId } });
+    revalidatePath(`/clients/${clientId}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting client note:", error);
+    return { error: "Ошибка при удалении заметки" };
   }
 }

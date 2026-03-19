@@ -3,12 +3,20 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getDashboardStats() {
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
   const [
     activeOrders,
     totalOrders,
     urgentTasks,
     recentOrders,
     teamHours,
+    monthlyRevenue,
+    outstandingInvoices,
+    overdueInvoices,
+    overdueList,
+    forecastList,
   ] = await Promise.all([
     // Active orders count
     prisma.order.count({
@@ -57,6 +65,58 @@ export async function getDashboardStats() {
         },
       },
       _sum: { hours: true },
+    }),
+    // Monthly revenue (sum of payments this month)
+    prisma.payment.aggregate({
+      where: { paymentDate: { gte: monthStart } },
+      _sum: { amount: true },
+    }),
+    // Outstanding invoices (sent/viewed/partially paid)
+    prisma.invoice.findMany({
+      where: { status: { in: ["SENT", "VIEWED", "PARTIALLY_PAID"] } },
+      select: { total: true, paidAmount: true },
+    }),
+    // Overdue invoices (overdue status or past due)
+    prisma.invoice.findMany({
+      where: {
+        OR: [
+          { status: "OVERDUE" },
+          {
+            dueDate: { lt: now },
+            status: { in: ["SENT", "VIEWED", "PARTIALLY_PAID"] },
+          },
+        ],
+      },
+      select: { total: true, paidAmount: true },
+    }),
+    // Overdue invoices list (for display)
+    prisma.invoice.findMany({
+      where: {
+        OR: [
+          { status: "OVERDUE" },
+          {
+            dueDate: { lt: now },
+            status: { in: ["SENT", "VIEWED", "PARTIALLY_PAID"] },
+          },
+        ],
+      },
+      include: {
+        client: { select: { name: true } },
+      },
+      orderBy: { dueDate: "asc" },
+      take: 5,
+    }),
+    // Payment forecast (upcoming due invoices)
+    prisma.invoice.findMany({
+      where: {
+        status: { in: ["SENT", "VIEWED", "PARTIALLY_PAID"] },
+        dueDate: { gte: now },
+      },
+      include: {
+        client: { select: { name: true } },
+      },
+      orderBy: { dueDate: "asc" },
+      take: 5,
     }),
   ]);
 
@@ -175,6 +235,17 @@ export async function getDashboardStats() {
     .sort((a, b) => b.date.getTime() - a.date.getTime())
     .slice(0, 8);
 
+  // Financial KPIs
+  const monthRevenue = Number(monthlyRevenue._sum.amount || 0);
+  const outstandingAmount = outstandingInvoices.reduce(
+    (sum, inv) => sum + Number(inv.total || 0) - Number(inv.paidAmount || 0),
+    0
+  );
+  const overdueAmount = overdueInvoices.reduce(
+    (sum, inv) => sum + Number(inv.total || 0) - Number(inv.paidAmount || 0),
+    0
+  );
+
   return {
     activeOrders,
     totalOrders,
@@ -184,6 +255,25 @@ export async function getDashboardStats() {
     totalWeekHours,
     statusChart,
     recentActivity: activity,
+    monthRevenue,
+    outstandingAmount,
+    overdueAmount,
+    overdueList: overdueList.map((inv) => ({
+      id: inv.id,
+      number: inv.number,
+      clientName: inv.client?.name || "—",
+      dueDate: inv.dueDate,
+      remaining: Number(inv.total || 0) - Number(inv.paidAmount || 0),
+      currency: inv.currency,
+    })),
+    forecastList: forecastList.map((inv) => ({
+      id: inv.id,
+      number: inv.number,
+      clientName: inv.client?.name || "—",
+      dueDate: inv.dueDate,
+      remaining: Number(inv.total || 0) - Number(inv.paidAmount || 0),
+      currency: inv.currency,
+    })),
   };
 }
 
