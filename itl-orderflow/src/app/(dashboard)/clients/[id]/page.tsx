@@ -23,6 +23,7 @@ import { formatCurrency, formatDate, formatRelativeTime } from "@/lib/utils";
 import { ClientActions } from "@/components/clients/client-actions";
 import { PortalAccess } from "@/components/clients/portal-access";
 import { AddContactDialog } from "@/components/clients/add-contact-dialog";
+import { EditContactDialog } from "@/components/clients/edit-contact-dialog";
 import { ClientNotes } from "@/components/clients/client-notes";
 
 const sourceLabels: Record<string, string> = {
@@ -264,6 +265,9 @@ export default async function ClientPage({ params }: ClientPageProps) {
                               ЛПР
                             </Badge>
                           )}
+                          <div className="ml-auto">
+                            <EditContactDialog clientId={client.id} contact={contact} />
+                          </div>
                         </div>
                         {contact.position && (
                           <p className="text-sm text-muted-foreground">

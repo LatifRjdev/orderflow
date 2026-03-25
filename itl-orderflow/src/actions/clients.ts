@@ -270,6 +270,56 @@ export async function addClientContact(
   }
 }
 
+// Update contact
+export async function updateClientContact(
+  contactId: string,
+  clientId: string,
+  data: {
+    firstName: string;
+    lastName?: string;
+    position?: string;
+    email?: string;
+    phone?: string;
+    telegram?: string;
+    isPrimary?: boolean;
+    isDecisionMaker?: boolean;
+  }
+) {
+  await requireAuth();
+  try {
+    if (data.isPrimary) {
+      await prisma.clientContact.updateMany({
+        where: { clientId, id: { not: contactId } },
+        data: { isPrimary: false },
+      });
+    }
+
+    const contact = await prisma.clientContact.update({
+      where: { id: contactId },
+      data,
+    });
+
+    revalidatePath(`/clients/${clientId}`);
+    return { success: true, contact };
+  } catch (error) {
+    console.error("Error updating contact:", error);
+    return { error: "Ошибка при обновлении контакта" };
+  }
+}
+
+// Delete contact
+export async function deleteClientContact(contactId: string, clientId: string) {
+  await requireAuth();
+  try {
+    await prisma.clientContact.delete({ where: { id: contactId } });
+    revalidatePath(`/clients/${clientId}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting contact:", error);
+    return { error: "Ошибка при удалении контакта" };
+  }
+}
+
 // Add client note
 export async function addClientNote(clientId: string, text: string) {
   const session = await requireAuth();
