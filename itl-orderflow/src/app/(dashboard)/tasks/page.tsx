@@ -16,6 +16,7 @@ import { cn, formatDate, getInitials } from "@/lib/utils";
 import { getTasks } from "@/actions/tasks";
 import { prisma } from "@/lib/prisma";
 import { CreateTaskDialog } from "@/components/tasks/create-task-dialog";
+import { ImportTasksDialog } from "@/components/tasks/import-tasks-dialog";
 import { FilterSelect } from "@/components/filters/filter-select";
 import { TasksKanban } from "@/components/kanban/tasks-kanban";
 import { type KanbanColumnData } from "@/components/kanban/kanban-board";
@@ -46,6 +47,7 @@ interface TasksSearchParams {
   status?: string;
   priority?: string;
   assigneeId?: string;
+  orderId?: string;
   view?: string;
 }
 
@@ -54,6 +56,7 @@ async function TasksContent({
   status,
   priority,
   assigneeId,
+  orderId,
   view,
 }: TasksSearchParams) {
   const { tasks, total } = await getTasks({
@@ -61,6 +64,7 @@ async function TasksContent({
     status,
     priority,
     assigneeId,
+    orderId,
   });
 
   const isKanban = view !== "table";
@@ -301,15 +305,20 @@ async function TasksHeader() {
     }),
   ]);
 
+  const ordersList = orders.map((o) => ({
+    id: o.id,
+    title: o.title,
+    number: o.number,
+  }));
+
   return (
-    <CreateTaskDialog
-      orders={orders.map((o) => ({
-        id: o.id,
-        title: o.title,
-        number: o.number,
-      }))}
-      users={users.map((u) => ({ id: u.id, name: u.name || "" }))}
-    />
+    <div className="flex gap-2">
+      <ImportTasksDialog orders={ordersList} />
+      <CreateTaskDialog
+        orders={ordersList}
+        users={users.map((u) => ({ id: u.id, name: u.name || "" }))}
+      />
+    </div>
   );
 }
 
@@ -318,10 +327,16 @@ async function TasksFilters({
 }: {
   searchParams: TasksSearchParams;
 }) {
-  const users = await prisma.user.findMany({
-    select: { id: true, name: true },
-    orderBy: { name: "asc" },
-  });
+  const [users, orders] = await Promise.all([
+    prisma.user.findMany({
+      select: { id: true, name: true },
+      orderBy: { name: "asc" },
+    }),
+    prisma.order.findMany({
+      select: { id: true, title: true, number: true },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
 
   const currentView = searchParams.view || "kanban";
 
@@ -411,6 +426,13 @@ async function TasksFilters({
               options={users.map((u) => ({ value: u.id, label: u.name || "" }))}
             />
 
+            <FilterSelect
+              name="orderId"
+              defaultValue={searchParams.orderId}
+              placeholder="Все проекты"
+              options={orders.map((o) => ({ value: o.id, label: `${o.number} — ${o.title}` }))}
+            />
+
             <Button type="submit" variant="secondary" size="sm">
               Найти
             </Button>
@@ -418,7 +440,8 @@ async function TasksFilters({
             {(searchParams.search ||
               searchParams.status ||
               searchParams.priority ||
-              searchParams.assigneeId) && (
+              searchParams.assigneeId ||
+              searchParams.orderId) && (
               <Link href={`/tasks?view=${currentView}`}>
                 <Button type="button" variant="ghost" size="sm">
                   Сбросить
@@ -466,6 +489,7 @@ export default function TasksPage({
           status={searchParams.status}
           priority={searchParams.priority}
           assigneeId={searchParams.assigneeId}
+          orderId={searchParams.orderId}
           view={searchParams.view}
         />
       </Suspense>
