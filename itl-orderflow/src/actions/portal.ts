@@ -4,56 +4,49 @@ import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import crypto from "crypto";
 import { createNotificationForUsers, getOrderNotificationRecipients } from "@/lib/notifications";
+import { requireAuth } from "@/lib/auth-guard";
+import { formatDate } from "@/lib/utils";
 
-// Validate portal token and get client
-export async function getPortalClient(token: string) {
-  const client = await prisma.client.findFirst({
-    where: {
-      portalToken: token,
-      isArchived: false,
-    },
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      portalToken: true,
-    },
-  });
-
-  return client;
-}
-
-// Get portal dashboard data
-export async function getPortalDashboard(clientId: string) {
-  const [orders, invoices, proposals] = await Promise.all([
-    prisma.order.findMany({
-      where: { clientId },
-      include: {
-        status: true,
-        tasks: { select: { status: true } },
-        milestones: {
-          select: {
-            tasks: { select: { status: true } },
+// Get portal dashboard data (only queries sections the contact can see)
+export async function getPortalDashboard(
+  clientId: string,
+  permissions: { canViewProjects: boolean; canViewProposals: boolean; canViewFinance: boolean }
+) {
+  const orders = permissions.canViewProjects
+    ? await prisma.order.findMany({
+        where: { clientId },
+        include: {
+          status: true,
+          tasks: { select: { status: true } },
+          milestones: {
+            select: {
+              tasks: { select: { status: true } },
+            },
           },
+          _count: { select: { tasks: true, milestones: true } },
         },
-        _count: { select: { tasks: true, milestones: true } },
-      },
-      orderBy: { createdAt: "desc" },
-    }),
-    prisma.invoice.findMany({
-      where: { clientId },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-    prisma.proposal.findMany({
-      where: {
-        clientId,
-        status: { not: "DRAFT" },
-      },
-      orderBy: { createdAt: "desc" },
-      take: 5,
-    }),
-  ]);
+        orderBy: { createdAt: "desc" },
+      })
+    : [];
+
+  const invoices = permissions.canViewFinance
+    ? await prisma.invoice.findMany({
+        where: { clientId },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      })
+    : [];
+
+  const proposals = permissions.canViewProposals
+    ? await prisma.proposal.findMany({
+        where: {
+          clientId,
+          status: { not: "DRAFT" },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 5,
+      })
+    : [];
 
   // Calculate stats
   const activeOrders = orders.filter(
@@ -133,6 +126,82 @@ export async function getPortalOrder(clientId: string, orderId: string) {
   });
 
   return order;
+}
+
+// Get portal documents: contracts, amendments, tech specs, reconciliation acts
+export type PortalDocumentType = "CONTRACT" | "AMENDMENT" | "TECH_SPEC" | "RECONCILIATION";
+
+export interface PortalDocument {
+  id: string;
+  type: PortalDocumentType;
+  number: string;
+  title: string;
+  date: Date;
+  status: string;
+  pdfUrl: string | null;
+}
+
+export async function getPortalDocuments(clientId: string): Promise<PortalDocument[]> {
+  const [contracts, techSpecs, reconciliations] = await Promise.all([
+    prisma.contract.findMany({
+      where: { clientId },
+      include: { amendments: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.techSpec.findMany({
+      where: { clientId },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.reconciliation.findMany({
+      where: { clientId },
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
+
+  const documents: PortalDocument[] = [
+    ...contracts.map((c) => ({
+      id: c.id,
+      type: "CONTRACT" as const,
+      number: c.number,
+      title: c.title,
+      date: c.contractDate,
+      status: c.status,
+      pdfUrl: c.generatedPdfUrl,
+    })),
+    ...contracts.flatMap((c) =>
+      c.amendments.map((a) => ({
+        id: a.id,
+        type: "AMENDMENT" as const,
+        number: a.number,
+        title: a.title,
+        date: a.effectiveDate,
+        status: a.status,
+        pdfUrl: a.generatedPdfUrl,
+      }))
+    ),
+    ...techSpecs.map((t) => ({
+      id: t.id,
+      type: "TECH_SPEC" as const,
+      number: t.number,
+      title: t.title,
+      date: t.approvedDate ?? t.createdAt,
+      status: t.status,
+      pdfUrl: t.generatedPdfUrl,
+    })),
+    ...reconciliations.map((r) => ({
+      id: r.id,
+      type: "RECONCILIATION" as const,
+      number: r.number,
+      title: `Акт сверки за период ${formatDate(r.periodFrom)} — ${formatDate(r.periodTo)}`,
+      date: r.generatedDate,
+      status: r.status,
+      pdfUrl: r.generatedPdfUrl,
+    })),
+  ];
+
+  documents.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+  return documents;
 }
 
 // Add portal comment
@@ -522,20 +591,66 @@ export async function respondToProposal(
   }
 }
 
-// Generate portal token for a client
-export async function generatePortalToken(clientId: string) {
+// Generate (or regenerate) a portal token for one client contact
+export async function generateContactPortalToken(contactId: string, clientId: string) {
+  await requireAuth();
   try {
     const token = crypto.randomBytes(32).toString("hex");
 
-    await prisma.client.update({
-      where: { id: clientId },
+    await prisma.clientContact.update({
+      where: { id: contactId },
       data: { portalToken: token },
     });
 
     revalidatePath(`/clients/${clientId}`);
     return { success: true, token };
   } catch (error) {
-    console.error("Error generating portal token:", error);
+    console.error("Error generating contact portal token:", error);
     return { error: "Ошибка при генерации токена" };
+  }
+}
+
+// Update a contact's portal enabled flag and section permissions
+export async function updateContactPortalPermissions(
+  contactId: string,
+  clientId: string,
+  data: {
+    portalEnabled: boolean;
+    canViewProjects: boolean;
+    canViewProposals: boolean;
+    canViewFinance: boolean;
+    canViewDocuments: boolean;
+    canViewTickets: boolean;
+  }
+) {
+  await requireAuth();
+  try {
+    await prisma.clientContact.update({
+      where: { id: contactId },
+      data,
+    });
+
+    revalidatePath(`/clients/${clientId}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating contact portal permissions:", error);
+    return { error: "Ошибка при обновлении прав доступа" };
+  }
+}
+
+// Turn off portal access without clearing permissions (so re-enabling restores them)
+export async function revokeContactPortalAccess(contactId: string, clientId: string) {
+  await requireAuth();
+  try {
+    await prisma.clientContact.update({
+      where: { id: contactId },
+      data: { portalEnabled: false },
+    });
+
+    revalidatePath(`/clients/${clientId}`);
+    return { success: true };
+  } catch (error) {
+    console.error("Error revoking contact portal access:", error);
+    return { error: "Ошибка при отзыве доступа" };
   }
 }
