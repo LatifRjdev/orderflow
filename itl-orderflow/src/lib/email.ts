@@ -156,32 +156,3 @@ export function milestoneReadyEmail(data: {
     `,
   };
 }
-
-export function portalTokenEmail(data: {
-  clientName: string;
-  portalUrl: string;
-}) {
-  return {
-    subject: "Доступ к клиентскому порталу ITL Solutions",
-    html: `
-      <div style="font-family: 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto;">
-        <div style="background: #3b82f6; color: white; padding: 24px; border-radius: 8px 8px 0 0;">
-          <h1 style="margin: 0; font-size: 20px;">ITL Solutions</h1>
-        </div>
-        <div style="padding: 24px; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">
-          <p>Уважаемый(ая) ${escapeHtml(data.clientName)},</p>
-          <p>Для вас создан доступ к клиентскому порталу, где вы можете отслеживать прогресс ваших проектов, согласовывать этапы и просматривать счета.</p>
-          <div style="text-align: center; margin: 24px 0;">
-            <a href="${data.portalUrl}" style="display: inline-block; background: #3b82f6; color: white; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 16px;">Войти в портал</a>
-          </div>
-          <p style="color: #6b7280; font-size: 14px;">
-            Сохраните эту ссылку — она является вашим ключом доступа к порталу.
-          </p>
-          <p style="color: #6b7280; font-size: 14px; margin-top: 24px;">
-            С уважением,<br>ITL Solutions
-          </p>
-        </div>
-      </div>
-    `,
-  };
-}

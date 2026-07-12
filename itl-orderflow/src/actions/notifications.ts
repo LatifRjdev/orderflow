@@ -10,8 +10,8 @@ import {
   invoiceSentEmail,
   orderStatusEmail,
   milestoneReadyEmail,
-  portalTokenEmail,
 } from "@/lib/email";
+import { findPortalContactForNotification } from "@/lib/portal-session";
 
 function getBaseUrl(): string {
   const url = process.env.NEXT_PUBLIC_APP_URL;
@@ -32,8 +32,13 @@ export async function sendInvoiceNotification(invoiceId: string) {
       },
     });
 
-    if (!invoice || !invoice.client?.email) {
-      return { error: "Счёт или email клиента не найден" };
+    if (!invoice) {
+      return { error: "Счёт не найден" };
+    }
+
+    const contact = await findPortalContactForNotification(invoice.clientId, "canViewFinance");
+    if (!contact?.email) {
+      return { error: "Контакт с доступом к разделу «Счета» и email не найден" };
     }
 
     const { subject, html } = invoiceSentEmail({
@@ -43,13 +48,13 @@ export async function sendInvoiceNotification(invoiceId: string) {
       dueDate: invoice.dueDate
         ? new Date(invoice.dueDate).toLocaleDateString("ru-RU")
         : "Не указан",
-      portalUrl: invoice.client.portalToken
-        ? `${getBaseUrl()}/portal/login?token=${invoice.client.portalToken}`
+      portalUrl: contact.portalToken
+        ? `${getBaseUrl()}/portal/login?token=${contact.portalToken}`
         : undefined,
     });
 
     const result = await sendEmail({
-      to: invoice.client.email,
+      to: contact.email,
       subject,
       html,
     });
@@ -83,20 +88,23 @@ export async function sendOrderStatusNotification(
       },
     });
 
-    if (!order || !order.client?.email) return;
+    if (!order) return;
     if (!order.status?.notifyClient) return;
+
+    const contact = await findPortalContactForNotification(order.clientId, "canViewProjects");
+    if (!contact?.email) return;
 
     const { subject, html } = orderStatusEmail({
       clientName: order.client.name,
       orderNumber: order.number,
       orderTitle: order.title,
       newStatus: newStatusName,
-      portalUrl: order.client.portalToken
-        ? `${getBaseUrl()}/portal/login?token=${order.client.portalToken}`
+      portalUrl: contact.portalToken
+        ? `${getBaseUrl()}/portal/login?token=${contact.portalToken}`
         : undefined,
     });
 
-    await sendEmail({ to: order.client.email, subject, html });
+    await sendEmail({ to: contact.email, subject, html });
   } catch (error) {
     log.error("Error sending order status notification", error);
   }
@@ -114,48 +122,24 @@ export async function sendMilestoneReadyNotification(milestoneId: string) {
       },
     });
 
-    if (!milestone || !milestone.order?.client?.email) return;
+    if (!milestone) return;
 
-    const client = milestone.order.client;
+    const contact = await findPortalContactForNotification(
+      milestone.order.clientId,
+      "canViewProjects"
+    );
+    if (!contact?.email) return;
 
     const { subject, html } = milestoneReadyEmail({
-      clientName: client.name,
+      clientName: milestone.order.client.name,
       orderNumber: milestone.order.number,
       milestoneTitle: milestone.title,
-      portalUrl: client.portalToken
-        ? `${getBaseUrl()}/portal/orders/${milestone.orderId}`
-        : undefined,
+      portalUrl: `${getBaseUrl()}/portal/orders/${milestone.orderId}`,
     });
 
-    await sendEmail({ to: client.email || "", subject, html });
+    await sendEmail({ to: contact.email, subject, html });
   } catch (error) {
     log.error("Error sending milestone notification", error);
-  }
-}
-
-// Send portal access link to client
-export async function sendPortalAccessEmail(clientId: string) {
-  try {
-    const client = await prisma.client.findUnique({
-      where: { id: clientId },
-    });
-
-    if (!client?.email || !client.portalToken) {
-      return { error: "Email или токен клиента не найден" };
-    }
-
-    const { subject, html } = portalTokenEmail({
-      clientName: client.name,
-      portalUrl: `${getBaseUrl()}/portal/login?token=${client.portalToken}`,
-    });
-
-    const result = await sendEmail({ to: client.email, subject, html });
-
-    if (result.error) return { error: result.error };
-    return { success: true };
-  } catch (error) {
-    log.error("Error sending portal access email", error);
-    return { error: "Ошибка при отправке" };
   }
 }
 
