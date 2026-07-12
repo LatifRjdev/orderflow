@@ -6,47 +6,51 @@ import crypto from "crypto";
 import { createNotificationForUsers, getOrderNotificationRecipients } from "@/lib/notifications";
 import { requireAuth } from "@/lib/auth-guard";
 import { formatDate } from "@/lib/utils";
+import { PortalPermissionKey } from "@/lib/portal-permissions";
 
 // Get portal dashboard data (only queries sections the contact can see)
 export async function getPortalDashboard(
   clientId: string,
-  permissions: { canViewProjects: boolean; canViewProposals: boolean; canViewFinance: boolean }
+  permissions: Pick<
+    Record<PortalPermissionKey, boolean>,
+    "canViewProjects" | "canViewProposals" | "canViewFinance"
+  >
 ) {
-  const orders = permissions.canViewProjects
-    ? await prisma.order.findMany({
-        where: { clientId },
-        include: {
-          status: true,
-          tasks: { select: { status: true } },
-          milestones: {
-            select: {
-              tasks: { select: { status: true } },
+  const [orders, invoices, proposals] = await Promise.all([
+    permissions.canViewProjects
+      ? prisma.order.findMany({
+          where: { clientId },
+          include: {
+            status: true,
+            tasks: { select: { status: true } },
+            milestones: {
+              select: {
+                tasks: { select: { status: true } },
+              },
             },
+            _count: { select: { tasks: true, milestones: true } },
           },
-          _count: { select: { tasks: true, milestones: true } },
-        },
-        orderBy: { createdAt: "desc" },
-      })
-    : [];
-
-  const invoices = permissions.canViewFinance
-    ? await prisma.invoice.findMany({
-        where: { clientId },
-        orderBy: { createdAt: "desc" },
-        take: 5,
-      })
-    : [];
-
-  const proposals = permissions.canViewProposals
-    ? await prisma.proposal.findMany({
-        where: {
-          clientId,
-          status: { not: "DRAFT" },
-        },
-        orderBy: { createdAt: "desc" },
-        take: 5,
-      })
-    : [];
+          orderBy: { createdAt: "desc" },
+        })
+      : Promise.resolve([]),
+    permissions.canViewFinance
+      ? prisma.invoice.findMany({
+          where: { clientId },
+          orderBy: { createdAt: "desc" },
+          take: 5,
+        })
+      : Promise.resolve([]),
+    permissions.canViewProposals
+      ? prisma.proposal.findMany({
+          where: {
+            clientId,
+            status: { not: "DRAFT" },
+          },
+          orderBy: { createdAt: "desc" },
+          take: 5,
+        })
+      : Promise.resolve([]),
+  ]);
 
   // Calculate stats
   const activeOrders = orders.filter(
@@ -144,16 +148,16 @@ export interface PortalDocument {
 export async function getPortalDocuments(clientId: string): Promise<PortalDocument[]> {
   const [contracts, techSpecs, reconciliations] = await Promise.all([
     prisma.contract.findMany({
-      where: { clientId },
+      where: { clientId, status: { not: "DRAFT" } },
       include: { amendments: true },
       orderBy: { createdAt: "desc" },
     }),
     prisma.techSpec.findMany({
-      where: { clientId },
+      where: { clientId, status: { not: "DRAFT" } },
       orderBy: { createdAt: "desc" },
     }),
     prisma.reconciliation.findMany({
-      where: { clientId },
+      where: { clientId, status: { not: "DRAFT" } },
       orderBy: { createdAt: "desc" },
     }),
   ]);
@@ -169,15 +173,17 @@ export async function getPortalDocuments(clientId: string): Promise<PortalDocume
       pdfUrl: c.generatedPdfUrl,
     })),
     ...contracts.flatMap((c) =>
-      c.amendments.map((a) => ({
-        id: a.id,
-        type: "AMENDMENT" as const,
-        number: a.number,
-        title: a.title,
-        date: a.effectiveDate,
-        status: a.status,
-        pdfUrl: a.generatedPdfUrl,
-      }))
+      c.amendments
+        .filter((a) => a.status !== "DRAFT")
+        .map((a) => ({
+          id: a.id,
+          type: "AMENDMENT" as const,
+          number: a.number,
+          title: a.title,
+          date: a.effectiveDate,
+          status: a.status,
+          pdfUrl: a.generatedPdfUrl,
+        }))
     ),
     ...techSpecs.map((t) => ({
       id: t.id,
