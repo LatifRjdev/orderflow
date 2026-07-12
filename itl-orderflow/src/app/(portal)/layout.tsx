@@ -1,28 +1,41 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Building2, FolderKanban, FileText, ScrollText, MessageCircle } from "lucide-react";
+import { Building2, FolderKanban, FileText, ScrollText, MessageCircle, FileStack } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getPortalClient } from "@/actions/portal";
+import { requirePortalSession } from "@/lib/portal-session";
+import { PORTAL_SECTIONS, PortalPermissionKey } from "@/lib/portal-permissions";
 import { PortalLogoutButton } from "@/components/portal-logout-button";
+
+const ICONS: Record<PortalPermissionKey, any> = {
+  canViewProjects: FolderKanban,
+  canViewProposals: ScrollText,
+  canViewFinance: FileText,
+  canViewDocuments: FileStack,
+  canViewTickets: MessageCircle,
+};
+
+const HREFS: Record<PortalPermissionKey, string> = {
+  canViewProjects: "/portal",
+  canViewProposals: "/portal/proposals",
+  canViewFinance: "/portal/invoices",
+  canViewDocuments: "/portal/documents",
+  canViewTickets: "/portal/tickets",
+};
 
 export default async function PortalLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
+  const session = await requirePortalSession();
 
-  if (!token) {
-    redirect("/portal/login");
-  }
-
-  const client = await getPortalClient(token);
-
-  if (!client) {
-    redirect("/portal/login");
-  }
+  const navItems = PORTAL_SECTIONS.filter((section) => session.permissions[section.key]).map(
+    (section) => ({
+      ...section,
+      icon: ICONS[section.key],
+      href: HREFS[section.key],
+    })
+  );
+  const hasAnyAccess = navItems.length > 0;
 
   return (
     <div className="min-h-screen bg-background-light">
@@ -39,37 +52,25 @@ export default async function PortalLayout({
               </Link>
 
               <nav className="hidden md:flex items-center gap-1">
-                <Link href="/portal">
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <FolderKanban className="w-4 h-4" />
-                    Проекты
-                  </Button>
-                </Link>
-                <Link href="/portal/proposals">
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <ScrollText className="w-4 h-4" />
-                    Предложения
-                  </Button>
-                </Link>
-                <Link href="/portal/invoices">
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <FileText className="w-4 h-4" />
-                    Счета
-                  </Button>
-                </Link>
-                <Link href="/portal/tickets">
-                  <Button variant="ghost" size="sm" className="gap-2">
-                    <MessageCircle className="w-4 h-4" />
-                    Обращения
-                  </Button>
-                </Link>
+                {navItems.map((item) => (
+                  <Link key={item.href} href={item.href}>
+                    <Button variant="ghost" size="sm" className="gap-2">
+                      <item.icon className="w-4 h-4" />
+                      {item.label}
+                    </Button>
+                  </Link>
+                ))}
               </nav>
             </div>
 
             <div className="flex items-center gap-4">
-              <span className="text-sm text-muted-foreground hidden sm:block">
-                {client.name}
-              </span>
+              <div className="text-sm text-muted-foreground hidden sm:block text-right">
+                <p className="font-medium text-foreground">{session.client.name}</p>
+                <p className="text-xs">
+                  {session.contact.firstName} {session.contact.lastName}
+                  {session.contact.position ? ` · ${session.contact.position}` : ""}
+                </p>
+              </div>
               <PortalLogoutButton />
             </div>
           </div>
@@ -78,7 +79,16 @@ export default async function PortalLayout({
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {children}
+        {hasAnyAccess ? (
+          children
+        ) : (
+          <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-12 text-center text-muted-foreground">
+            <p className="font-medium text-foreground">Доступ не настроен</p>
+            <p className="text-sm mt-1">
+              Обратитесь к вашему менеджеру, чтобы включить нужные разделы портала.
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );
