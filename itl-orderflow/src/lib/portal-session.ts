@@ -64,13 +64,13 @@ export async function requirePortalSession(
 ): Promise<PortalSession> {
   const cookieStore = cookies();
   const token = cookieStore.get("portal_token")?.value;
-  if (!token) redirect("/portal/login");
+  if (!token) return redirect("/portal/login");
 
   const session = await getPortalSession(token);
-  if (!session) redirect("/portal/login");
+  if (!session) return redirect("/portal/login");
 
   if (permission && !session.permissions[permission]) {
-    redirect("/portal?denied=1");
+    return redirect("/portal?denied=1");
   }
 
   return session;
@@ -82,12 +82,14 @@ export async function findPortalContactForNotification(
   clientId: string,
   permission: PortalPermissionKey
 ) {
+  const permissionFilter: Partial<Record<PortalPermissionKey, boolean>> = { [permission]: true };
+
   return prisma.clientContact.findFirst({
     where: {
       clientId,
       portalEnabled: true,
       email: { not: null },
-      ...({ [permission]: true } as Record<PortalPermissionKey, boolean>),
+      ...permissionFilter,
     },
     orderBy: [{ isPrimary: "desc" }, { createdAt: "asc" }],
     select: { id: true, email: true, portalToken: true, firstName: true },
