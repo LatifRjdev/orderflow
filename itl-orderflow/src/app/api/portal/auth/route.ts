@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getPortalClient } from "@/actions/portal";
+import { getPortalSession } from "@/lib/portal-session";
 import { rateLimit } from "@/lib/rate-limit";
 
 export async function POST(request: NextRequest) {
@@ -21,9 +21,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Токен обязателен" }, { status: 400 });
     }
 
-    const client = await getPortalClient(token);
+    const session = await getPortalSession(token);
 
-    if (!client) {
+    if (!session) {
       return NextResponse.json({ error: "Неверный токен" }, { status: 401 });
     }
 
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       path: "/",
     });
 
-    return NextResponse.json({ success: true, client: { name: client.name } });
+    return NextResponse.json({ success: true, client: { name: session.client.name } });
   } catch (error) {
     console.error("Portal auth error:", error);
     return NextResponse.json({ error: "Ошибка сервера" }, { status: 500 });
