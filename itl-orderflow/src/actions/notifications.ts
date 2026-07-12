@@ -92,7 +92,12 @@ export async function sendOrderStatusNotification(
     if (!order.status?.notifyClient) return;
 
     const contact = await findPortalContactForNotification(order.clientId, "canViewProjects");
-    if (!contact?.email) return;
+    if (!contact?.email) {
+      log.warn(
+        `No contact with canViewProjects+email found for client ${order.clientId}, skipping order status email`
+      );
+      return;
+    }
 
     const { subject, html } = orderStatusEmail({
       clientName: order.client.name,
@@ -128,7 +133,12 @@ export async function sendMilestoneReadyNotification(milestoneId: string) {
       milestone.order.clientId,
       "canViewProjects"
     );
-    if (!contact?.email) return;
+    if (!contact?.email) {
+      log.warn(
+        `No contact with canViewProjects+email found for client ${milestone.order.clientId}, skipping milestone email`
+      );
+      return;
+    }
 
     const { subject, html } = milestoneReadyEmail({
       clientName: milestone.order.client.name,
