@@ -6,7 +6,9 @@ const prisma = new PrismaClient();
 async function main() {
   const clients = await prisma.client.findMany({
     where: { portalEnabled: true, portalToken: { not: null } },
-    include: { contacts: { orderBy: { isPrimary: "desc" } } },
+    include: {
+      contacts: { orderBy: [{ isPrimary: "desc" }, { createdAt: "asc" }] },
+    },
   });
 
   console.log(`Найдено ${clients.length} клиентов с активным старым порталом`);
@@ -25,6 +27,13 @@ async function main() {
         },
       });
       console.log(`  [${client.name}] контактов не было — создан контакт-заглушка "Владелец"`);
+    }
+
+    if (ownerContact.portalToken) {
+      console.log(
+        `  [${client.name}] контакт "${ownerContact.firstName}" уже мигрирован, пропускаю`
+      );
+      continue;
     }
 
     const token = crypto.randomBytes(32).toString("hex");
