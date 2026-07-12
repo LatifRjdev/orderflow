@@ -146,10 +146,20 @@ model ClientContact {
   isPrimary     Boolean   @default(false)
   isDecisionMaker Boolean @default(false)
 
+  // Portal access
+  portalEnabled     Boolean  @default(false)
+  portalToken       String?  @unique
+  canViewProjects   Boolean  @default(false)
+  canViewProposals  Boolean  @default(false)
+  canViewFinance    Boolean  @default(false)
+  canViewDocuments  Boolean  @default(false)
+  canViewTickets    Boolean  @default(false)
+
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
   @@index([clientId])
+  @@index([portalToken])
 }
 
 enum LeadSource {
