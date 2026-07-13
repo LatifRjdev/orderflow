@@ -1,11 +1,19 @@
 import Link from "next/link";
-import { Building2, FolderKanban, FileText, ScrollText, MessageCircle, FileStack } from "lucide-react";
+import {
+  Building2,
+  FolderKanban,
+  FileText,
+  ScrollText,
+  MessageCircle,
+  FileStack,
+  type LucideIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { requirePortalSession } from "@/lib/portal-session";
 import { PORTAL_SECTIONS, PortalPermissionKey } from "@/lib/portal-permissions";
 import { PortalLogoutButton } from "@/components/portal-logout-button";
 
-const ICONS: Record<PortalPermissionKey, any> = {
+const ICONS: Record<PortalPermissionKey, LucideIcon> = {
   canViewProjects: FolderKanban,
   canViewProposals: ScrollText,
   canViewFinance: FileText,
@@ -35,7 +43,7 @@ export default async function PortalLayout({
       href: HREFS[section.key],
     })
   );
-  const hasAnyAccess = navItems.length > 0;
+  const hasAnyAccess = Object.values(session.permissions).some(Boolean);
 
   return (
     <div className="min-h-screen bg-background-light">
