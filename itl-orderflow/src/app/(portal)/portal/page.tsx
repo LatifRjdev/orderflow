@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { getPortalDashboard } from "@/actions/portal";
 import { requirePortalSession } from "@/lib/portal-session";
+import { ClearDeniedParam } from "@/components/portal/clear-denied-param";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -33,10 +34,13 @@ export default async function PortalDashboard({
 
   return (
     <div className="space-y-8">
-      {searchParams.denied && (
-        <div className="rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm p-3">
-          У вас нет доступа к этому разделу. Обратитесь к вашему менеджеру.
-        </div>
+      {searchParams.denied === "1" && (
+        <>
+          <ClearDeniedParam />
+          <div className="rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm p-3">
+            У вас нет доступа к этому разделу. Обратитесь к вашему менеджеру.
+          </div>
+        </>
       )}
 
       {/* Welcome */}
