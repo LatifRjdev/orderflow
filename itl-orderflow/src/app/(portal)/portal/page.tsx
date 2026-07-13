@@ -1,7 +1,6 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getPortalClient, getPortalDashboard } from "@/actions/portal";
+import { getPortalDashboard } from "@/actions/portal";
+import { requirePortalSession } from "@/lib/portal-session";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -12,27 +11,38 @@ import {
   ArrowRight,
   CheckCircle2,
   Circle,
-  ScrollText,
 } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
-export default async function PortalDashboard() {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
+export default async function PortalDashboard({
+  searchParams,
+}: {
+  searchParams: { denied?: string };
+}) {
+  const session = await requirePortalSession();
+  const { permissions } = session;
 
-  if (!token) redirect("/portal/login");
-
-  const client = await getPortalClient(token);
-  if (!client) redirect("/portal/login");
-
-  const { orders, activeOrders, invoices, proposals, pendingProposals, stats } = await getPortalDashboard(client.id);
+  const { orders, invoices, proposals, pendingProposals, stats } = await getPortalDashboard(
+    session.client.id,
+    {
+      canViewProjects: permissions.canViewProjects,
+      canViewProposals: permissions.canViewProposals,
+      canViewFinance: permissions.canViewFinance,
+    }
+  );
 
   return (
     <div className="space-y-8">
+      {searchParams.denied && (
+        <div className="rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-sm p-3">
+          У вас нет доступа к этому разделу. Обратитесь к вашему менеджеру.
+        </div>
+      )}
+
       {/* Welcome */}
       <div>
         <h1 className="text-2xl font-bold">
-          Добро пожаловать, {client.name}
+          Добро пожаловать, {session.contact.firstName}
         </h1>
         <p className="text-muted-foreground mt-1">
           Отслеживайте прогресс ваших проектов
@@ -40,137 +50,148 @@ export default async function PortalDashboard() {
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <FolderKanban className="w-5 h-5 text-blue-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">{stats.totalOrders}</p>
-              <p className="text-sm text-muted-foreground">Проектов</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <Clock className="w-5 h-5 text-green-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">{stats.activeCount}</p>
-              <p className="text-sm text-muted-foreground">Активных</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-amber-100 rounded-lg">
-              <DollarSign className="w-5 h-5 text-amber-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">
-                {formatCurrency(stats.totalInvoiced)}
-              </p>
-              <p className="text-sm text-muted-foreground">Выставлено</p>
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-red-100 rounded-lg">
-              <FileText className="w-5 h-5 text-red-600" />
-            </div>
-            <div>
-              <p className="text-2xl font-bold">
-                {formatCurrency(stats.outstanding)}
-              </p>
-              <p className="text-sm text-muted-foreground">К оплате</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Projects */}
-      <div>
-        <h2 className="text-lg font-bold mb-4">Ваши проекты</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {orders.map((order: any) => {
-            // Calculate progress from all tasks
-            const allTasks = [
-              ...(order.tasks || []),
-              ...(order.milestones?.flatMap((m: any) => m.tasks || []) || []),
-            ];
-            const doneTasks = allTasks.filter((t: any) => t.status === "DONE").length;
-            const totalTasks = allTasks.length;
-            const progressPercent = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
-            const isCompleted = order.status?.code === "completed";
-
-            return (
-              <Link key={order.id} href={`/portal/orders/${order.id}`}>
-                <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer h-full p-5">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <span className="text-xs font-mono text-muted-foreground">
-                        {order.number}
-                      </span>
-                      <h3 className="font-medium mt-0.5">{order.title}</h3>
-                    </div>
-                    {order.status && (
-                      <div
-                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium"
-                        style={{
-                          backgroundColor: order.status.color + "10",
-                          color: order.status.color,
-                          borderColor: order.status.color + "40",
-                        }}
-                      >
-                        <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: order.status.color }} />
-                        {order.status.name}
-                      </div>
-                    )}
+      {(permissions.canViewProjects || permissions.canViewFinance) && (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {permissions.canViewProjects && (
+            <>
+              <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-blue-100 rounded-lg">
+                    <FolderKanban className="w-5 h-5 text-blue-600" />
                   </div>
-
-                  {/* Progress bar */}
-                  <div className="flex items-center gap-2 mt-3">
-                    <Progress value={progressPercent} className="flex-1 h-2" />
-                    <span className="text-sm font-medium w-10 text-right">{progressPercent}%</span>
-                  </div>
-
-                  <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
-                    {order.deadline && (
-                      <span>Дедлайн: {formatDate(order.deadline)}</span>
-                    )}
-                    <span>{doneTasks}/{totalTasks} задач</span>
-                    <span>{order._count?.milestones || 0} этапов</span>
-                  </div>
-
-                  <div className="flex items-center gap-2 mt-3">
-                    {isCompleted ? (
-                      <CheckCircle2 className="w-4 h-4 text-green-500" />
-                    ) : (
-                      <Circle className="w-4 h-4 text-blue-500" />
-                    )}
-                    <span className="text-sm">
-                      {isCompleted ? "Завершён" : "В работе"}
-                    </span>
-                    <ArrowRight className="w-4 h-4 ml-auto text-muted-foreground" />
+                  <div>
+                    <p className="text-2xl font-bold">{stats.totalOrders}</p>
+                    <p className="text-sm text-muted-foreground">Проектов</p>
                   </div>
                 </div>
-              </Link>
-            );
-          })}
-          {orders.length === 0 && (
-            <div className="col-span-2 bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-12 text-center text-muted-foreground">
-              <FolderKanban className="w-10 h-10 mx-auto mb-3 opacity-50" />
-              <p>Проектов пока нет</p>
-            </div>
+              </div>
+              <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-green-100 rounded-lg">
+                    <Clock className="w-5 h-5 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">{stats.activeCount}</p>
+                    <p className="text-sm text-muted-foreground">Активных</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+          {permissions.canViewFinance && (
+            <>
+              <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-amber-100 rounded-lg">
+                    <DollarSign className="w-5 h-5 text-amber-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">
+                      {formatCurrency(stats.totalInvoiced)}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Выставлено</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-5">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-red-100 rounded-lg">
+                    <FileText className="w-5 h-5 text-red-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-bold">
+                      {formatCurrency(stats.outstanding)}
+                    </p>
+                    <p className="text-sm text-muted-foreground">К оплате</p>
+                  </div>
+                </div>
+              </div>
+            </>
           )}
         </div>
-      </div>
+      )}
+
+      {/* Projects */}
+      {permissions.canViewProjects && (
+        <div>
+          <h2 className="text-lg font-bold mb-4">Ваши проекты</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {orders.map((order: any) => {
+              const allTasks = [
+                ...(order.tasks || []),
+                ...(order.milestones?.flatMap((m: any) => m.tasks || []) || []),
+              ];
+              const doneTasks = allTasks.filter((t: any) => t.status === "DONE").length;
+              const totalTasks = allTasks.length;
+              const progressPercent = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+              const isCompleted = order.status?.code === "completed";
+
+              return (
+                <Link key={order.id} href={`/portal/orders/${order.id}`}>
+                  <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer h-full p-5">
+                    <div className="flex items-start justify-between mb-3">
+                      <div>
+                        <span className="text-xs font-mono text-muted-foreground">
+                          {order.number}
+                        </span>
+                        <h3 className="font-medium mt-0.5">{order.title}</h3>
+                      </div>
+                      {order.status && (
+                        <div
+                          className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-xs font-medium"
+                          style={{
+                            backgroundColor: order.status.color + "10",
+                            color: order.status.color,
+                            borderColor: order.status.color + "40",
+                          }}
+                        >
+                          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: order.status.color }} />
+                          {order.status.name}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Progress bar */}
+                    <div className="flex items-center gap-2 mt-3">
+                      <Progress value={progressPercent} className="flex-1 h-2" />
+                      <span className="text-sm font-medium w-10 text-right">{progressPercent}%</span>
+                    </div>
+
+                    <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
+                      {order.deadline && (
+                        <span>Дедлайн: {formatDate(order.deadline)}</span>
+                      )}
+                      <span>{doneTasks}/{totalTasks} задач</span>
+                      <span>{order._count?.milestones || 0} этапов</span>
+                    </div>
+
+                    <div className="flex items-center gap-2 mt-3">
+                      {isCompleted ? (
+                        <CheckCircle2 className="w-4 h-4 text-green-500" />
+                      ) : (
+                        <Circle className="w-4 h-4 text-blue-500" />
+                      )}
+                      <span className="text-sm">
+                        {isCompleted ? "Завершён" : "В работе"}
+                      </span>
+                      <ArrowRight className="w-4 h-4 ml-auto text-muted-foreground" />
+                    </div>
+                  </div>
+                </Link>
+              );
+            })}
+            {orders.length === 0 && (
+              <div className="col-span-2 bg-white rounded-xl border border-[#dbdfe6] shadow-sm p-12 text-center text-muted-foreground">
+                <FolderKanban className="w-10 h-10 mx-auto mb-3 opacity-50" />
+                <p>Проектов пока нет</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Pending Proposals */}
-      {proposals.length > 0 && (
+      {permissions.canViewProposals && proposals.length > 0 && (
         <div>
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold">
@@ -240,7 +261,7 @@ export default async function PortalDashboard() {
       )}
 
       {/* Recent Invoices */}
-      {invoices.length > 0 && (
+      {permissions.canViewFinance && invoices.length > 0 && (
         <div>
           <h2 className="text-lg font-bold mb-4">Последние счета</h2>
           <div className="bg-white rounded-xl border border-[#dbdfe6] shadow-sm overflow-hidden">
