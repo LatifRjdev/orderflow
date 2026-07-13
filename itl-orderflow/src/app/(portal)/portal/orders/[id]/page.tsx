@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getPortalClient, getPortalOrder } from "@/actions/portal";
+import { getPortalOrder } from "@/actions/portal";
+import { requirePortalSession } from "@/lib/portal-session";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -42,13 +42,8 @@ const milestoneStatusDots: Record<string, { label: string; dot: string }> = {
 };
 
 export default async function PortalOrderPage({ params }: PortalOrderPageProps) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
-
-  if (!token) redirect("/portal/login");
-
-  const client = await getPortalClient(token);
-  if (!client) redirect("/portal/login");
+  const session = await requirePortalSession("canViewProjects");
+  const { client } = session;
 
   const order = await getPortalOrder(client.id, params.id);
   if (!order) notFound();
