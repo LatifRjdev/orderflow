@@ -1,7 +1,5 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { getPortalClient } from "@/actions/portal";
 import { prisma } from "@/lib/prisma";
+import { requirePortalSession } from "@/lib/portal-session";
 import { FileText } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
@@ -16,13 +14,8 @@ const statusDots: Record<string, { label: string; dot: string }> = {
 };
 
 export default async function PortalInvoicesPage() {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
-
-  if (!token) redirect("/portal/login");
-
-  const client = await getPortalClient(token);
-  if (!client) redirect("/portal/login");
+  const session = await requirePortalSession("canViewFinance");
+  const { client } = session;
 
   const invoices = await prisma.invoice.findMany({
     where: { clientId: client.id },
