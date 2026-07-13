@@ -1,7 +1,7 @@
-import { cookies } from "next/headers";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getPortalClient, getPortalProposal } from "@/actions/portal";
+import { getPortalProposal } from "@/actions/portal";
+import { requirePortalSession } from "@/lib/portal-session";
 import { getSettings } from "@/actions/settings";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -25,13 +25,8 @@ interface PortalProposalPageProps {
 export default async function PortalProposalPage({
   params,
 }: PortalProposalPageProps) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
-
-  if (!token) redirect("/portal/login");
-
-  const client = await getPortalClient(token);
-  if (!client) redirect("/portal/login");
+  const session = await requirePortalSession("canViewProposals");
+  const { client } = session;
 
   const [proposal, settings] = await Promise.all([
     getPortalProposal(client.id, params.id),

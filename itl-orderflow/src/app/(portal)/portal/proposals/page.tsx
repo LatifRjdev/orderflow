@@ -1,7 +1,6 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getPortalClient, getPortalProposals } from "@/actions/portal";
+import { getPortalProposals } from "@/actions/portal";
+import { requirePortalSession } from "@/lib/portal-session";
 import { FileText } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
@@ -14,13 +13,8 @@ const statusDots: Record<string, { label: string; dot: string }> = {
 };
 
 export default async function PortalProposalsPage() {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
-
-  if (!token) redirect("/portal/login");
-
-  const client = await getPortalClient(token);
-  if (!client) redirect("/portal/login");
+  const session = await requirePortalSession("canViewProposals");
+  const { client } = session;
 
   const proposals = await getPortalProposals(client.id);
 
