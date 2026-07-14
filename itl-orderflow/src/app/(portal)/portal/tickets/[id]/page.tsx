@@ -1,8 +1,7 @@
-import { cookies } from "next/headers";
-import { redirect, notFound } from "next/navigation";
+import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getPortalClient } from "@/actions/portal";
 import { getPortalTicket } from "@/actions/tickets";
+import { requirePortalSession } from "@/lib/portal-session";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, FolderKanban, User, Clock } from "lucide-react";
@@ -28,13 +27,8 @@ export default async function PortalTicketDetailPage({
 }: {
   params: { id: string };
 }) {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
-
-  if (!token) redirect("/portal/login");
-
-  const client = await getPortalClient(token);
-  if (!client) redirect("/portal/login");
+  const session = await requirePortalSession("canViewTickets");
+  const { client } = session;
 
   const ticket = await getPortalTicket(client.id, params.id);
   if (!ticket) notFound();

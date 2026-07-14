@@ -1,8 +1,6 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import { getPortalClient } from "@/actions/portal";
 import { getPortalTickets } from "@/actions/tickets";
+import { requirePortalSession } from "@/lib/portal-session";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -30,13 +28,8 @@ const priorityConfig: Record<string, { label: string; variant: "default" | "seco
 };
 
 export default async function PortalTicketsPage() {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
-
-  if (!token) redirect("/portal/login");
-
-  const client = await getPortalClient(token);
-  if (!client) redirect("/portal/login");
+  const session = await requirePortalSession("canViewTickets");
+  const { client } = session;
 
   const { tickets, stats } = await getPortalTickets(client.id);
 

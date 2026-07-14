@@ -1,17 +1,10 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { getPortalClient } from "@/actions/portal";
 import { getPortalOrders } from "@/actions/tickets";
 import { PortalTicketForm } from "@/components/portal/ticket-form";
+import { requirePortalSession } from "@/lib/portal-session";
 
 export default async function PortalNewTicketPage() {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
-
-  if (!token) redirect("/portal/login");
-
-  const client = await getPortalClient(token);
-  if (!client) redirect("/portal/login");
+  const session = await requirePortalSession("canViewTickets");
+  const { client } = session;
 
   const orders = await getPortalOrders(client.id);
 
