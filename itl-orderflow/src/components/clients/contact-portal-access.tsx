@@ -13,6 +13,7 @@ import {
   revokeContactPortalAccess,
 } from "@/actions/portal";
 import { PORTAL_SECTIONS, PortalPermissionKey } from "@/lib/portal-permissions";
+import { toast } from "@/lib/use-toast";
 
 interface ContactPortalAccessProps {
   clientId: string;
@@ -47,40 +48,50 @@ export function ContactPortalAccess({ clientId, contact }: ContactPortalAccessPr
   const portalLoginUrl =
     typeof window !== "undefined" ? `${window.location.origin}/portal/login` : "/portal/login";
 
-  function savePermissions(next: Permissions, nextEnabled: boolean) {
+  function savePermissions(
+    next: Permissions,
+    nextEnabled: boolean,
+    previous: Permissions,
+    previousEnabled: boolean
+  ) {
     startTransition(async () => {
       const result = await updateContactPortalPermissions(contact.id, clientId, {
         portalEnabled: nextEnabled,
         ...next,
       });
-      if (result.error) alert(result.error);
-      router.refresh();
+      if (result.error) {
+        toast.error(result.error);
+        setPermissions(previous);
+        setEnabled(previousEnabled);
+      } else {
+        router.refresh();
+      }
     });
   }
 
   function toggleEnabled() {
+    const previousEnabled = enabled;
     const next = !enabled;
     setEnabled(next);
-    savePermissions(permissions, next);
+    savePermissions(permissions, next, permissions, previousEnabled);
   }
 
   function togglePermission(key: PortalPermissionKey) {
+    const previousPermissions = permissions;
     const next = { ...permissions, [key]: !permissions[key] };
     setPermissions(next);
-    savePermissions(next, enabled);
+    savePermissions(next, enabled, previousPermissions, enabled);
   }
 
   function grantFullAccess() {
-    const next: Permissions = {
-      canViewProjects: true,
-      canViewProposals: true,
-      canViewFinance: true,
-      canViewDocuments: true,
-      canViewTickets: true,
-    };
+    const previousPermissions = permissions;
+    const previousEnabled = enabled;
+    const next = Object.fromEntries(
+      PORTAL_SECTIONS.map((s) => [s.key, true])
+    ) as Permissions;
     setPermissions(next);
     setEnabled(true);
-    savePermissions(next, true);
+    savePermissions(next, true, previousPermissions, previousEnabled);
   }
 
   function handleGenerateToken() {
@@ -89,18 +100,23 @@ export function ContactPortalAccess({ clientId, contact }: ContactPortalAccessPr
       if (result.success && result.token) {
         setToken(result.token);
       } else if (result.error) {
-        alert(result.error);
+        toast.error(result.error);
       }
       router.refresh();
     });
   }
 
   function handleRevoke() {
+    const previousEnabled = enabled;
     setEnabled(false);
     startTransition(async () => {
       const result = await revokeContactPortalAccess(contact.id, clientId);
-      if (result.error) alert(result.error);
-      router.refresh();
+      if (result.error) {
+        toast.error(result.error);
+        setEnabled(previousEnabled);
+      } else {
+        router.refresh();
+      }
     });
   }
 
