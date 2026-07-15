@@ -21,9 +21,9 @@ import {
 import Link from "next/link";
 import { formatCurrency, formatDate, formatRelativeTime } from "@/lib/utils";
 import { ClientActions } from "@/components/clients/client-actions";
-import { PortalAccess } from "@/components/clients/portal-access";
 import { AddContactDialog } from "@/components/clients/add-contact-dialog";
 import { EditContactDialog } from "@/components/clients/edit-contact-dialog";
+import { ContactPortalAccess } from "@/components/clients/contact-portal-access";
 import { ClientNotes } from "@/components/clients/client-notes";
 
 const sourceLabels: Record<string, string> = {
@@ -294,6 +294,7 @@ export default async function ClientPage({ params }: ClientPageProps) {
                             </span>
                           )}
                         </div>
+                        <ContactPortalAccess clientId={client.id} contact={contact} />
                       </div>
                     </div>
                   ))}
@@ -306,12 +307,6 @@ export default async function ClientPage({ params }: ClientPageProps) {
             </div>
           </div>
 
-          {/* Portal Access */}
-          <PortalAccess
-            clientId={client.id}
-            portalToken={client.portalToken}
-            portalEnabled={client.portalEnabled}
-          />
         </div>
 
         {/* Right Column - Orders & Invoices */}
