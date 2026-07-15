@@ -106,10 +106,6 @@ model Client {
   // Status
   isArchived    Boolean   @default(false)
 
-  // Portal
-  portalToken   String?   @unique
-  portalEnabled Boolean   @default(false)
-
   // Relations
   contacts      ClientContact[]
   orders        Order[]
@@ -127,7 +123,6 @@ model Client {
 
   @@index([name])
   @@index([isArchived])
-  @@index([portalToken])
 }
 
 model ClientContact {
