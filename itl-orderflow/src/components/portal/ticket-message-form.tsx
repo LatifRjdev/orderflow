@@ -8,13 +8,11 @@ import { addPortalTicketMessage } from "@/actions/tickets";
 import { toast } from "@/lib/use-toast";
 
 interface PortalTicketMessageFormProps {
-  clientId: string;
   clientName: string;
   ticketId: string;
 }
 
 export function PortalTicketMessageForm({
-  clientId,
   clientName,
   ticketId,
 }: PortalTicketMessageFormProps) {
@@ -27,7 +25,6 @@ export function PortalTicketMessageForm({
     setLoading(true);
     try {
       const result = await addPortalTicketMessage(
-        clientId,
         ticketId,
         content.trim(),
         clientName

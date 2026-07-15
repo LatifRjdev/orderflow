@@ -59,6 +59,15 @@ export async function getPortalSession(token: string): Promise<PortalSession | n
   };
 }
 
+// Non-redirecting variant of requirePortalSession, for use inside Server Actions,
+// which must return an { error } result instead of redirecting mid-mutation.
+export async function getPortalSessionFromCookie(): Promise<PortalSession | null> {
+  const cookieStore = cookies();
+  const token = cookieStore.get("portal_token")?.value;
+  if (!token) return null;
+  return getPortalSession(token);
+}
+
 export async function requirePortalSession(
   permission?: PortalPermissionKey
 ): Promise<PortalSession> {

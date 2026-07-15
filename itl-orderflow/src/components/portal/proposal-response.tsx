@@ -17,12 +17,10 @@ import { respondToProposal } from "@/actions/portal";
 import { toast } from "@/lib/use-toast";
 
 interface ProposalResponseButtonsProps {
-  clientId: string;
   proposalId: string;
 }
 
 export function ProposalResponseButtons({
-  clientId,
   proposalId,
 }: ProposalResponseButtonsProps) {
   const router = useRouter();
@@ -32,7 +30,7 @@ export function ProposalResponseButtons({
   async function handleAccept() {
     setLoading("ACCEPTED");
     try {
-      const result = await respondToProposal(clientId, proposalId, "ACCEPTED");
+      const result = await respondToProposal(proposalId, "ACCEPTED");
       if (result.error) {
         toast.error(result.error);
       } else {
@@ -49,7 +47,7 @@ export function ProposalResponseButtons({
   async function handleReject() {
     setLoading("REJECTED");
     try {
-      const result = await respondToProposal(clientId, proposalId, "REJECTED");
+      const result = await respondToProposal(proposalId, "REJECTED");
       if (result.error) {
         toast.error(result.error);
       } else {

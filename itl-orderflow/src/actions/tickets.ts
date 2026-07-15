@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireAuth } from "@/lib/auth-guard";
 import { createNotificationForUsers } from "@/lib/notifications";
 import { TicketStatus } from "@prisma/client";
+import { getPortalSessionFromCookie } from "@/lib/portal-session";
 
 // ==================== PORTAL ACTIONS ====================
 
@@ -48,7 +49,6 @@ export async function getPortalTicket(clientId: string, ticketId: string) {
 }
 
 export async function createPortalTicket(
-  clientId: string,
   data: {
     subject: string;
     description: string;
@@ -57,6 +57,11 @@ export async function createPortalTicket(
   },
   clientName: string
 ) {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewTickets) {
+    return { error: "Доступ запрещён" };
+  }
+
   try {
     if (!data.subject.trim() || !data.description.trim()) {
       return { error: "Заполните тему и описание" };
@@ -65,7 +70,7 @@ export async function createPortalTicket(
     // Verify order belongs to client if provided
     if (data.orderId) {
       const order = await prisma.order.findFirst({
-        where: { id: data.orderId, clientId },
+        where: { id: data.orderId, clientId: session.client.id },
       });
       if (!order) {
         return { error: "Заказ не найден" };
@@ -87,7 +92,7 @@ export async function createPortalTicket(
         subject: data.subject.trim(),
         description: data.description.trim(),
         priority: data.priority || "MEDIUM",
-        clientId,
+        clientId: session.client.id,
         orderId: data.orderId || null,
       },
     });
@@ -116,18 +121,22 @@ export async function createPortalTicket(
 }
 
 export async function addPortalTicketMessage(
-  clientId: string,
   ticketId: string,
   content: string,
   clientName: string
 ) {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewTickets) {
+    return { error: "Доступ запрещён" };
+  }
+
   try {
     if (!content.trim()) {
       return { error: "Введите сообщение" };
     }
 
     const ticket = await prisma.ticket.findFirst({
-      where: { id: ticketId, clientId },
+      where: { id: ticketId, clientId: session.client.id },
     });
 
     if (!ticket) {

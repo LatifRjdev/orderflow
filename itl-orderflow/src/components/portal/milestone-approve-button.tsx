@@ -19,12 +19,10 @@ import { approveMilestone, rejectMilestone } from "@/actions/portal";
 import { toast } from "@/lib/use-toast";
 
 interface MilestoneApproveButtonProps {
-  clientId: string;
   milestoneId: string;
 }
 
 export function MilestoneApproveButton({
-  clientId,
   milestoneId,
 }: MilestoneApproveButtonProps) {
   const router = useRouter();
@@ -36,7 +34,7 @@ export function MilestoneApproveButton({
   async function handleApprove() {
     setApproveLoading(true);
     try {
-      const result = await approveMilestone(clientId, milestoneId);
+      const result = await approveMilestone(milestoneId);
       if (result.error) {
         toast.error(result.error);
       } else {
@@ -57,7 +55,7 @@ export function MilestoneApproveButton({
     }
     setRejectLoading(true);
     try {
-      const result = await rejectMilestone(clientId, milestoneId, rejectComment);
+      const result = await rejectMilestone(milestoneId, rejectComment);
       if (result.error) {
         toast.error(result.error);
       } else {

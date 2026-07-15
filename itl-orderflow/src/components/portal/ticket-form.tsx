@@ -9,13 +9,11 @@ import { createPortalTicket } from "@/actions/tickets";
 import { toast } from "@/lib/use-toast";
 
 interface PortalTicketFormProps {
-  clientId: string;
   clientName: string;
   orders: { id: string; number: string; title: string }[];
 }
 
 export function PortalTicketForm({
-  clientId,
   clientName,
   orders,
 }: PortalTicketFormProps) {
@@ -33,7 +31,6 @@ export function PortalTicketForm({
     setLoading(true);
     try {
       const result = await createPortalTicket(
-        clientId,
         {
           subject: subject.trim(),
           description: description.trim(),

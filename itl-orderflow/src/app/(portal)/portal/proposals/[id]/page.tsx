@@ -78,7 +78,6 @@ export default async function PortalProposalPage({
               </p>
             </div>
             <ProposalResponseButtons
-              clientId={client.id}
               proposalId={proposal.id}
             />
           </div>
@@ -227,7 +226,6 @@ export default async function PortalProposalPage({
       {canRespond && (
         <div className="flex justify-end gap-3">
           <ProposalResponseButtons
-            clientId={client.id}
             proposalId={proposal.id}
           />
         </div>

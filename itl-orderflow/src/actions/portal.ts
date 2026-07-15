@@ -7,6 +7,7 @@ import { createNotificationForUsers, getOrderNotificationRecipients } from "@/li
 import { requireAuth } from "@/lib/auth-guard";
 import { formatDate } from "@/lib/utils";
 import { PortalPermissionKey } from "@/lib/portal-permissions";
+import { getPortalSessionFromCookie } from "@/lib/portal-session";
 
 // Get portal dashboard data (only queries sections the contact can see)
 export async function getPortalDashboard(
@@ -212,15 +213,19 @@ export async function getPortalDocuments(clientId: string): Promise<PortalDocume
 
 // Add portal comment
 export async function addPortalComment(
-  clientId: string,
   orderId: string,
   content: string,
   authorName: string
 ) {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewProjects) {
+    return { error: "Доступ запрещён" };
+  }
+
   try {
     // Verify the order belongs to this client
     const order = await prisma.order.findFirst({
-      where: { id: orderId, clientId },
+      where: { id: orderId, clientId: session.client.id },
     });
 
     if (!order) {
@@ -257,15 +262,17 @@ export async function addPortalComment(
 }
 
 // Approve milestone
-export async function approveMilestone(
-  clientId: string,
-  milestoneId: string
-) {
+export async function approveMilestone(milestoneId: string) {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewProjects) {
+    return { error: "Доступ запрещён" };
+  }
+
   try {
     const milestone = await prisma.milestone.findFirst({
       where: {
         id: milestoneId,
-        order: { clientId },
+        order: { clientId: session.client.id },
       },
     });
 
@@ -305,16 +312,17 @@ export async function approveMilestone(
 }
 
 // Reject milestone (client sends back for revisions)
-export async function rejectMilestone(
-  clientId: string,
-  milestoneId: string,
-  comment: string
-) {
+export async function rejectMilestone(milestoneId: string, comment: string) {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewProjects) {
+    return { error: "Доступ запрещён" };
+  }
+
   try {
     const milestone = await prisma.milestone.findFirst({
       where: {
         id: milestoneId,
-        order: { clientId },
+        order: { clientId: session.client.id },
         status: "COMPLETED",
       },
       include: {
@@ -336,20 +344,14 @@ export async function rejectMilestone(
       },
     });
 
-    // Get client info for comment
-    const client = await prisma.client.findUnique({
-      where: { id: clientId },
-      select: { name: true, email: true },
-    });
-
     // Save rejection comment
     if (comment.trim()) {
       await prisma.comment.create({
         data: {
           content: `[Отклонение этапа «${milestone.title}»] ${comment}`,
           orderId: milestone.orderId,
-          clientName: client?.name || "Клиент",
-          clientEmail: client?.email,
+          clientName: session.client.name,
+          clientEmail: session.client.email,
           isInternal: false,
           isPortalVisible: true,
         },
@@ -456,15 +458,19 @@ export async function getPortalProposal(clientId: string, proposalId: string) {
 
 // Client responds to proposal (accept/reject)
 export async function respondToProposal(
-  clientId: string,
   proposalId: string,
   response: "ACCEPTED" | "REJECTED"
 ) {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewProposals) {
+    return { error: "Доступ запрещён" };
+  }
+
   try {
     const proposal = await prisma.proposal.findFirst({
       where: {
         id: proposalId,
-        clientId,
+        clientId: session.client.id,
         status: { in: ["SENT", "VIEWED"] },
       },
       include: {
@@ -485,10 +491,7 @@ export async function respondToProposal(
     });
 
     // Notify team about proposal response
-    const proposalClient = await prisma.client.findUnique({
-      where: { id: clientId },
-      select: { name: true },
-    });
+    const proposalClient = { name: session.client.name };
     const adminsAndManagers = await prisma.user.findMany({
       where: { role: { in: ["ADMIN", "MANAGER"] } },
       select: { id: true },

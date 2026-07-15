@@ -175,7 +175,6 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
                     </div>
                     {canApprove && (
                       <MilestoneApproveButton
-                        clientId={client.id}
                         milestoneId={milestone.id}
                       />
                     )}
@@ -390,7 +389,6 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
 
               {/* Add comment */}
               <PortalCommentForm
-                clientId={client.id}
                 clientName={client.name}
                 orderId={order.id}
               />
