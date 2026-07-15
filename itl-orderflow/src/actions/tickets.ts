@@ -48,15 +48,12 @@ export async function getPortalTicket(clientId: string, ticketId: string) {
   return ticket;
 }
 
-export async function createPortalTicket(
-  data: {
-    subject: string;
-    description: string;
-    priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
-    orderId?: string;
-  },
-  clientName: string
-) {
+export async function createPortalTicket(data: {
+  subject: string;
+  description: string;
+  priority?: "LOW" | "MEDIUM" | "HIGH" | "URGENT";
+  orderId?: string;
+}) {
   const session = await getPortalSessionFromCookie();
   if (!session || !session.permissions.canViewTickets) {
     return { error: "Доступ запрещён" };
@@ -105,7 +102,7 @@ export async function createPortalTicket(
     createNotificationForUsers(adminsAndManagers.map((u) => u.id), {
       type: "TICKET",
       title: "Новое обращение от клиента",
-      description: `${clientName}: «${data.subject}»`,
+      description: `${session.client.name}: «${data.subject}»`,
       linkUrl: `/tickets/${ticket.id}`,
       entityType: "ticket",
       entityId: ticket.id,
@@ -122,8 +119,7 @@ export async function createPortalTicket(
 
 export async function addPortalTicketMessage(
   ticketId: string,
-  content: string,
-  clientName: string
+  content: string
 ) {
   const session = await getPortalSessionFromCookie();
   if (!session || !session.permissions.canViewTickets) {
@@ -148,7 +144,7 @@ export async function addPortalTicketMessage(
         ticketId,
         content: content.trim(),
         isFromClient: true,
-        clientName,
+        clientName: session.client.name,
       },
     });
 
@@ -172,7 +168,7 @@ export async function addPortalTicketMessage(
     createNotificationForUsers(Array.from(recipientIds), {
       type: "TICKET",
       title: "Сообщение от клиента в обращении",
-      description: `${clientName}: «${content.substring(0, 80)}${content.length > 80 ? "..." : ""}»`,
+      description: `${session.client.name}: «${content.substring(0, 80)}${content.length > 80 ? "..." : ""}»`,
       linkUrl: `/tickets/${ticketId}`,
       entityType: "ticket",
       entityId: ticketId,

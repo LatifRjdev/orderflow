@@ -71,11 +71,7 @@ export async function getPortalSessionFromCookie(): Promise<PortalSession | null
 export async function requirePortalSession(
   permission?: PortalPermissionKey
 ): Promise<PortalSession> {
-  const cookieStore = cookies();
-  const token = cookieStore.get("portal_token")?.value;
-  if (!token) return redirect("/portal/login");
-
-  const session = await getPortalSession(token);
+  const session = await getPortalSessionFromCookie();
   if (!session) return redirect("/portal/login");
 
   if (permission && !session.permissions[permission]) {

@@ -214,8 +214,7 @@ export async function getPortalDocuments(clientId: string): Promise<PortalDocume
 // Add portal comment
 export async function addPortalComment(
   orderId: string,
-  content: string,
-  authorName: string
+  content: string
 ) {
   const session = await getPortalSessionFromCookie();
   if (!session || !session.permissions.canViewProjects) {
@@ -238,7 +237,7 @@ export async function addPortalComment(
         orderId,
         isPortalVisible: true,
         isInternal: false,
-        clientName: authorName,
+        clientName: session.client.name,
       },
     });
 
@@ -247,7 +246,7 @@ export async function addPortalComment(
     createNotificationForUsers(recipients, {
       type: "COMMENT",
       title: "Комментарий от клиента",
-      description: `${authorName}: "${content.substring(0, 80)}${content.length > 80 ? "..." : ""}"`,
+      description: `${session.client.name}: "${content.substring(0, 80)}${content.length > 80 ? "..." : ""}"`,
       linkUrl: `/orders/${orderId}`,
       entityType: "comment",
       entityId: comment.id,
@@ -491,7 +490,6 @@ export async function respondToProposal(
     });
 
     // Notify team about proposal response
-    const proposalClient = { name: session.client.name };
     const adminsAndManagers = await prisma.user.findMany({
       where: { role: { in: ["ADMIN", "MANAGER"] } },
       select: { id: true },
@@ -499,7 +497,7 @@ export async function respondToProposal(
     createNotificationForUsers(adminsAndManagers.map((u) => u.id), {
       type: "STATUS",
       title: response === "ACCEPTED" ? "КП принято клиентом" : "КП отклонено клиентом",
-      description: `${proposalClient?.name}: ${proposal.title}`,
+      description: `${session.client.name}: ${proposal.title}`,
       linkUrl: `/proposals/${proposalId}`,
       entityType: "proposal",
       entityId: proposalId,

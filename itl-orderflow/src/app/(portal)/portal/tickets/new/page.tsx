@@ -11,7 +11,6 @@ export default async function PortalNewTicketPage() {
   return (
     <div className="max-w-2xl mx-auto">
       <PortalTicketForm
-        clientName={client.name}
         orders={orders}
       />
     </div>

@@ -9,12 +9,10 @@ import { createPortalTicket } from "@/actions/tickets";
 import { toast } from "@/lib/use-toast";
 
 interface PortalTicketFormProps {
-  clientName: string;
   orders: { id: string; number: string; title: string }[];
 }
 
 export function PortalTicketForm({
-  clientName,
   orders,
 }: PortalTicketFormProps) {
   const router = useRouter();
@@ -30,15 +28,12 @@ export function PortalTicketForm({
 
     setLoading(true);
     try {
-      const result = await createPortalTicket(
-        {
-          subject: subject.trim(),
-          description: description.trim(),
-          priority: priority as any,
-          orderId: orderId || undefined,
-        },
-        clientName
-      );
+      const result = await createPortalTicket({
+        subject: subject.trim(),
+        description: description.trim(),
+        priority: priority as any,
+        orderId: orderId || undefined,
+      });
       if (result.error) {
         toast.error(result.error);
       } else {

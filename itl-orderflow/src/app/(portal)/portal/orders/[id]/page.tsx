@@ -389,7 +389,6 @@ export default async function PortalOrderPage({ params }: PortalOrderPageProps) 
 
               {/* Add comment */}
               <PortalCommentForm
-                clientName={client.name}
                 orderId={order.id}
               />
             </div>

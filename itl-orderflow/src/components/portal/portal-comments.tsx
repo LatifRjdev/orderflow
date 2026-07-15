@@ -8,12 +8,10 @@ import { addPortalComment } from "@/actions/portal";
 import { toast } from "@/lib/use-toast";
 
 interface PortalCommentFormProps {
-  clientName: string;
   orderId: string;
 }
 
 export function PortalCommentForm({
-  clientName,
   orderId,
 }: PortalCommentFormProps) {
   const router = useRouter();
@@ -26,8 +24,7 @@ export function PortalCommentForm({
     try {
       const result = await addPortalComment(
         orderId,
-        content.trim(),
-        clientName
+        content.trim()
       );
       if (result.error) {
         toast.error(result.error);

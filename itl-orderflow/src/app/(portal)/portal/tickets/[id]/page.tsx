@@ -136,7 +136,6 @@ export default async function PortalTicketDetailPage({
           </div>
           <div className="px-6 pb-6">
             <PortalTicketMessageForm
-              clientName={client.name}
               ticketId={ticket.id}
             />
           </div>
