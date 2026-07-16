@@ -24,8 +24,8 @@ const statusDots: Record<string, { label: string; dot: string }> = {
 };
 
 export default async function PortalDocumentsPage() {
-  const session = await requirePortalSession("canViewDocuments");
-  const documents = await getPortalDocuments(session.client.id);
+  await requirePortalSession("canViewDocuments");
+  const documents = await getPortalDocuments();
 
   return (
     <div className="space-y-6">

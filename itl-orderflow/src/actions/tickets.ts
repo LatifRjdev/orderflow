@@ -9,9 +9,14 @@ import { getPortalSessionFromCookie } from "@/lib/portal-session";
 
 // ==================== PORTAL ACTIONS ====================
 
-export async function getPortalTickets(clientId: string) {
+export async function getPortalTickets() {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewTickets) {
+    return { tickets: [], stats: { total: 0, open: 0, inProgress: 0, resolved: 0 } };
+  }
+
   const tickets = await prisma.ticket.findMany({
-    where: { clientId },
+    where: { clientId: session.client.id },
     include: {
       order: { select: { id: true, number: true, title: true } },
       _count: { select: { messages: true } },
@@ -30,9 +35,12 @@ export async function getPortalTickets(clientId: string) {
   };
 }
 
-export async function getPortalTicket(clientId: string, ticketId: string) {
+export async function getPortalTicket(ticketId: string) {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewTickets) return null;
+
   const ticket = await prisma.ticket.findFirst({
-    where: { id: ticketId, clientId },
+    where: { id: ticketId, clientId: session.client.id },
     include: {
       order: { select: { id: true, number: true, title: true } },
       messages: {
@@ -184,9 +192,12 @@ export async function addPortalTicketMessage(
 }
 
 // Get client's orders for ticket form dropdown
-export async function getPortalOrders(clientId: string) {
+export async function getPortalOrders() {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewTickets) return [];
+
   return prisma.order.findMany({
-    where: { clientId },
+    where: { clientId: session.client.id },
     select: { id: true, number: true, title: true },
     orderBy: { createdAt: "desc" },
   });

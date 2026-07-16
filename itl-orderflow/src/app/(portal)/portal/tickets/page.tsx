@@ -28,10 +28,9 @@ const priorityConfig: Record<string, { label: string; variant: "default" | "seco
 };
 
 export default async function PortalTicketsPage() {
-  const session = await requirePortalSession("canViewTickets");
-  const { client } = session;
+  await requirePortalSession("canViewTickets");
 
-  const { tickets, stats } = await getPortalTickets(client.id);
+  const { tickets, stats } = await getPortalTickets();
 
   return (
     <div className="space-y-8">

@@ -13,10 +13,9 @@ const statusDots: Record<string, { label: string; dot: string }> = {
 };
 
 export default async function PortalProposalsPage() {
-  const session = await requirePortalSession("canViewProposals");
-  const { client } = session;
+  await requirePortalSession("canViewProposals");
 
-  const proposals = await getPortalProposals(client.id);
+  const proposals = await getPortalProposals();
 
   const pendingCount = proposals.filter((p) =>
     ["SENT", "VIEWED"].includes(p.status)

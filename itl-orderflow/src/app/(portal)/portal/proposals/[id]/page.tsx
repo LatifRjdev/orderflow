@@ -25,11 +25,10 @@ interface PortalProposalPageProps {
 export default async function PortalProposalPage({
   params,
 }: PortalProposalPageProps) {
-  const session = await requirePortalSession("canViewProposals");
-  const { client } = session;
+  await requirePortalSession("canViewProposals");
 
   const [proposal, settings] = await Promise.all([
-    getPortalProposal(client.id, params.id),
+    getPortalProposal(params.id),
     getSettings(),
   ]);
   if (!proposal) notFound();

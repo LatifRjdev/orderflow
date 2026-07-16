@@ -23,14 +23,7 @@ export default async function PortalDashboard({
   const session = await requirePortalSession();
   const { permissions } = session;
 
-  const { orders, invoices, proposals, pendingProposals, stats } = await getPortalDashboard(
-    session.client.id,
-    {
-      canViewProjects: permissions.canViewProjects,
-      canViewProposals: permissions.canViewProposals,
-      canViewFinance: permissions.canViewFinance,
-    }
-  );
+  const { orders, invoices, proposals, pendingProposals, stats } = await getPortalDashboard();
 
   return (
     <div className="space-y-8">

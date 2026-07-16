@@ -27,10 +27,9 @@ export default async function PortalTicketDetailPage({
 }: {
   params: { id: string };
 }) {
-  const session = await requirePortalSession("canViewTickets");
-  const { client } = session;
+  await requirePortalSession("canViewTickets");
 
-  const ticket = await getPortalTicket(client.id, params.id);
+  const ticket = await getPortalTicket(params.id);
   if (!ticket) notFound();
 
   const st = ticketStatusDots[ticket.status] || ticketStatusDots.OPEN;

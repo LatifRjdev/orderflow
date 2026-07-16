@@ -42,10 +42,9 @@ const milestoneStatusDots: Record<string, { label: string; dot: string }> = {
 };
 
 export default async function PortalOrderPage({ params }: PortalOrderPageProps) {
-  const session = await requirePortalSession("canViewProjects");
-  const { client } = session;
+  await requirePortalSession("canViewProjects");
 
-  const order = await getPortalOrder(client.id, params.id);
+  const order = await getPortalOrder(params.id);
   if (!order) notFound();
 
   // Calculate stats - include both direct tasks and milestone tasks

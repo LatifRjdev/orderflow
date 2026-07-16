@@ -6,17 +6,18 @@ import crypto from "crypto";
 import { createNotificationForUsers, getOrderNotificationRecipients } from "@/lib/notifications";
 import { requireAuth } from "@/lib/auth-guard";
 import { formatDate } from "@/lib/utils";
-import { PortalPermissionKey } from "@/lib/portal-permissions";
 import { getPortalSessionFromCookie } from "@/lib/portal-session";
 
 // Get portal dashboard data (only queries sections the contact can see)
-export async function getPortalDashboard(
-  clientId: string,
-  permissions: Pick<
-    Record<PortalPermissionKey, boolean>,
-    "canViewProjects" | "canViewProposals" | "canViewFinance"
-  >
-) {
+export async function getPortalDashboard() {
+  const session = await getPortalSessionFromCookie();
+  const clientId = session?.client.id ?? "";
+  const permissions = {
+    canViewProjects: session?.permissions.canViewProjects ?? false,
+    canViewProposals: session?.permissions.canViewProposals ?? false,
+    canViewFinance: session?.permissions.canViewFinance ?? false,
+  };
+
   const [orders, invoices, proposals] = await Promise.all([
     permissions.canViewProjects
       ? prisma.order.findMany({
@@ -81,9 +82,12 @@ export async function getPortalDashboard(
 }
 
 // Get portal order detail
-export async function getPortalOrder(clientId: string, orderId: string) {
+export async function getPortalOrder(orderId: string) {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewProjects) return null;
+
   const order = await prisma.order.findFirst({
-    where: { id: orderId, clientId },
+    where: { id: orderId, clientId: session.client.id },
     include: {
       status: true,
       tasks: {
@@ -146,7 +150,11 @@ export interface PortalDocument {
   pdfUrl: string | null;
 }
 
-export async function getPortalDocuments(clientId: string): Promise<PortalDocument[]> {
+export async function getPortalDocuments(): Promise<PortalDocument[]> {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewDocuments) return [];
+  const clientId = session.client.id;
+
   const [contracts, techSpecs, reconciliations] = await Promise.all([
     prisma.contract.findMany({
       where: { clientId, status: { not: "DRAFT" } },
@@ -378,10 +386,13 @@ export async function rejectMilestone(milestoneId: string, comment: string) {
 }
 
 // Get portal proposals (only non-draft ones)
-export async function getPortalProposals(clientId: string) {
+export async function getPortalProposals() {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewProposals) return [];
+
   const proposals = await prisma.proposal.findMany({
     where: {
-      clientId,
+      clientId: session.client.id,
       status: { not: "DRAFT" },
     },
     include: {
@@ -411,11 +422,14 @@ export async function getPortalProposals(clientId: string) {
 }
 
 // Get single portal proposal
-export async function getPortalProposal(clientId: string, proposalId: string) {
+export async function getPortalProposal(proposalId: string) {
+  const session = await getPortalSessionFromCookie();
+  if (!session || !session.permissions.canViewProposals) return null;
+
   const proposal = await prisma.proposal.findFirst({
     where: {
       id: proposalId,
-      clientId,
+      clientId: session.client.id,
       status: { not: "DRAFT" },
     },
     include: {

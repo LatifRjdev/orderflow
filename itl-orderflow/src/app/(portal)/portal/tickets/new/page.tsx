@@ -3,10 +3,9 @@ import { PortalTicketForm } from "@/components/portal/ticket-form";
 import { requirePortalSession } from "@/lib/portal-session";
 
 export default async function PortalNewTicketPage() {
-  const session = await requirePortalSession("canViewTickets");
-  const { client } = session;
+  await requirePortalSession("canViewTickets");
 
-  const orders = await getPortalOrders(client.id);
+  const orders = await getPortalOrders();
 
   return (
     <div className="max-w-2xl mx-auto">
