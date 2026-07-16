@@ -11,12 +11,25 @@ import { getPortalSessionFromCookie } from "@/lib/portal-session";
 // Get portal dashboard data (only queries sections the contact can see)
 export async function getPortalDashboard() {
   const session = await getPortalSessionFromCookie();
-  const clientId = session?.client.id ?? "";
-  const permissions = {
-    canViewProjects: session?.permissions.canViewProjects ?? false,
-    canViewProposals: session?.permissions.canViewProposals ?? false,
-    canViewFinance: session?.permissions.canViewFinance ?? false,
-  };
+  if (!session) {
+    return {
+      orders: [],
+      activeOrders: [],
+      invoices: [],
+      proposals: [],
+      pendingProposals: 0,
+      stats: {
+        totalOrders: 0,
+        activeCount: 0,
+        totalInvoiced: 0,
+        totalPaid: 0,
+        outstanding: 0,
+      },
+    };
+  }
+
+  const clientId = session.client.id;
+  const permissions = session.permissions;
 
   const [orders, invoices, proposals] = await Promise.all([
     permissions.canViewProjects
