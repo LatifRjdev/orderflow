@@ -128,8 +128,8 @@ export function ContactPortalAccess({ clientId, contact }: ContactPortalAccessPr
 
   return (
     <div className="mt-3 pt-3 border-t border-[#dbdfe6] space-y-3">
-      <div className="flex items-center justify-between">
-        <label className="flex items-center gap-2 cursor-pointer text-sm font-medium">
+      <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
+        <label className="flex items-center gap-2 cursor-pointer text-sm font-medium whitespace-nowrap">
           <Checkbox checked={enabled} onCheckedChange={toggleEnabled} disabled={isPending} />
           Доступ в портал
           {enabled && <Badge className="bg-green-100 text-green-700">Включён</Badge>}
@@ -166,7 +166,7 @@ export function ContactPortalAccess({ clientId, contact }: ContactPortalAccessPr
               {copied === "link" ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
             </Button>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <Button type="button" variant="outline" size="sm" onClick={handleGenerateToken} disabled={isPending}>
               {isPending ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <RefreshCw className="w-4 h-4 mr-2" />}
               Перегенерировать токен
