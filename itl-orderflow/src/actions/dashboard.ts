@@ -5,6 +5,10 @@ import { prisma } from "@/lib/prisma";
 export async function getDashboardStats() {
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const prevMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const weekStart = getWeekStart();
+  const prevWeekStart = new Date(weekStart);
+  prevWeekStart.setDate(prevWeekStart.getDate() - 7);
 
   const [
     activeOrders,
@@ -13,6 +17,8 @@ export async function getDashboardStats() {
     recentOrders,
     teamHours,
     monthlyRevenue,
+    prevMonthlyRevenue,
+    prevWeekHours,
     outstandingInvoices,
     overdueInvoices,
     overdueList,
@@ -61,7 +67,7 @@ export async function getDashboardStats() {
       by: ["userId"],
       where: {
         date: {
-          gte: getWeekStart(),
+          gte: weekStart,
         },
       },
       _sum: { hours: true },
@@ -70,6 +76,16 @@ export async function getDashboardStats() {
     prisma.payment.aggregate({
       where: { paymentDate: { gte: monthStart } },
       _sum: { amount: true },
+    }),
+    // Monthly revenue for the previous month (for trend comparison)
+    prisma.payment.aggregate({
+      where: { paymentDate: { gte: prevMonthStart, lt: monthStart } },
+      _sum: { amount: true },
+    }),
+    // Total hours logged in the previous week (for trend comparison)
+    prisma.timeEntry.aggregate({
+      where: { date: { gte: prevWeekStart, lt: weekStart } },
+      _sum: { hours: true },
     }),
     // Outstanding invoices (sent/viewed/partially paid)
     prisma.invoice.findMany({
@@ -237,6 +253,8 @@ export async function getDashboardStats() {
 
   // Financial KPIs
   const monthRevenue = Number(monthlyRevenue._sum.amount || 0);
+  const prevMonthRevenue = Number(prevMonthlyRevenue._sum.amount || 0);
+  const prevWeekTotalHours = Number(prevWeekHours._sum.hours || 0);
   const outstandingAmount = outstandingInvoices.reduce(
     (sum, inv) => sum + Number(inv.total || 0) - Number(inv.paidAmount || 0),
     0
@@ -246,6 +264,11 @@ export async function getDashboardStats() {
     0
   );
 
+  // Trend vs. the previous equivalent period; null when there's no baseline to compare against
+  // (avoids showing a fabricated or divide-by-zero percentage)
+  const revenueChangePercent = calcPercentChange(monthRevenue, prevMonthRevenue);
+  const hoursChangePercent = calcPercentChange(totalWeekHours, prevWeekTotalHours);
+
   return {
     activeOrders,
     totalOrders,
@@ -253,9 +276,11 @@ export async function getDashboardStats() {
     recentOrders,
     teamWorkload,
     totalWeekHours,
+    hoursChangePercent,
     statusChart,
     recentActivity: activity,
     monthRevenue,
+    revenueChangePercent,
     outstandingAmount,
     overdueAmount,
     overdueList: overdueList.map((inv) => ({
@@ -284,4 +309,11 @@ function getWeekStart(): Date {
   const weekStart = new Date(now.setDate(diff));
   weekStart.setHours(0, 0, 0, 0);
   return weekStart;
+}
+
+// Percentage change vs. a previous period. Returns null when there's no baseline
+// to compare against, rather than an infinite or misleading value.
+function calcPercentChange(current: number, previous: number): number | null {
+  if (previous === 0) return null;
+  return Math.round(((current - previous) / previous) * 100);
 }

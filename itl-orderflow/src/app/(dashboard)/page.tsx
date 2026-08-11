@@ -3,25 +3,32 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   FolderKanban,
-  TrendingUp,
+  CheckCircle,
+  DollarSign,
   Clock,
-  ArrowRight,
-  AlertCircle,
   MessageSquare,
   RefreshCw,
   CreditCard,
   Users,
   UserPlus,
   Rocket,
-  DollarSign,
   AlertTriangle,
-  CheckCircle,
 } from "lucide-react";
 import Link from "next/link";
 import { getDashboardStats } from "@/actions/dashboard";
 import { getRevenueByMonth } from "@/actions/reports";
 import { formatCurrency, formatDate, formatRelativeTime, getDaysUntilDeadline, getInitials } from "@/lib/utils";
 import { RevenueByMonthChart } from "@/components/finance/finance-charts";
+import { KpiCard } from "@/components/dashboard/kpi-card";
+import { StatusBarChart } from "@/components/dashboard/status-bar-chart";
+
+// Shared entrance animation for each dashboard section; disabled under prefers-reduced-motion.
+function sectionAnim(delayMs: number, className: string) {
+  return {
+    className: `${className} animate-in fade-in slide-in-from-bottom-2 duration-500 motion-reduce:animate-none`,
+    style: { animationDelay: `${delayMs}ms`, animationFillMode: "backwards" as const },
+  };
+}
 
 async function DashboardContent() {
   const [stats, revenueData] = await Promise.all([
@@ -36,16 +43,19 @@ async function DashboardContent() {
     recentOrders,
     teamWorkload,
     totalWeekHours,
+    hoursChangePercent,
     statusChart,
     recentActivity,
     monthRevenue,
+    revenueChangePercent,
     outstandingAmount,
     overdueAmount,
     overdueList,
-    forecastList,
   } = stats;
 
+  const activeStatuses = statusChart.filter((s) => s.count > 0);
   const totalStatusCount = statusChart.reduce((sum, s) => sum + s.count, 0);
+  const revenueSparkline = revenueData.map((d) => ({ value: d.amount }));
 
   // Empty state — onboarding
   if (totalOrders === 0) {
@@ -95,49 +105,42 @@ async function DashboardContent() {
   return (
     <>
       {/* KPI Cards Row 1 */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Link href="/orders">
-          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-            <p className="text-gray-500 text-sm font-medium">Активные проекты</p>
-            <div className="flex items-end justify-between mt-2">
-              <p className="text-3xl font-bold">{activeOrders}</p>
-              <span className="bg-blue-50 text-blue-600 text-xs font-bold px-2 py-1 rounded">В работе</span>
-            </div>
-          </div>
-        </Link>
-        <Link href="/orders">
-          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-            <p className="text-gray-500 text-sm font-medium">На проверке</p>
-            <div className="flex items-end justify-between mt-2">
-              <p className="text-3xl font-bold">{totalOrders}</p>
-              <span className="bg-orange-50 text-orange-600 text-xs font-bold px-2 py-1 rounded">Всего</span>
-            </div>
-          </div>
-        </Link>
-        <Link href="/finance">
-          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-            <p className="text-gray-500 text-sm font-medium">Выручка за месяц</p>
-            <div className="flex items-end justify-between mt-2">
-              <p className="text-3xl font-bold">{formatCurrency(monthRevenue)}</p>
-              <span className="text-emerald-600 text-sm font-bold flex items-center gap-1">
-                <TrendingUp className="w-4 h-4" /> +12%
-              </span>
-            </div>
-          </div>
-        </Link>
-        <Link href="/time">
-          <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-            <p className="text-gray-500 text-sm font-medium">Часы за неделю</p>
-            <div className="flex items-end justify-between mt-2">
-              <p className="text-3xl font-bold">{totalWeekHours} ч.</p>
-              <span className="bg-gray-100 text-gray-500 text-xs font-bold px-2 py-1 rounded">Норма</span>
-            </div>
-          </div>
-        </Link>
+      <div {...sectionAnim(0, "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4")}>
+        <KpiCard
+          href="/orders"
+          icon={<FolderKanban className="w-5 h-5" />}
+          accent="blue"
+          label="Активные проекты"
+          value={String(activeOrders)}
+        />
+        <KpiCard
+          href="/orders"
+          icon={<CheckCircle className="w-5 h-5" />}
+          accent="amber"
+          label="На проверке"
+          value={String(totalOrders)}
+        />
+        <KpiCard
+          href="/finance"
+          icon={<DollarSign className="w-5 h-5" />}
+          accent="emerald"
+          label="Выручка за месяц"
+          value={formatCurrency(monthRevenue)}
+          trendPercent={revenueChangePercent}
+          sparkline={revenueSparkline}
+        />
+        <KpiCard
+          href="/time"
+          icon={<Clock className="w-5 h-5" />}
+          accent="violet"
+          label="Часы за неделю"
+          value={`${totalWeekHours} ч.`}
+          trendPercent={hoursChangePercent}
+        />
       </div>
 
       {/* Row 2: Status Chart + Urgent Tasks */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div {...sectionAnim(80, "grid grid-cols-1 lg:grid-cols-3 gap-6")}>
         {/* Project Status Bar Chart */}
         <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
           <div className="flex items-center justify-between mb-8">
@@ -149,26 +152,8 @@ async function DashboardContent() {
               Детализация
             </Link>
           </div>
-          {totalStatusCount > 0 ? (
-            <div className="flex items-end justify-between gap-6 h-[200px] px-4">
-              {statusChart.filter(s => s.count > 0).map((s) => {
-                const pct = Math.round((s.count / totalStatusCount) * 100);
-                return (
-                  <div key={s.name} className="flex flex-col items-center gap-3 flex-1 h-full">
-                    <div className="w-full bg-primary/10 rounded-t-lg flex flex-col justify-end overflow-hidden h-full">
-                      <div
-                        className="rounded-t-sm transition-all"
-                        style={{ backgroundColor: s.color, height: `${Math.max(pct, 5)}%` }}
-                        title={`${s.name}: ${s.count} (${pct}%)`}
-                      />
-                    </div>
-                    <span className="text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">
-                      {s.name}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
+          {activeStatuses.length > 0 ? (
+            <StatusBarChart data={activeStatuses} />
           ) : (
             <p className="text-muted-foreground text-sm text-center py-8">Нет данных</p>
           )}
@@ -230,7 +215,7 @@ async function DashboardContent() {
       </div>
 
       {/* Row 3: Team Workload + Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div {...sectionAnim(140, "grid grid-cols-1 lg:grid-cols-2 gap-6")}>
         {/* Team Workload */}
         <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
           <div className="flex items-center justify-between mb-6">
@@ -306,7 +291,7 @@ async function DashboardContent() {
       </div>
 
       {/* Row 4: Revenue Chart + Financial Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div {...sectionAnim(200, "grid grid-cols-1 lg:grid-cols-3 gap-6")}>
         {/* Revenue Chart */}
         <div className="lg:col-span-2 bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
           <div className="flex items-center justify-between mb-4">
@@ -380,7 +365,7 @@ async function DashboardContent() {
       </div>
 
       {/* Row 5: Deadlines */}
-      <div className="bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm">
+      <div {...sectionAnim(260, "bg-white p-6 rounded-xl border border-[#dbdfe6] shadow-sm")}>
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-lg">Ближайшие дедлайны</h3>
           <Link href="/orders" className="text-primary text-sm font-medium hover:underline">
@@ -392,10 +377,10 @@ async function DashboardContent() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">
-                  <th className="text-left py-3 font-medium text-gray-500">Проект</th>
-                  <th className="text-left py-3 font-medium text-gray-500">Клиент</th>
-                  <th className="text-left py-3 font-medium text-gray-500">Дедлайн</th>
-                  <th className="text-left py-3 font-medium text-gray-500">Осталось</th>
+                  <th className="text-left py-3 font-medium text-gray-500 text-xs uppercase tracking-wider">Проект</th>
+                  <th className="text-left py-3 font-medium text-gray-500 text-xs uppercase tracking-wider">Клиент</th>
+                  <th className="text-left py-3 font-medium text-gray-500 text-xs uppercase tracking-wider">Дедлайн</th>
+                  <th className="text-left py-3 font-medium text-gray-500 text-xs uppercase tracking-wider">Осталось</th>
                 </tr>
               </thead>
               <tbody>
@@ -438,13 +423,13 @@ async function DashboardContent() {
 function DashboardSkeleton() {
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {[1, 2, 3, 4].map((i) => (
-          <div key={i} className="h-24 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
+          <div key={i} className="h-28 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
         ))}
       </div>
-      <div className="grid grid-cols-3 gap-6">
-        <div className="col-span-2 h-64 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 h-64 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
         <div className="h-64 bg-white animate-pulse rounded-xl border border-[#dbdfe6]" />
       </div>
     </div>
